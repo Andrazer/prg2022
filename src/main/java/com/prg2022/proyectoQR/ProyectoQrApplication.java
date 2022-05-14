@@ -9,3 +9,4 @@ public class ProyectoQrApplication {
 		SpringApplication.run(ProyectoQrApplication.class, args);
 	}
 }
+ 

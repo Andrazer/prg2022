@@ -12,5 +12,9 @@ public class GeneralController {
         modelAndView.setViewName("iniciar");
         return modelAndView;
     }    
-    
+    @GetMapping("/salir")
+    public ModelAndView getSalir(ModelAndView modelAndView) {
+        modelAndView.setViewName("salir");
+        return modelAndView;
+    }    
 }
