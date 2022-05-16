@@ -1,11 +1,12 @@
 <th:block th:include="/cabecera.html"></th:block>
 
 <style>
-    .borrar, .editar, .ver {
+    .borrar, .editar, .ver, .add_fol {
         background-repeat: no-repeat;
         background-position: center;
         width: 40px;
         height: 28px;
+        margin-right: 5px;
     }
     .editar {
         background-image: url(/css/editar.svg);
@@ -16,36 +17,90 @@
     .ver {
         background-image: url(/css/ver.svg);
     }
+    .add_fol{
+        background-image: url(/css/add_fol.svg);
+    }
 </style>
-<div class="container-sm">
-    <table id="tblbrigadas" class="table table-hover">
-          <thead class="table-light">
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Brigada</th>
-              <th scope="col">Usuarios</th>
-              <th scope="col">Acciones</th>
-            </tr>
-          </thead>
-          <tbody name="brigadas">
-            <tr>
-              <th scope="row">3</th>
-              <td>Jacob</td>
-              <td>3</td>
-                <td>
-                    <div >
-                        <button type="button" class="btn btn-sm btn-outline-success ver">&nbsp;</button>
-                        <button type="button" class="btn btn-sm btn-outline-warning editar">&nbsp;</button>
-                        <button type="button" class="btn btn-sm btn-outline-danger borrar">&nbsp;</button>
-                    </div>
-                </td>
-            </tr>
-          </tbody>
-          <caption>List of users</caption>
-    </table>
+<div id="bdy_brigada" class="container-sm">
+    
 </div>
+<div id="acciones_briada" class="container-sm">
+    <button class="btn btn-sm btn-success add_fol mb-2"  data-bs-toggle="modal" data-bs-target="#add_brigada"
+     title="Agregar Brigada"></button>
+</div>
+<script>
+    function nueva_brigada(){
+        document.getElementById("modalLoginForm").ariaHidden =false;
+    }
+</script>
+
+<script>    
+    function Registrame() {
+        $nuevabrigada = document.getElementById("NuevaBrigadaInput").value;
+// create a JSON object
+const json = { 
+ descripcion: $nuevabrigada
+};
+
+// request options
+const options = {
+method: 'POST',
+body: JSON.stringify(json),
+headers: {
+   'Content-Type': 'application/json'
+}
+}
+
+// send post request
+fetch('/brigada/add', options)
+.catch(err => console.error(err));
+window.location.reload();
+}
+    
+
+window.onload = function() {
+        actualiza_tabla();
+};    
+</script>
+
+
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="add_brigada" tabindex="-1" aria-labelledby="add_brigadaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="add_brigadaLabel">Agregar Brigada</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Descripción:</span>
+                <input id="NuevaBrigadaInput" type="text" class="form-control" placeholder="3A 2022" aria-label="descripcion" aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" onclick="Registrame();">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
 
 <script>
+function actualiza_tabla(){
 fetch('/brigada/all', { method: "GET" }).then(response => 
     response.json().then(data => ({
         data: data,
@@ -55,34 +110,72 @@ fetch('/brigada/all', { method: "GET" }).then(response =>
     //console.log(res.status, res.data);
     updateTable(res.data)
 }));
-/*
-fetch('/brigada/all', { method: "GET" })
-        .then(function(response){
-            if(response.status==200){
-              updateTable(response.json(), ['id', 'descripcion', 'inicio']);
-            } else {
-                throw new Error(response.status);             
-            }
-        })
-        .catch(err => {
-            //
-            }
-        );*/
+}
+
 
 function updateTable(data){
-  console.log(data);
-var r = new Array(), j = -1;
-for (var x=0; x<=data.length; x++){
-  r[++j] ='<tr><td>';
-  r[++j] = data[x];
-  r[++j] = '</td><td class="whatever1">';
-  r[++j] = data[x];
-  r[++j] = '</td><td class="whatever2">';
-  r[++j] = data[x];
-  r[++j] = '</td></tr>';
+//generamos la tabla a través del DOM automáticamente
+var table = document.createElement("table");
+    table.setAttribute("id", "tbl_brigadas");
+var body = document.getElementById("bdy_brigada");
+    body.innerHTML = '';
+    body.appendChild(table).classList.add("table", "table-hover"); 
+
+if (data.length) {
+  var thead = document.createElement("thead"); 
+  var row = document.createElement("tr");
+  thead.appendChild(row);
+  table.appendChild(thead).classList.add("table-light"); 
+  Object.keys(data[0]).forEach(function(v,i=0) {
+    i++;
+    var cell = document.createElement("th");
+    row.appendChild(cell).setAttribute("scope", "col");
+    //oculto en movil, resto de columnas, dejando solo 1 y 2
+    if (i>2){ cell.classList.add("d-none","d-sm-table-cell"); }
+    //fin ocultacion
+    cell.innerHTML = v.toUpperCase();
+  });
 }
-console.log(r.join(''));
-document.getElementById('tblbrigadas').replaceChild(r.join('')); 
+
+
+
+//lo anterior genera la tabla sola a partir del JSON
+//si quiero meter funcionalidades a mayores, tengo que incluirlas.
+//agregando botones, necesito un th mas para los botones:
+row.appendChild(document.createElement("th")).setAttribute("scope", "col");
+row.lastChild.innerHTML = "ACCIONES";
+// ahora ya tenemos una columna para acciones, generamos filas en auto:
+var tbody = document.createElement("tbody"); 
+
+for (var i = 0; i < data.length; i++) {
+  
+  var row = document.createElement("tr");
+  tbody.appendChild(row);
+  table.appendChild(tbody);
+  j=0;
+  for (key in data[i]) {
+    j++;
+    var cell = document.createElement("td");
+    row.appendChild(cell).setAttribute("scope", "row");
+    if (j>2){ cell.classList.add("d-none","d-sm-table-cell"); }
+    cell.innerHTML = data[i][key];
+  }
+}
+
+//y tenemos que meter los botones en cada fila
+//recorremos el tbody y metemos botones a cada uno de sus hijos (que serian los tr)
+NodeList.prototype.forEach = Array.prototype.forEach;
+var children = tbody.childNodes;
+children.forEach(function(item){
+    item.appendChild(document.createElement("td")).setAttribute("scope", "row");
+    botonera = document.createElement("div");
+    botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-success","ver");
+    botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-warning","editar");
+    botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-danger","borrar");
+    item.lastChild.appendChild(botonera);
+});
+
+
 }
 </script>
 <th:block th:include="/pie.html"></th:block>
