@@ -1,7 +1,88 @@
 <th:block th:include="/cabecera.html"></th:block>
 
+<style>
+    .borrar, .editar, .ver {
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 40px;
+        height: 28px;
+    }
+    .editar {
+        background-image: url(/css/editar.svg);
+    }
+    .borrar {
+        background-image: url(/css/borrar.svg);
+    }
+    .ver {
+        background-image: url(/css/ver.svg);
+    }
+</style>
+<div class="container-sm">
+    <table id="tblbrigadas" class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Brigada</th>
+              <th scope="col">Usuarios</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody name="brigadas">
+            <tr>
+              <th scope="row">3</th>
+              <td>Jacob</td>
+              <td>3</td>
+                <td>
+                    <div >
+                        <button type="button" class="btn btn-sm btn-outline-success ver">&nbsp;</button>
+                        <button type="button" class="btn btn-sm btn-outline-warning editar">&nbsp;</button>
+                        <button type="button" class="btn btn-sm btn-outline-danger borrar">&nbsp;</button>
+                    </div>
+                </td>
+            </tr>
+          </tbody>
+          <caption>List of users</caption>
+    </table>
+</div>
 
-    <div>OK</div>
+<script>
+fetch('/brigada/all', { method: "GET" }).then(response => 
+    response.json().then(data => ({
+        data: data,
+        status: response.status
+    })
+).then(res => {
+    //console.log(res.status, res.data);
+    updateTable(res.data)
+}));
+/*
+fetch('/brigada/all', { method: "GET" })
+        .then(function(response){
+            if(response.status==200){
+              updateTable(response.json(), ['id', 'descripcion', 'inicio']);
+            } else {
+                throw new Error(response.status);             
+            }
+        })
+        .catch(err => {
+            //
+            }
+        );*/
 
-
+function updateTable(data){
+  console.log(data);
+var r = new Array(), j = -1;
+for (var x=0; x<=data.length; x++){
+  r[++j] ='<tr><td>';
+  r[++j] = data[x];
+  r[++j] = '</td><td class="whatever1">';
+  r[++j] = data[x];
+  r[++j] = '</td><td class="whatever2">';
+  r[++j] = data[x];
+  r[++j] = '</td></tr>';
+}
+console.log(r.join(''));
+document.getElementById('tblbrigadas').replaceChild(r.join('')); 
+}
+</script>
 <th:block th:include="/pie.html"></th:block>

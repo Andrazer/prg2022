@@ -39,6 +39,7 @@ public class Brigada {
     public LocalDate getInicio() { return inicio; }
     public LocalDate getFin() { return fin; }
     public LocalTime getRF() { return RF; }
+    public Long getId() { return id; }
 
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }      
     public void setInicio(LocalDate inicio) { this.inicio = inicio; } 
