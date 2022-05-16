@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 
-public interface BrigadaRepository extends JpaRepository<Brigada, Integer>{
+public interface BrigadaRepository extends JpaRepository<Brigada, Long>{
     List<Brigada> findByDescripcion(String descripcion);
 }

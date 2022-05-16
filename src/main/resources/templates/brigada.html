@@ -53,8 +53,24 @@ headers: {
 
 // send post request
 fetch('/brigada/add', options)
-.catch(err => console.error(err));
-window.location.reload();
+.then(async response => {
+  const isJson = response.headers.get('content-type')?.includes('application/json');
+  const data = isJson ? await response.json() : null;  
+  if (!response.ok) {
+
+            // get error message from body or default to response status
+            const error = (data && data.message) || response.status;
+            return Promise.reject(error);
+        }
+        else {
+          window.location.reload();
+        }
+})
+.catch(err => {
+  console.error(err);
+  alert("No ha sido posible agregar la brigada solicitada");
+});
+
 }
     
 
@@ -107,11 +123,29 @@ fetch('/brigada/all', { method: "GET" }).then(response =>
         status: response.status
     })
 ).then(res => {
-    //console.log(res.status, res.data);
     updateTable(res.data)
 }));
 }
 
+function borra_brigada(identificador){
+fetch('/brigada/del/'+identificador, { method: "DELETE" })
+.then(async response => {
+  if (!response.ok) {
+  const error = (data && data.message) || response.status;
+  return Promise.reject(error);
+  }
+  else {
+  window.location.reload();
+  }
+})
+.catch(err => {
+  alert("No ha sido posible borrar la brigada solicitada");
+  })
+};
+
+function show_brigada(id){
+  window.location.pathname='/brigada/show/'+id;
+}
 
 function updateTable(data){
 //generamos la tabla a través del DOM automáticamente
@@ -120,6 +154,8 @@ var table = document.createElement("table");
 var body = document.getElementById("bdy_brigada");
     body.innerHTML = '';
     body.appendChild(table).classList.add("table", "table-hover"); 
+//campos a mostrar
+const mostrar = ["id","creada","descripcion"];
 
 if (data.length) {
   var thead = document.createElement("thead"); 
@@ -127,13 +163,15 @@ if (data.length) {
   thead.appendChild(row);
   table.appendChild(thead).classList.add("table-light"); 
   Object.keys(data[0]).forEach(function(v,i=0) {
-    i++;
-    var cell = document.createElement("th");
-    row.appendChild(cell).setAttribute("scope", "col");
-    //oculto en movil, resto de columnas, dejando solo 1 y 2
-    if (i>2){ cell.classList.add("d-none","d-sm-table-cell"); }
-    //fin ocultacion
-    cell.innerHTML = v.toUpperCase();
+    if (mostrar.includes(v)){
+      i++;
+      var cell = document.createElement("th");
+      row.appendChild(cell).setAttribute("scope", "col");
+      //oculto en movil, resto de columnas, dejando solo 1 y 2
+      if (i>2){ cell.classList.add("d-none","d-sm-table-cell"); }
+      //fin ocultacion
+      cell.innerHTML = v.toUpperCase();
+    }
   });
 }
 
@@ -154,12 +192,18 @@ for (var i = 0; i < data.length; i++) {
   table.appendChild(tbody);
   j=0;
   for (key in data[i]) {
-    j++;
-    var cell = document.createElement("td");
-    row.appendChild(cell).setAttribute("scope", "row");
-    if (j>2){ cell.classList.add("d-none","d-sm-table-cell"); }
-    cell.innerHTML = data[i][key];
+    if (mostrar.includes(key)){
+      j++;
+      var cell = document.createElement("td");
+      row.appendChild(cell).setAttribute("scope", "row");
+      if (j>2){ cell.classList.add("d-none","d-sm-table-cell"); }
+      cell.innerHTML = data[i][key];
+    }
   }
+  if (!data[i]['activa']){
+    row.classList.add("table-danger");
+  }
+    
 }
 
 //y tenemos que meter los botones en cada fila
@@ -169,9 +213,20 @@ var children = tbody.childNodes;
 children.forEach(function(item){
     item.appendChild(document.createElement("td")).setAttribute("scope", "row");
     botonera = document.createElement("div");
-    botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-success","ver");
-    botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-warning","editar");
-    botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-danger","borrar");
+    if (!item.classList.contains("table-danger")){
+      botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-success","ver");
+      botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-warning","editar");
+      botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-danger","borrar");
+      botonera.firstChild.setAttribute("onClick","show_brigada("+item.firstChild.textContent+")");
+      botonera.lastChild.setAttribute("onClick","borra_brigada("+item.firstChild.textContent+")");
+      
+    } else {
+      botonera.appendChild(document.createElement("button"));
+      botonera.lastChild.classList.add("btn","btn-sm","btn-outline-danger");
+      botonera.lastChild.innerHTML="recuperar elemento";
+      botonera.lastChild.setAttribute("onClick","borra_brigada("+item.firstChild.textContent+")");
+
+    }
     item.lastChild.appendChild(botonera);
 });
 

@@ -1,0 +1,115 @@
+<th:block th:include="/cabecera.html"></th:block>
+
+<section style="background-color: #eee;">
+    <div class="container py-5">
+      <div class="row">
+        <div class="col">
+          <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+              <li class="breadcrumb-item"><a href="/brigada">Brigadas</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Detalle de la Brigada </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 150px;">
+              <h5 class="my-3">John Smith</h5>
+              <p class="text-muted mb-1">Comte. Brigada</p>
+              <p class="text-muted mb-4">6 Brigada Afa</p>
+              <div class="d-flex justify-content-center mb-2">
+                <button type="button" class="btn btn-primary">@mail</button>
+                <button type="button" class="btn btn-outline-primary ms-1">Tlf: 666-555-444</button>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-4 mb-lg-0">
+            
+            <div class="card mb-4">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <p class="mb-0">Creada</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <p class="text-muted mb-0">xx</p>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <p class="mb-0">Actualizada</p>
+                    </div>
+                    <div class="col-sm-6">
+                      <p class="text-muted mb-0">xx</p>
+                    </div>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="col-lg-8">
+
+
+
+          <div class="row">
+
+            <div class="col-6">
+                <div class="card mb-4 mb-md-0">
+                    <div class="card-body">
+                        <p class="mb-4"><span class="text-primary font-italic me-1">Usuarios</span></p>
+                        <p class="mb-1" style="font-size: .77rem;">611A - Paquita Rosa Oleastro</p>
+                        <p class="mb-1" style="font-size: .77rem;">612A - Higinio Victorino Quijada</p>
+                        <p class="mb-1" style="font-size: .77rem;">613A - Gertrudis Covadonga Crespo</p>
+                        <p class="mb-1" style="font-size: .77rem;">614A - Dolores Paulina Félix</p>
+                        <p class="mb-1" style="font-size: .77rem;">615A - Facundo Marianita Vicario</p>
+                        <p class="mb-1" style="font-size: .77rem;">616A - Elvira Martita Medina</p>
+                        <p class="mb-1" style="font-size: .77rem;">617A - Hernán Joel Espinosa</p>
+                        <p class="mb-1" style="font-size: .77rem;">618A - Emelina Raymundo Calvo</p>
+                        <p class="mb-1" style="font-size: .77rem;">619A - Felicidad Denisse Salcedo</p>
+                        <p class="mb-1" style="font-size: .77rem;">621A - Aitana Elpidio Espina</p>
+                        <p class="mb-1" style="font-size: .77rem;">622A - Carlos Armida Esparza</p>
+                        <p class="mb-1" style="font-size: .77rem;">623A - Yasmin Trini Colón</p>
+                        <p class="mb-1" style="font-size: .77rem;">624A - Jenaro Luis Ángel María</p>
+                        <p class="mb-1" style="font-size: .77rem;">625A - Pedro Gael Díez</p>
+                        <p class="mb-1" style="font-size: .77rem;">626A - Próspero Leonel Obando</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card mb-4 mb-md-0">
+                    <div class="card-body">
+                        <p class="mb-4"><span class="text-primary font-italic me-1">Movimientos</span></p>
+                    </div>
+                </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script>
+  //function actualiza_detalle(){
+    fetch('/brigada/get/[[${id}]]', { method: "GET" }).then(response => 
+        response.json().then(data => ({
+            data: data,
+            status: response.status
+        })
+    ).then(res => {
+        console.log(res.data)
+    }));
+    //}    
+  </script>
+  <th:block th:include="/pie.html"></th:block>
