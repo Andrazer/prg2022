@@ -1,0 +1,113 @@
+ena
+conf t
+!! nombre del host
+hostname S2
+
+!!desactivas busqueda dns
+no ip domain-lookup
+
+!!activar encriptado claves
+service password-encryption
+
+!!mensajes login
+banner motd "Acceso autorizado unicamente. Los infractores se procesaran en la medida en que lo permita la ley."
+
+!!configuramos clave consola
+line con 0
+password cisco
+login
+
+!!evitar que un mensaje nos corte un comando cuando escribimos en las líneas
+logging synchronous 
+
+!!configuramos clave lineas vty
+line vty 0 15
+password cisco
+login
+enable password cisco
+enable secret itsasecret
+exit
+
+
+
+enable
+configure terminal
+vlan 10
+name alumnos
+vlan 20
+name profesores
+vlan 30
+name invitados
+vlan 66
+name admin
+vlan 88
+name negra
+vlan 99
+name nativa
+exit
+
+
+enable
+conf t
+vtp domain prg
+vtp password prg
+vtp mode server
+vtp version 2
+end
+
+
+192.168.0.0/16
+
+	192.168.0.0  /18  		255.255.192.0   bc 192.168.63.255
+	192.168.64.0 /23		255.255.254.0	bc 192.168.65.255
+	192.168.66.0 /25		255.255.255.128	bc 192.168.66.127
+	192.168.66.128 /28		255.255.255.240	bc 192.168.66.143
+
+
+
+a)	Vlan 10 (alumnos) de 8.500 host (PC10 la última y PC11 la penúltima IP de red).
+b)	Vlan 20 (profesores) de 500 host (PC20 la última y PC21 la penúltima IP de red).
+c)	Vlan 30 (invitados) 100 host (PC30 la última y PC31 la penúltima IP de red).
+d)	Vlan 66 (admin) 10 host (PC60 la última y PC61 la penúltima IP de red).
+e)	Vlan 88 (negra).
+f)	Vlan 99 (nativa).
+g)	Distribuir las vlan´s por VTP. S1 como servidor, S2 y S3 como clientes. Dominio “prg” password “prg”.
+h)	Configurar las interfaces conectadas del S1 como troncales y las que no se usen colocarlas en la vlan 88 y desactivarlas.
+
+
+enable
+configure terminal
+interface range f0/1-f0/3
+switchport mode trunk
+switchport nonegotiate
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,66,88,99
+no shutdown
+end
+
+interface range f0/4-f0/24
+switchport mode access
+switchport access vlan 88
+shutdown
+end
+
+
+enable
+conf t
+interface vlan 1
+ip address 192.168.66.130 255.255.255.240
+no shut
+exit
+
+
+
+enable
+configure terminal
+ip domain-name prg.com
+crypto key generate rsa
+username admin privilege 15 secret admin
+line vty 0 15
+transport input ssh
+login local
+exit
+ip ssh version 2

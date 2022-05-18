@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
 import com.prg2022.proyectoQR.modelos.Brigada;
 import com.prg2022.proyectoQR.payload.request.AddBrigadaRequest;
+import com.prg2022.proyectoQR.payload.request.UploadFileRequest;
 import com.prg2022.proyectoQR.payload.response.MessageResponse;
 
 import com.prg2022.proyectoQR.payload.response.BrigadaResponse;
@@ -74,8 +75,10 @@ public class BrigadaController {
     @GetMapping("/show/{id}")
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
     public ModelAndView showBrigada(@PathVariable Long id, ModelAndView modelAndView) {
+        UploadFileRequest importarArchivo = new UploadFileRequest();
         modelAndView.addObject("id", id);
         modelAndView.setViewName("brigada_detail");
+        modelAndView.addObject("importarArchivo", importarArchivo);
         return modelAndView;
     }
 

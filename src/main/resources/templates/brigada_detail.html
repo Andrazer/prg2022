@@ -68,6 +68,10 @@
             <div class="col-6">
                 <div class="card mb-4 mb-md-0">
                     <div class="card-body">
+<div class="text-end">
+<button class="btn btn-sm btn-success add_fol mb-2" data-bs-toggle="modal" data-bs-target="#add_user" 
+title="Agregar Usuarios">+</button>
+</div>
                         <p class="mb-4"><span class="text-primary font-italic me-1">Usuarios</span></p>
                         <p class="mb-1" style="font-size: .77rem;">611A - Paquita Rosa Oleastro</p>
                         <p class="mb-1" style="font-size: .77rem;">612A - Higinio Victorino Quijada</p>
@@ -100,6 +104,35 @@
       </div>
     </div>
   </section>
+
+<!-- Modal -->
+<div class="modal fade" id="add_user" tabindex="-1" aria-labelledby="add_userLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="add_userLabel">Agregar Usuarios</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body text-center">
+          
+          <form th:object="${importarArchivo}" enctype="multipart/form-data">
+           <input th:field="*{fileDatas}" type="file"  style="display:none"/>
+           <button type="button" class="btn btn-primary btn-sm" disabled>Alta individual</button>
+           <span role="button" class="btn btn-primary btn-sm" 
+            accept=".xls, .csv, .xlsx"
+            onclick="document.getElementById('fileDatas').click();">Importar XLS / CSV </span>
+       </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
   <script>
   //function actualiza_detalle(){
     fetch('/brigada/get/[[${id}]]', { method: "GET" }).then(response => 
@@ -111,5 +144,28 @@
         console.log(res.data)
     }));
     //}    
+
+ const subirImagen= event => {
+  const archivos = event.target.files;
+  const data = new FormData();
+
+  data.append('fileDatas', archivos[0]);
+
+  fetch('/usuarios/subidaUnArchivo', {
+    method: 'POST',
+    body: data
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('El archivo ' + data.path + ' se ha subido correctamente.');
+  })
+  .catch(error => {
+    console.error(error);
+  });
+}
+
+document.querySelector('#fileDatas').addEventListener('change', event => {
+    subirImagen(event);
+});
   </script>
   <th:block th:include="/pie.html"></th:block>

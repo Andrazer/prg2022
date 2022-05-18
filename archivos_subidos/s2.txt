@@ -1,0 +1,70 @@
+enable
+conf t
+vtp domain prg
+vtp password prg
+vtp mode client
+vtp version 2
+end
+
+
+enable
+configure terminal
+interface f0/1
+switchport mode trunk
+switchport nonegotiate
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,66,88,99
+no shutdown
+exit
+
+interface range f0/2-f0/24
+switchport mode access
+switchport access vlan 88
+shutdown
+exit
+
+interface f0/5
+switchport mode access
+switchport access vlan 10
+no shutdown
+exit
+
+interface f0/10
+switchport mode access
+switchport access vlan 20
+no shutdown
+exit
+
+interface f0/15
+switchport mode access
+switchport access vlan 30
+no shutdown
+exit
+
+interface f0/20
+switchport mode access
+switchport access vlan 66
+no shutdown
+exit
+
+
+enable
+conf t
+interface vlan 1
+ip address 192.168.66.132 255.255.255.240
+no shut
+exit
+
+
+enable
+configure terminal
+ip domain-name prg.com
+crypto key generate rsa
+1024
+
+username admin privilege 15 secret admin
+line vty 0 15
+transport input ssh
+login local
+exit
+ip ssh version 2
