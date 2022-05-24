@@ -21,7 +21,7 @@ public class Alumno implements Serializable{
     private Long id;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 60)
     private String nombre;     
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

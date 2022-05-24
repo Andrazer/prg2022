@@ -1,10 +1,14 @@
 package com.prg2022.proyectoQR;
 
 
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.Set;
+
+
 
 import com.prg2022.proyectoQR.Repository.AlumnoRepository;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
@@ -19,6 +23,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 @Component
 public class DataLoader implements ApplicationRunner {
@@ -73,6 +81,39 @@ public class DataLoader implements ApplicationRunner {
             permisos.add(adminRole);
             agregado.setRoles(permisos);
             aRepository.save(agregado);
-        }                    
+        }
+        //creando usuarios de ejemplo
+        try {
+
+            String[] valor;
+            Alumno nuevos_alumnos;
+            Set<Role> permisosar = new HashSet<>();
+            Role userRols = rRepository.findByDescripcion(EnumRole.ROLE_USER).get();
+            permisosar.add(userRols);   
+            List<Brigada> existe;                     
+            
+        Resource resource = new ClassPathResource("data1.csv");
+        FileInputStream f = new FileInputStream(resource.getFile());
+        Scanner sc = new Scanner(f);  
+
+        existe = bRepository.findByDescripcion("1A");
+        if (existe.isEmpty()){
+            bRepository.save(new Brigada("1A"));
+            while (sc.hasNext())   
+            {  
+                valor = sc.next().split(",");
+                nuevos_alumnos = aRepository.save( 
+                    new Alumno(valor[0]+" "+valor[1]+""+valor[2], valor[3], 
+                    bRepository.findByDescripcion("1A").get(0)));
+                System.out.print("Nombre: "+valor[0]+" "+valor[1]+" "+valor[2]+" DNI: "+valor[3]+"\n");  
+                nuevos_alumnos.setRoles(permisosar);
+                aRepository.save(nuevos_alumnos);
+            }             
+        }
+
+        sc.close();  //closes the scanner 
+        }
+        catch (IOException ex) {
+        }
     }
 }
