@@ -11,6 +11,7 @@ import java.util.Set;
 
 
 import com.prg2022.proyectoQR.Repository.UsuarioRepository;
+import com.prg2022.proyectoQR.addons.numeroBrigada.generador;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
 import com.prg2022.proyectoQR.Repository.MovimientoRepository;
 import com.prg2022.proyectoQR.Repository.RoleRepository;
@@ -75,7 +76,7 @@ public class DataLoader implements ApplicationRunner {
             for (EnumRole dir : EnumRole.values()) {
                 rRepository.save(new Role(dir));
               }
-        }    //(String nombre, String dni, Brigada brigada)
+        }   
         if (alumno.isEmpty()) {
             System.out.println("No hay administrador, creando usuario Admin con password 1234");
             
@@ -105,12 +106,18 @@ public class DataLoader implements ApplicationRunner {
             FileInputStream f = new FileInputStream(resource.getFile());
             Scanner sc = new Scanner(f);             
             bRepository.save(new Brigada("1A"));
+            generador NumBrigada =  new generador(1, "A");
             while (sc.hasNext())   
             {  
+                Object[] usuarioNumero = NumBrigada.getRancho();
                 valor = sc.next().split(",");
                 nuevos_alumnos = aRepository.save( 
                     new Usuario(valor[0]+" "+valor[1]+" "+valor[2], valor[3], 
-                    bRepository.findByDescripcion("1A").get(0)));
+                    bRepository.findByDescripcion("1A").get(0),
+                    (int)usuarioNumero[0],
+                    (int)usuarioNumero[1],
+                    (int)usuarioNumero[2],
+                    (String)usuarioNumero[3]));
                 nuevos_alumnos.setRoles(permisosar);
                 aRepository.save(nuevos_alumnos);
             }             

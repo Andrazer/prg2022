@@ -1,0 +1,71 @@
+<th:block th:include="/cabecera.html"></th:block>
+
+<section style="background-color: #eee;">
+    <div class="container py-5">
+      <div class="row">
+        <div class="col">
+          <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+              <li class="breadcrumb-item"><a href="/brigada">Brigadas</a></li>
+              <li class="breadcrumb-item"><a href="/" th:href="'/brigada/show/'+${usuario.BrigadaId}" th:text="'Brigada '+${usuario.getBrigadaDescripcion}" >Usuarios</a></li>
+              <li class="breadcrumb-item active" aria-current="page" th:text="'Ficha de '+${usuario.nombre}" >Detalle del usuario</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+              <img th:src="'/qr-'+${id}+'.png'" src="xxx" alt="avatar"
+                class="rounded-circle img-fluid" style="width: 150px;border-radius: 10%!important;">
+              <h5 th:text="${usuario.nombre}" class="my-3">John Smith</h5>
+              <p th:text="${usuario.dni}" class="text-muted mb-1">Nombre</p>
+              <p th:text="'Brigada '+${usuario.getBrigadaDescripcion}" class="text-muted mb-4">Brigada</p>
+              <div class="d-flex justify-content-center mb-2">
+                <button type="button" class="btn btn-primary" th:text="${usuario.NumBrigada}" disabled>Num Brigada</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <div class="col-lg-8">
+
+
+
+          <div class="row">
+
+            <div class="col-6">
+                <div class="card mb-4 mb-md-0">
+                    <div class="card-body">
+                      <p class="mb-4"><span class="text-primary font-italic me-1">Últimos 10 registros</span></p>
+
+                      <div th:each="movimiento : ${movimientos}" class="mx-2 mb-1">
+                          <span th:if="${movimiento.Abordo}" th:text="${#temporals.format(movimiento.cuando, 'dd-MM-yyyy HH:mm')}"  class="btn btn-outline-success btn-sm"/>
+                          <span th:unless="${movimiento.Abordo}" th:text="${#temporals.format(movimiento.cuando, 'dd-MM-yyyy HH:mm')}"  class="btn btn-outline-danger btn-sm mx-4"/>
+                      </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card mb-4 mb-md-0">
+                    <div class="card-body">
+                        <p class="mb-4"><span class="text-primary font-italic me-1">Autorizaciones</span></p>
+                    </div>
+                </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <th:block th:include="/pie.html"></th:block>

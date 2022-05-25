@@ -72,16 +72,42 @@
 <button class="btn btn-sm btn-success add_fol mb-2" data-bs-toggle="modal" data-bs-target="#add_user" 
 title="Agregar Usuarios">+</button>
 </div>
-                        <p class="mb-4">
-                          <span th:text="'Usuarios ('+ ${usuarios.size}+')'" class="text-primary font-italic me-1">Usuarios</span>
-                        </p>
+                        <div class="mb-4">
+                          
+                            <div class="form-check float-end">
+                              <input class="form-check-input" type="checkbox" id="flexCheckDefault" onClick="show_nombres();">
+                              <label class="form-check-label" for="flexCheckDefault">
+                                Ver nombres
+                              </label>
+                            </div>
+                            <span th:text="'Usuarios ('+ ${usuarios.size}+')'" class="text-primary font-italic me-1">Usuarios</span>
+                        </div>
+<script>
+  function show_nombres(){
+    console.log("s");
+    const nombres = document.querySelectorAll('span.nombres');
+
+    if(document.getElementById("flexCheckDefault").checked){
+      for (const nombre of nombres) {
+        nombre.classList.remove('d-none');
+        nombre.parentNode.classList.remove('float-start');
+      }
+    } else{
+      for (const nombre of nombres) {
+        nombre.classList.add('d-none');
+        nombre.parentNode.classList.add('float-start');
+      }      
+    }
 
 
-                        <p th:each="usuario : ${usuarios}" class="mx-2 mb-1 style="font-size: .77rem;"">
-                          <a th:text="${usuario.NombreCorto}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="small"/>
-                          <span th:if="${usuario.Abordo}" th:text="'A Bordo'">A Bordo</span>
-                          <span th:unless="${usuario.Abordo}" th:text="'En tierra'">En tierra</span>
-                        </p>
+  }
+</script>
+
+                        <div th:each="usuario : ${usuarios}" class="botonera mx-2 mb-1 float-start">
+                          <a th:if="${usuario.Abordo}" th:text="${usuario.NumBrigada}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="btn btn-outline-success btn-sm"/>
+                          <a th:unless="${usuario.Abordo}" th:text="${usuario.NumBrigada}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="btn btn-outline-danger btn-sm"/>
+                          <span th:text="${usuario.NombreCorto}" class="nombres d-none">xxx</span>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -40,4 +40,7 @@ public class Movimiento {
         this.autorizador = autorizador;
     }
 
+    public LocalDateTime getCuando() { return cuando; }
+    public Boolean getAbordo() { return aBordo; }
+
 }

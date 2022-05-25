@@ -52,6 +52,16 @@ public class Usuario implements Serializable{
 
     private String clave;
 
+    @Column(columnDefinition = "TINYINT")
+        private int rancho;
+    @Column(columnDefinition = "TINYINT")
+        private int numero;
+    @Column(columnDefinition = "TINYINT")
+        private int grupo;   
+    private String letra;     
+    
+
+
     public Usuario() {
     }
 
@@ -60,6 +70,27 @@ public class Usuario implements Serializable{
         this.dni = dni;
         this.brigada = brigada;
         this.Abordo = false;
+    }
+
+    public Usuario(String nombre, String dni, Brigada brigada,int rancho,  int numero, int grupo, String letra) {
+        this.nombre = nombre;
+        this.dni = dni;
+        this.brigada = brigada;
+        this.Abordo = false;
+        this.rancho=rancho;
+        this.numero=numero;
+        this.grupo=grupo;   
+        this.letra=letra;  
+    }
+
+    public String getNumBrigada(){
+        return this.rancho+""+this.numero+""+this.grupo+""+this.letra;
+    }
+    public void setNumBrigada(int rancho,  int numero, int grupo, String letra){
+        this.rancho=rancho;
+        this.numero=numero;
+        this.grupo=grupo;   
+        this.letra=letra;            
     }
 
     public String getClave() { return clave; }
@@ -74,6 +105,8 @@ public class Usuario implements Serializable{
     public void setRoles(Set<Role> roles) { this.roles = roles; }
 
     public Brigada getBrigada() { return brigada; }
+    public String getBrigadaDescripcion() { return brigada.getDescripcion();}
+    public Long getBrigadaId() { return brigada.getId();}
     public void setBrigada(Brigada brigada) { this.brigada = brigada;}
 
     public String getNombre() { return nombre; }
