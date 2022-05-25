@@ -3,10 +3,7 @@ package com.prg2022.proyectoQR.modelos;
 import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 
@@ -33,7 +30,7 @@ public class Movimiento {
     private Usuario autorizador; 
 
     public Movimiento(){
-        
+
     }
 
     public Movimiento(boolean aBordo, LocalDateTime cuando, Usuario usuario, Usuario autorizador) {

@@ -2,6 +2,7 @@ package com.prg2022.proyectoQR.modelos;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.HashSet;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -79,6 +80,12 @@ public class Usuario implements Serializable{
     public void setNombre(String nombre) { this.nombre = nombre;}    
 
     public Boolean getAbordo() { return Abordo; }
-    public void setAbordo(Boolean Abordo) { this.Abordo = Abordo;}      
+    public void setAbordo(Boolean Abordo) { this.Abordo = Abordo;}    
+    
+    public String getNombreCorto() { 
+        StringTokenizer cortando = new StringTokenizer(this.nombre);
+        String inicial = cortando.nextToken();
+        return cortando.nextToken()+" "+cortando.nextToken()+", "+inicial.substring(0,1)+"."; 
+    }
 
 }

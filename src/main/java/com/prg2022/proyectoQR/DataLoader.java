@@ -93,38 +93,35 @@ public class DataLoader implements ApplicationRunner {
         }
         //creando usuarios de ejemplo
         try {
-
+            List<Brigada> existe;                     
+            existe = bRepository.findByDescripcion("1A");
+        if (existe.isEmpty()){
             String[] valor;
             Usuario nuevos_alumnos;
             Set<Role> permisosar = new HashSet<>();
             Role userRols = rRepository.findByDescripcion(EnumRole.ROLE_USER).get();
-            permisosar.add(userRols);   
-            List<Brigada> existe;                     
-            
-        Resource resource = new ClassPathResource("data1.csv");
-        FileInputStream f = new FileInputStream(resource.getFile());
-        Scanner sc = new Scanner(f);  
-
-        existe = bRepository.findByDescripcion("1A");
-        if (existe.isEmpty()){
+            permisosar.add(userRols);            
+            Resource resource = new ClassPathResource("data1.csv");
+            FileInputStream f = new FileInputStream(resource.getFile());
+            Scanner sc = new Scanner(f);             
             bRepository.save(new Brigada("1A"));
             while (sc.hasNext())   
             {  
                 valor = sc.next().split(",");
                 nuevos_alumnos = aRepository.save( 
-                    new Usuario(valor[0]+" "+valor[1]+""+valor[2], valor[3], 
+                    new Usuario(valor[0]+" "+valor[1]+" "+valor[2], valor[3], 
                     bRepository.findByDescripcion("1A").get(0)));
-                System.out.print("Nombre: "+valor[0]+" "+valor[1]+" "+valor[2]+" DNI: "+valor[3]+"\n");  
                 nuevos_alumnos.setRoles(permisosar);
                 aRepository.save(nuevos_alumnos);
             }             
+            sc.close();  //closes the scanner 
         }
-        sc.close();  //closes the scanner 
+        
 
         
 
         //ver si hay movimiento
-        if (mrepository.findAll().size()==0) {
+        if (mrepository.countByIdGreaterThan(Long.valueOf(1))<1) {
             List<Usuario> UsuariosNuevos = aRepository.findByBrigada(bRepository.findByDescripcion("1A").get(0));
             for (int i=0;i<UsuariosNuevos.size();i++) {
         

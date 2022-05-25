@@ -7,5 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MovimientoRepository  extends JpaRepository<Movimiento, Long>{
+
+    Long countByIdGreaterThan(Long id);
+
     
 }

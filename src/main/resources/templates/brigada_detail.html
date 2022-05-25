@@ -78,8 +78,9 @@ title="Agregar Usuarios">+</button>
 
 
                         <p th:each="usuario : ${usuarios}" class="mx-2 mb-1 style="font-size: .77rem;"">
-                          <a th:text="${usuario.nombre}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="small"/>
-                          <span th:if="${usuario.Abordo == true}" th:text="'A Bordo'"/>
+                          <a th:text="${usuario.NombreCorto}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="small"/>
+                          <span th:if="${usuario.Abordo}" th:text="'A Bordo'">A Bordo</span>
+                          <span th:unless="${usuario.Abordo}" th:text="'En tierra'">En tierra</span>
                         </p>
                     </div>
                 </div>
