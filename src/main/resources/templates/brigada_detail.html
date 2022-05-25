@@ -72,22 +72,15 @@
 <button class="btn btn-sm btn-success add_fol mb-2" data-bs-toggle="modal" data-bs-target="#add_user" 
 title="Agregar Usuarios">+</button>
 </div>
-                        <p class="mb-4"><span class="text-primary font-italic me-1">Usuarios</span></p>
-                        <p class="mb-1" style="font-size: .77rem;">611A - Paquita Rosa Oleastro</p>
-                        <p class="mb-1" style="font-size: .77rem;">612A - Higinio Victorino Quijada</p>
-                        <p class="mb-1" style="font-size: .77rem;">613A - Gertrudis Covadonga Crespo</p>
-                        <p class="mb-1" style="font-size: .77rem;">614A - Dolores Paulina Félix</p>
-                        <p class="mb-1" style="font-size: .77rem;">615A - Facundo Marianita Vicario</p>
-                        <p class="mb-1" style="font-size: .77rem;">616A - Elvira Martita Medina</p>
-                        <p class="mb-1" style="font-size: .77rem;">617A - Hernán Joel Espinosa</p>
-                        <p class="mb-1" style="font-size: .77rem;">618A - Emelina Raymundo Calvo</p>
-                        <p class="mb-1" style="font-size: .77rem;">619A - Felicidad Denisse Salcedo</p>
-                        <p class="mb-1" style="font-size: .77rem;">621A - Aitana Elpidio Espina</p>
-                        <p class="mb-1" style="font-size: .77rem;">622A - Carlos Armida Esparza</p>
-                        <p class="mb-1" style="font-size: .77rem;">623A - Yasmin Trini Colón</p>
-                        <p class="mb-1" style="font-size: .77rem;">624A - Jenaro Luis Ángel María</p>
-                        <p class="mb-1" style="font-size: .77rem;">625A - Pedro Gael Díez</p>
-                        <p class="mb-1" style="font-size: .77rem;">626A - Próspero Leonel Obando</p>
+                        <p class="mb-4">
+                          <span th:text="'Usuarios ('+ ${usuarios.size}+')'" class="text-primary font-italic me-1">Usuarios</span>
+                        </p>
+
+
+                        <p th:each="usuario : ${usuarios}" class="mx-2 mb-1 style="font-size: .77rem;"">
+                          <a th:text="${usuario.nombre}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="small"/>
+                          <span th:if="${usuario.Abordo == true}" th:text="'A Bordo'"/>
+                        </p>
                     </div>
                 </div>
             </div>

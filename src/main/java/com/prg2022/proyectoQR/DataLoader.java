@@ -10,12 +10,14 @@ import java.util.Set;
 
 
 
-import com.prg2022.proyectoQR.Repository.AlumnoRepository;
+import com.prg2022.proyectoQR.Repository.UsuarioRepository;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
+import com.prg2022.proyectoQR.Repository.MovimientoRepository;
 import com.prg2022.proyectoQR.Repository.RoleRepository;
-import com.prg2022.proyectoQR.modelos.Alumno;
+import com.prg2022.proyectoQR.modelos.Usuario;
 import com.prg2022.proyectoQR.modelos.Brigada;
 import com.prg2022.proyectoQR.modelos.EnumRole;
+import com.prg2022.proyectoQR.modelos.Movimiento;
 import com.prg2022.proyectoQR.modelos.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +29,32 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.temporal.ChronoField;
 
 @Component
 public class DataLoader implements ApplicationRunner {
 
 
 
-    private AlumnoRepository aRepository;
+    private UsuarioRepository aRepository;
     private BrigadaRepository bRepository;
     private RoleRepository rRepository;
+    private MovimientoRepository mrepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public DataLoader(AlumnoRepository aRepository, BrigadaRepository bRepository, RoleRepository rRepository) {
+    public DataLoader(UsuarioRepository aRepository, BrigadaRepository bRepository, 
+                        RoleRepository rRepository, MovimientoRepository mrepository) {
         this.aRepository = aRepository;
         this.bRepository = bRepository;
         this.rRepository = rRepository;
+        this.mrepository = mrepository;
     }
 
 
@@ -54,7 +63,7 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        Optional<Alumno> alumno = aRepository.findByDni("Admin");
+        Optional<Usuario> alumno = aRepository.findByDni("Admin");
         List<Brigada> brigada = bRepository.findByDescripcion("Sistema");
         Optional<Role> roles = rRepository.findByDescripcion(EnumRole.ROLE_ADMIN);
         if (brigada.isEmpty()) {
@@ -70,8 +79,8 @@ public class DataLoader implements ApplicationRunner {
         if (alumno.isEmpty()) {
             System.out.println("No hay administrador, creando usuario Admin con password 1234");
             
-            Alumno agregado = aRepository.save(
-                    new Alumno(
+            Usuario agregado = aRepository.save(
+                    new Usuario(
                         "Administrador",
                         "Admin",
                         bRepository.findByDescripcion("Sistema").get(0)));
@@ -86,7 +95,7 @@ public class DataLoader implements ApplicationRunner {
         try {
 
             String[] valor;
-            Alumno nuevos_alumnos;
+            Usuario nuevos_alumnos;
             Set<Role> permisosar = new HashSet<>();
             Role userRols = rRepository.findByDescripcion(EnumRole.ROLE_USER).get();
             permisosar.add(userRols);   
@@ -103,15 +112,53 @@ public class DataLoader implements ApplicationRunner {
             {  
                 valor = sc.next().split(",");
                 nuevos_alumnos = aRepository.save( 
-                    new Alumno(valor[0]+" "+valor[1]+""+valor[2], valor[3], 
+                    new Usuario(valor[0]+" "+valor[1]+""+valor[2], valor[3], 
                     bRepository.findByDescripcion("1A").get(0)));
                 System.out.print("Nombre: "+valor[0]+" "+valor[1]+" "+valor[2]+" DNI: "+valor[3]+"\n");  
                 nuevos_alumnos.setRoles(permisosar);
                 aRepository.save(nuevos_alumnos);
             }             
         }
-
         sc.close();  //closes the scanner 
+
+        
+
+        //ver si hay movimiento
+        if (mrepository.findAll().size()==0) {
+            List<Usuario> UsuariosNuevos = aRepository.findByBrigada(bRepository.findByDescripcion("1A").get(0));
+            for (int i=0;i<UsuariosNuevos.size();i++) {
+        
+                System.out.println(UsuariosNuevos.get(i).getId());
+                Usuario autorize = aRepository.getById(Long.valueOf(1));
+                
+
+                for(int j=1;j<=YearMonth.of(2022, 04).lengthOfMonth();j++){
+                    LocalDate dia = LocalDate.parse("2022-04-"+String.format("%1$02d",j));
+                    switch(dia.get(ChronoField.DAY_OF_WEEK)){
+                        case 7: break;
+                        case 6: break;
+                        default:
+                        //de luneas a viernes, llegan por la mañana y se van por la tarde
+                        // llegan entre las 07:00 y las 07:45
+                        //se marchan entre las 14:00 y las 14:59
+                        LocalDateTime llega = dia.atTime(07,(int) (Math.random() * 45));
+                        LocalDateTime ssale = dia.atTime(14,(int) (Math.random() * 59));
+                        mrepository.save(new Movimiento(true,llega,UsuariosNuevos.get(i),autorize));
+                        mrepository.save(new Movimiento(false,ssale,UsuariosNuevos.get(i),autorize));
+                        //System.out.println(llega);
+                        //System.out.println(ssale);
+                        //#SET ABORDO
+                            break;
+                    }          
+                }
+            }
+
+
+          }
+
+
+
+
         }
         catch (IOException ex) {
         }

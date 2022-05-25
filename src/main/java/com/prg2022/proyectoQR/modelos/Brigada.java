@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 
-@Table(name = "brigada")
+@Table(name = "brigadas")
 
 public class Brigada {
     @Id
@@ -46,7 +46,7 @@ public class Brigada {
     private boolean activa = true;
 
     @OneToMany(mappedBy = "brigada", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-      private Set<Alumno> alumno;
+      private Set<Usuario> alumno;
 
     public Brigada() {
     }

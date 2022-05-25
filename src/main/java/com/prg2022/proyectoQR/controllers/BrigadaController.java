@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.prg2022.proyectoQR.Repository.UsuarioRepository;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
+import com.prg2022.proyectoQR.modelos.Usuario;
 import com.prg2022.proyectoQR.modelos.Brigada;
 import com.prg2022.proyectoQR.payload.request.AddBrigadaRequest;
 import com.prg2022.proyectoQR.payload.request.UploadFileRequest;
@@ -34,6 +36,8 @@ import com.prg2022.proyectoQR.payload.response.BrigadaResponse;
 public class BrigadaController {
     @Autowired
     private BrigadaRepository brepository;
+    @Autowired
+    private UsuarioRepository urepository;
 
     @GetMapping("")
     public ModelAndView getBrigadas(ModelAndView modelAndView, Model pagina) {
@@ -75,7 +79,10 @@ public class BrigadaController {
     @GetMapping("/show/{id}")
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
     public ModelAndView showBrigada(@PathVariable Long id, ModelAndView modelAndView) {
+        Brigada brigada = brepository.getById(id);
+        List<Usuario> usuarios = urepository.findByBrigada(brigada);
         UploadFileRequest importarArchivo = new UploadFileRequest();
+        modelAndView.addObject("usuarios", usuarios);
         modelAndView.addObject("id", id);
         modelAndView.setViewName("brigada_detail");
         modelAndView.addObject("importarArchivo", importarArchivo);
@@ -86,12 +93,9 @@ public class BrigadaController {
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<BrigadaResponse> findById(@PathVariable Long id) {
         Brigada brigada = brepository.getById(id);
-        BrigadaResponse respuesta = new BrigadaResponse(
-          id, 
-          brigada.getDescripcion(), 
-          brigada.getActualizada(), 
-          brigada.getActualizada());
+        BrigadaResponse respuesta = new BrigadaResponse(id, brigada.getDescripcion(), brigada.getCreada(),brigada.getActualizada());
         return ResponseEntity.ok(respuesta);
     }    
+    
 }
 

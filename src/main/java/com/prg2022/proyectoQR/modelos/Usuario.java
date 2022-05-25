@@ -12,9 +12,9 @@ import javax.validation.constraints.Size;
 
 
 @Entity
-@Table(name = "alumno")
+@Table(name = "usuarios")
 
-public class Alumno implements Serializable{
+public class Usuario implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,9 @@ public class Alumno implements Serializable{
     @NotBlank
     @Size(max = 60)
     private String nombre;     
+
+    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
+    private boolean Abordo;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "brigada_id", nullable = false)
@@ -48,13 +51,14 @@ public class Alumno implements Serializable{
 
     private String clave;
 
-    public Alumno() {
+    public Usuario() {
     }
 
-    public Alumno(String nombre, String dni, Brigada brigada) {
+    public Usuario(String nombre, String dni, Brigada brigada) {
         this.nombre = nombre;
         this.dni = dni;
         this.brigada = brigada;
+        this.Abordo = true;
     }
 
     public String getClave() { return clave; }
@@ -70,5 +74,11 @@ public class Alumno implements Serializable{
 
     public Brigada getBrigada() { return brigada; }
     public void setBrigada(Brigada brigada) { this.brigada = brigada;}
+
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre;}    
+
+    public Boolean getAbordo() { return Abordo; }
+    public void setAbordo(Boolean Abordo) { this.Abordo = Abordo;}      
 
 }

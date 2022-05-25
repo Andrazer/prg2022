@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.prg2022.proyectoQR.modelos.Alumno;
+import com.prg2022.proyectoQR.modelos.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDetailsImpl implements UserDetails {
@@ -25,7 +25,7 @@ public class UserDetailsImpl implements UserDetails {
     this.password = password;
     this.authorities = authorities;
   }
-  public static UserDetailsImpl build(Alumno user) {
+  public static UserDetailsImpl build(Usuario user) {
     List<GrantedAuthority> authorities = user.getRoles().stream()
         .map(role -> new SimpleGrantedAuthority(role.getDescripcion().name()))
         .collect(Collectors.toList());

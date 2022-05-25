@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.prg2022.proyectoQR.modelos.EnumRole;
 import com.prg2022.proyectoQR.modelos.Role;
-import com.prg2022.proyectoQR.modelos.Alumno;
+import com.prg2022.proyectoQR.modelos.Usuario;
 
 import com.prg2022.proyectoQR.payload.request.LoginRequest;
 import com.prg2022.proyectoQR.payload.request.SignupRequest;
@@ -30,7 +30,7 @@ import com.prg2022.proyectoQR.payload.response.UserInfoResponse;
 import com.prg2022.proyectoQR.payload.response.MessageResponse;
 
 import com.prg2022.proyectoQR.Repository.RoleRepository;
-import com.prg2022.proyectoQR.Repository.AlumnoRepository;
+import com.prg2022.proyectoQR.Repository.UsuarioRepository;
 import com.prg2022.proyectoQR.addons.jwt.JwtUtils;
 import com.prg2022.proyectoQR.services.UserDetailsImpl;
 
@@ -41,7 +41,7 @@ public class AuthController {
   @Autowired
   AuthenticationManager authenticationManager;
   @Autowired
-  AlumnoRepository userRepository;
+  UsuarioRepository userRepository;
   @Autowired
   RoleRepository roleRepository;
   @Autowired
@@ -69,7 +69,7 @@ public class AuthController {
       return ResponseEntity.badRequest().body(new MessageResponse("Error: EL DNI ya está registrado!"));
     }
     // Create new user's account
-    Alumno user = new Alumno(signUpRequest.getUsername(),
+    Usuario user = new Usuario(signUpRequest.getUsername(),
                          encoder.encode(signUpRequest.getPassword()),
                          signUpRequest.getBrigada());
     Set<String> strRoles = signUpRequest.getRole();
