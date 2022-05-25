@@ -58,7 +58,7 @@ public class Usuario implements Serializable{
         this.nombre = nombre;
         this.dni = dni;
         this.brigada = brigada;
-        this.Abordo = true;
+        this.Abordo = false;
     }
 
     public String getClave() { return clave; }
