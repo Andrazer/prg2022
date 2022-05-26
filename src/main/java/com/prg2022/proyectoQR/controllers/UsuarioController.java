@@ -48,7 +48,7 @@ public class UsuarioController {
         return quien.getId().toString();
     }*/
 
-    public ModelAndView showBrigada(@PathVariable Long id, ModelAndView modelAndView) {
+    public ModelAndView showUser(@PathVariable Long id, ModelAndView modelAndView) {
         Usuario usuario = urepository.getById(id);
         List<Movimiento> movimientos = mrepository.findTop10ByUsuario(usuario);
         //List<Usuario> usuarios = urepository.findByBrigada(brigada);
