@@ -9,7 +9,7 @@
               <li class="breadcrumb-item"><a href="/">Inicio</a></li>
               <li class="breadcrumb-item"><a href="/brigada">Brigadas</a></li>
               <li class="breadcrumb-item"><a href="/" th:href="'/brigada/show/'+${usuario.BrigadaId}" th:text="'Brigada '+${usuario.getBrigadaDescripcion}" >Usuarios</a></li>
-              <li class="breadcrumb-item active" aria-current="page" th:text="'Ficha de '+${usuario.nombre}" >Detalle del usuario</li>
+              <li class="breadcrumb-item active" aria-current="page" th:text="'Ficha de '+${usuario.nombre}+' '+${usuario.apellido1}+' '+${usuario.apellido2}" >Detalle del usuario</li>
             </ol>
           </nav>
         </div>
@@ -21,11 +21,11 @@
             <div class="card-body text-center">
               <img th:src="'/qr-'+${id}+'.png'" src="xxx" alt="avatar"
                 class="rounded-circle img-fluid" style="width: 150px;border-radius: 10%!important;">
-              <h5 th:text="${usuario.nombre}" class="my-3">John Smith</h5>
+              <h5 th:text="${usuario.NombreCompleto}" class="my-3">John Smith</h5>
               <p th:text="${usuario.dni}" class="text-muted mb-1">Nombre</p>
               <p th:text="'Brigada '+${usuario.getBrigadaDescripcion}" class="text-muted mb-4">Brigada</p>
               <div class="d-flex justify-content-center mb-2">
-                <button type="button" class="btn btn-primary" th:text="${usuario.NumBrigada}" disabled>Num Brigada</button>
+                <button th:if="${usuario.NumBrigada}!='000null'" type="button" class="btn btn-primary" th:text="${usuario.NumBrigada}" disabled>Num Brigada</button>
               </div>
             </div>
           </div>

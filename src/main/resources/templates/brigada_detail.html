@@ -68,46 +68,34 @@
             <div class="col-6">
                 <div class="card mb-4 mb-md-0">
                     <div class="card-body">
-<div class="text-end">
-<button class="btn btn-sm btn-success add_fol mb-2" data-bs-toggle="modal" data-bs-target="#add_user" 
-title="Agregar Usuarios">+</button>
-</div>
-                        <div class="mb-4">
-                          
-                            <div class="form-check float-end">
-                              <input class="form-check-input" type="checkbox" id="flexCheckDefault" onClick="show_nombres();">
-                              <label class="form-check-label" for="flexCheckDefault">
-                                Ver nombres
-                              </label>
-                            </div>
-                            <span th:text="'Usuarios ('+ ${usuarios.size}+')'" class="text-primary font-italic me-1">Usuarios</span>
+                      <div class="row">
+                        <div class="col-6">
+                          <span th:text="'Usuarios ('+ ${usuarios.size}+')'" class="text-primary font-italic me-1">Usuarios</span>
                         </div>
-<script>
-  function show_nombres(){
-    console.log("s");
-    const nombres = document.querySelectorAll('span.nombres');
-
-    if(document.getElementById("flexCheckDefault").checked){
-      for (const nombre of nombres) {
-        nombre.classList.remove('d-none');
-        nombre.parentNode.classList.remove('float-start');
-      }
-    } else{
-      for (const nombre of nombres) {
-        nombre.classList.add('d-none');
-        nombre.parentNode.classList.add('float-start');
-      }      
-    }
+                        <div class="col-6 text-end">
+                          <button class="btn btn-sm btn-success add_fol mb-2" data-bs-toggle="modal" 
+                            data-bs-target="#add_user" title="Agregar Usuarios">+</button>
+                        </div>
+                        <div class="col py-3 text-center">
+                          <input class="form-check-input" type="checkbox" id="flexCheckDefault" onClick="show_nombres();">
+                          <label class="form-check-label" for="flexCheckDefault">
+                            Ver nombres
+                          </label>
+                        </div>
+                      </div>
 
 
-  }
-</script>
-
-                        <div th:each="usuario : ${usuarios}" class="botonera mx-2 mb-1 float-start">
+                      <div th:each="usuario : ${usuarios}" class="botonera mx-2 mb-1 float-start">
+                        <th th:if="${usuario.NumBrigada}!='000null'">
                           <a th:if="${usuario.Abordo}" th:text="${usuario.NumBrigada}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="btn btn-outline-success btn-sm"/>
                           <a th:unless="${usuario.Abordo}" th:text="${usuario.NumBrigada}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="btn btn-outline-danger btn-sm"/>
                           <span th:text="${usuario.NombreCorto}" class="nombres d-none">xxx</span>
-                        </div>
+                        </th>
+                        <th th:unless="${usuario.NumBrigada}!='000null'">
+                          <span th:text="${usuario.NombreCompleto}" class="nombres">xxx</span>
+                        </th>
+                      </div>
+
                     </div>
                 </div>
             </div>
@@ -137,11 +125,40 @@ title="Agregar Usuarios">+</button>
           
           <form th:object="${importarArchivo}" enctype="multipart/form-data">
            <input th:field="*{fileDatas}" type="file"  style="display:none"/>
-           <button type="button" class="btn btn-primary btn-sm" disabled>Alta individual</button>
+           <button type="button" class="btn btn-primary btn-sm"  data-bs-toggle="modal" data-bs-target="#add_user_ind">Alta individual</button>
            <span role="button" class="btn btn-primary btn-sm" 
             accept=".xls, .csv, .xlsx"
             onclick="document.getElementById('fileDatas').click();">Importar XLS / CSV </span>
        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<!-- Modal ADD USER-->
+<div class="modal fade" id="add_user_ind" tabindex="-1" aria-labelledby="add_user_indLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="add_user_indLabel">Agregar Usuario</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body text-center">
+      <form>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Nombre</span>
+          <input type="text" class="form-control" placeholder="Nombre y Apellidos" aria-label="Nombre y Apellidos" aria-describedby="basic-addon1">
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" disabled>Alta usuario</button>
+      </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -210,5 +227,26 @@ title="Agregar Usuarios">+</button>
 document.querySelector('#fileDatas').addEventListener('change', event => {
     subirImagen(event);
 });
+  </script>
+  
+<script>
+  function show_nombres(){
+  console.log("s");
+  const nombres = document.querySelectorAll('span.nombres');
+  
+  if(document.getElementById("flexCheckDefault").checked){
+  for (const nombre of nombres) {
+  nombre.classList.remove('d-none');
+  nombre.parentNode.classList.remove('float-start');
+  }
+  } else{
+  for (const nombre of nombres) {
+  nombre.classList.add('d-none');
+  nombre.parentNode.classList.add('float-start');
+  }      
+  }
+  
+  
+  }
   </script>
   <th:block th:include="/pie.html"></th:block>

@@ -112,7 +112,7 @@ public class DataLoader implements ApplicationRunner {
                 Object[] usuarioNumero = NumBrigada.getRancho();
                 valor = sc.next().split(",");
                 nuevos_alumnos = aRepository.save( 
-                    new Usuario(valor[0]+" "+valor[1]+" "+valor[2], valor[3], 
+                    new Usuario(valor[0],valor[1],valor[2], valor[3], 
                     bRepository.findByDescripcion("1A").get(0),
                     (int)usuarioNumero[0],
                     (int)usuarioNumero[1],

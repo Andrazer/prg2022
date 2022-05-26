@@ -2,7 +2,6 @@ package com.prg2022.proyectoQR.modelos;
 
 import java.io.Serializable;
 import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.HashSet;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -23,7 +22,13 @@ public class Usuario implements Serializable{
 
     @NotBlank
     @Size(max = 60)
-    private String nombre;     
+    private String nombre;   
+    
+    @Size(max = 60)
+    private String apellido1;    
+
+    @Size(max = 60)
+    private String apellido2;      
 
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private boolean Abordo;
@@ -67,13 +72,26 @@ public class Usuario implements Serializable{
 
     public Usuario(String nombre, String dni, Brigada brigada) {
         this.nombre = nombre;
+        this.apellido1 = "";
+        this.apellido2 = "";        
         this.dni = dni;
         this.brigada = brigada;
         this.Abordo = false;
     }
 
-    public Usuario(String nombre, String dni, Brigada brigada,int rancho,  int numero, int grupo, String letra) {
+    public Usuario(String nombre, String apellido1, String apellido2, String dni, Brigada brigada) {
         this.nombre = nombre;
+        this.dni = dni;
+        this.brigada = brigada;
+        this.apellido1 = apellido1;
+        this.apellido2 = apellido2;
+        this.Abordo = false;
+    }
+    
+    public Usuario(String nombre, String apellido1, String apellido2, String dni, Brigada brigada,int rancho,  int numero, int grupo, String letra) {
+        this.nombre = nombre;
+        this.apellido1 = apellido1;
+        this.apellido2 = apellido2;        
         this.dni = dni;
         this.brigada = brigada;
         this.Abordo = false;
@@ -112,13 +130,21 @@ public class Usuario implements Serializable{
     public String getNombre() { return nombre; }
     public void setNombre(String nombre) { this.nombre = nombre;}    
 
+    public String getApellido1() { return apellido1; }
+    public void setApellido1(String apellido1) { this.apellido1 = apellido1;}  
+    
+    public String getApellido2() { return apellido2; }
+    public void setApellido2(String apellido2) { this.apellido2 = apellido2;}      
+
     public Boolean getAbordo() { return Abordo; }
     public void setAbordo(Boolean Abordo) { this.Abordo = Abordo;}    
     
     public String getNombreCorto() { 
-        StringTokenizer cortando = new StringTokenizer(this.nombre);
-        String inicial = cortando.nextToken();
-        return cortando.nextToken()+" "+cortando.nextToken()+", "+inicial.substring(0,1)+"."; 
+        return this.apellido1+" "+this.apellido2+", "+this.nombre.substring(0,1)+"."; 
     }
+
+    public String getNombreCompleto() { 
+        return this.nombre+" "+this.apellido1+" "+this.apellido2;
+    }    
 
 }

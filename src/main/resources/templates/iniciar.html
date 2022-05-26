@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <th:block th:include="/fragments/head.html"></th:block>
-<body class="home9">
-   <div class="container pt-5">
-   
-      <div class="row justify-content-center">
-         <div class="col-xs-12 col-md-8 col-lg-4">
+<body  class="login" style="background-color:rgba(6, 85, 181, 0.449)">
+  <div class="container-sm p-3 mb-2 bg-light text-dark">
+  <th:block th:include="/fragments/titulo.html"></th:block>
+    <form class="mt-5"> 
+      <div class="row">
+        <div class="col">
+          <img src="logo_escano.png" width="40%" class="rounded mx-auto d-block" alt="logo_escano.png">
+        </div>
 
+  <!-- Email input -->
+        <div class="col" Vertically aligned padding="25px">
+          <div>
+            <label for="form2Example1" class="form-label">Nombre de usuario</label>
+            <input id='username' class="form-control form-control-lg" type="text" name='username' value='Admin'>
+          </div>
+    <br>
+  <!-- Password input -->
+          <div class="mb-3">
+            <label class="form-label" for="form2Example2">Contraseña</label>
+            <input id='password' type='password' name='password' class="form-control form-control-lg" value="123456"/>
+          </div>
 
-
-      <form class="mt-5">
-         <!-- Email input -->
-         <div class="form-outline mb-4">
-           <input id='username' type='text' name='username' value='Admin' class="form-control" >
-           <label class="form-label" for="form2Example1">Usuario</label>
-         </div>
-       
-         <!-- Password input -->
-         <div class="form-outline mb-4">
-           <input id='password' type='password' name='password' class="form-control" value="123456"/>
-           <label class="form-label" for="form2Example2">Clave</label>
-         </div>
-
-         <div id="errormessage" class="alert alert-danger d-flex align-items-center d-none" role="alert">
+          <div id="errormessage" class="alert alert-danger d-flex align-items-center d-none" role="alert">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
               <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
             </svg>
@@ -30,28 +31,22 @@
               Se requiere un usuario válido.
             </div>
           </div>                    
-          <div class="col d-flex justify-content-center">
+          <div>
             <button type="button" class="btn btn-primary btn-block mb-4 px-5" onclick="CallWebAPI();">Entrar</button>  
-           </div>
-         <!-- 2 column grid layout for inline styling -->
-         <div class="row mb-4">
-
-       
-           <div class="col">
-            <!-- Simple link -->
-            <a href="#!">Registrarse?</a>
           </div>
-         </div>
-      </form>
-
-    
-
-   </div>
-
-</div>
-</div>  
+  <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-4">
+            <div class="col">
+  <!-- Simple link -->
+              <a href="#!">Registrarse?</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <th:block th:include="/fragments/footer.html"></th:block>
   <script src="/js/bootstrap.bundle.min.js"></script>
   <script src="/js/entrar.js"></script>
-  </body>
+</body>
 </html>
-

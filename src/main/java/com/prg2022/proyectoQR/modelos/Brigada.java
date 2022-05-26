@@ -35,6 +35,7 @@ public class Brigada {
     @PrePersist
     protected void onCreate() {
       creada = new Date();
+      actualizada = new Date();
     }
   
     @PreUpdate
