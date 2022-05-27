@@ -57,6 +57,8 @@ public class Usuario implements Serializable{
 
     private String clave;
 
+    
+
     @Column(columnDefinition = "TINYINT")
         private int rancho;
     @Column(columnDefinition = "TINYINT")
@@ -65,6 +67,8 @@ public class Usuario implements Serializable{
         private int grupo;   
     private String letra;     
     
+    private Empleo empleo;
+    private Especialidad especialidad;
 
 
     public Usuario() {
@@ -77,6 +81,8 @@ public class Usuario implements Serializable{
         this.dni = dni;
         this.brigada = brigada;
         this.Abordo = false;
+        this.empleo = Empleo.None;
+        this.especialidad = Especialidad.None;
     }
 
     public Usuario(String nombre, String apellido1, String apellido2, String dni, Brigada brigada) {
@@ -86,6 +92,8 @@ public class Usuario implements Serializable{
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
         this.Abordo = false;
+        this.empleo = Empleo.None;
+        this.especialidad = Especialidad.None;        
     }
     
     public Usuario(String nombre, String apellido1, String apellido2, String dni, Brigada brigada,int rancho,  int numero, int grupo, String letra) {
@@ -99,7 +107,25 @@ public class Usuario implements Serializable{
         this.numero=numero;
         this.grupo=grupo;   
         this.letra=letra;  
+        this.empleo = Empleo.None;
+        this.especialidad = Especialidad.None;        
     }
+
+    public Usuario(String nombre, String apellido1, String apellido2, String dni, Brigada brigada,
+        int rancho,  int numero, int grupo, String letra, Empleo empleo, Especialidad especialidad) {
+        this.nombre = nombre;
+        this.apellido1 = apellido1;
+        this.apellido2 = apellido2;        
+        this.dni = dni;
+        this.brigada = brigada;
+        this.Abordo = false;
+        this.rancho=rancho;
+        this.numero=numero;
+        this.grupo=grupo;   
+        this.letra=letra;  
+        this.empleo = empleo;
+        this.especialidad = especialidad;        
+    }    
 
     public String getNumBrigada(){
         return this.rancho+""+this.numero+""+this.grupo+""+this.letra;
@@ -121,6 +147,12 @@ public class Usuario implements Serializable{
 
     public Set<Role> getRoles() { return roles; }
     public void setRoles(Set<Role> roles) { this.roles = roles; }
+
+    public void setEmpleo(Empleo empleo){ this.empleo = empleo; }
+    public void setEspecialidad(Especialidad especialidad){ this.especialidad = especialidad; }
+
+
+
 
     public Brigada getBrigada() { return brigada; }
     public String getBrigadaDescripcion() { return brigada.getDescripcion();}
@@ -146,5 +178,8 @@ public class Usuario implements Serializable{
     public String getNombreCompleto() { 
         return this.nombre+" "+this.apellido1+" "+this.apellido2;
     }    
+
+    public Empleo getEmpleo(){ return this.empleo; }
+    public Especialidad getEspecialidad(){ return this.especialidad; }
 
 }
