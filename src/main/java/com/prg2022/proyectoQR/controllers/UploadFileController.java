@@ -4,7 +4,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,22 +18,29 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 @Controller
 
 public class UploadFileController {
-    String tmpUploadFolder = "archivos_subidos";
-    File carpeta = new File(tmpUploadFolder);
 
-    @RequestMapping(value = "/usuarios/subidaUnArchivo", method = RequestMethod.POST)
-    public String uploadOneFileHandlerPOST(HttpServletRequest request, Model modelo, @ModelAttribute("miformulario") UploadFileRequest archivos) {
-        return this.subir(request, modelo, archivos);
+    @RequestMapping(value = "/usuarios/subidaUnArchivo", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<String>>  uploadOneFileHandlerPOST(HttpServletRequest request, @ModelAttribute("miformulario") UploadFileRequest archivos) {
+        return ResponseEntity.ok(this.subir(request, archivos));
     }
 
 
-    private String subir(HttpServletRequest request, Model modelo, UploadFileRequest archivos) {
+    private List<String> subir(HttpServletRequest request, UploadFileRequest archivos) {
+        //Carlos: al subir hace limpieza, si los archivos o carpetas dentro de archivos_subidos
+        // llevan mas de 24h, borrar
+        String tmpUploadFolder = "archivos_subidos/"+UUID.randomUUID().toString();
+        File carpeta = new File(tmpUploadFolder);
+
+        
         MultipartFile[] fileDatas = archivos.getFileDatas();
-        List<File> archivoSubido = new ArrayList<File>();
+        //List<File> archivoSubido = new ArrayList<File>();
+        List<String> archivoSubido = new ArrayList<String>();
         List<String> failedFiles = new ArrayList<String>();
 
         if (!carpeta.exists()) { carpeta.mkdirs(); }
@@ -45,7 +54,8 @@ public class UploadFileController {
                     BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(archivoServidor));
                     stream.write(fileData.getBytes());
                     stream.close();
-                    archivoSubido.add(archivoServidor);
+                    //archivoSubido.add(archivoServidor);
+                    archivoSubido.add(nombre);
                 } catch (Exception e) {
                     failedFiles.add(nombre);
                 }
@@ -53,8 +63,8 @@ public class UploadFileController {
         }
         //aqui si tenemos xls o csv... alta de usuarios, si tenemos fotos... a fotos de usuario
         //si falla, devolvemos error con motivo del fallo
-        modelo.addAttribute("archivoSubido", archivoSubido);
-        modelo.addAttribute("failedFiles", failedFiles);
-        return "tests/resultadosubida";
+        //modelo.addAttribute("archivoSubido", archivoSubido);
+        //modelo.addAttribute("failedFiles", failedFiles);
+        return archivoSubido;
     }
 }
