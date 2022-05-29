@@ -56,11 +56,17 @@ public class BrigadaController {
     }
     @PostMapping("/add")
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody AddBrigadaRequest addbrigadarequest) {
+    public ResponseEntity<?> nuevaBrigada(@Valid @RequestBody AddBrigadaRequest addbrigadarequest) {
       if (!brepository.findByDescripcion(addbrigadarequest.getDescripcion()).isEmpty()) {
         return ResponseEntity.badRequest().body(new MessageResponse("Error: Esa Brigada ya existe"));
-      }
-      brepository.save(new Brigada(addbrigadarequest.getDescripcion()));
+      }      
+      brepository.save(new Brigada(
+        addbrigadarequest.getDescripcion(),
+        addbrigadarequest.getInicio(),
+        addbrigadarequest.getFin(),
+        addbrigadarequest.getGrupo(),
+        addbrigadarequest.getLetra()
+        ));
       return ResponseEntity.ok(new MessageResponse("Brigada registrada!"));
     }
 
@@ -93,7 +99,17 @@ public class BrigadaController {
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<BrigadaResponse> findById(@PathVariable Long id) {
         Brigada brigada = brepository.getById(id);
-        BrigadaResponse respuesta = new BrigadaResponse(id, brigada.getDescripcion(), brigada.getCreada(),brigada.getActualizada());
+        BrigadaResponse respuesta = 
+          new BrigadaResponse(
+              id, 
+              brigada.getDescripcion(), 
+              brigada.getCreada(),
+              brigada.getActualizada(),
+              brigada.getInicio(),
+              brigada.getFin(),
+              brigada.getGrupo(),
+              brigada.getLetra(),
+              brigada.getRF());
         return ResponseEntity.ok(respuesta);
     }    
     

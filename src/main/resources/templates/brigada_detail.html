@@ -10,50 +10,55 @@
               <li class="breadcrumb-item"><a href="/brigada">Brigadas</a></li>
               <li class="breadcrumb-item active" aria-current="page">Detalle de la Brigada <span id="nombreBrigada"></span> </li>
             </ol>
+            <span id="marcas" style="font-size: 10px;">creada: 00/00/00 | Última actualización: 00/00/00</span>
           </nav>
+          
         </div>
       </div>
   
       <div class="row">
         <div class="col-lg-4">
-          <div class="card mb-4">
-            <div class="card-body text-center">
-              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                class="rounded-circle img-fluid" style="width: 150px;">
-              <h5 class="my-3">John Smith</h5>
-              <p class="text-muted mb-1">Comte. Brigada</p>
-              <p class="text-muted mb-4">6 Brigada Afa</p>
-              <div class="d-flex justify-content-center mb-2">
-                <button type="button" class="btn btn-primary">@mail</button>
-                <button type="button" class="btn btn-outline-primary ms-1">Tlf: 666-555-444</button>
-              </div>
-            </div>
-          </div>
           <div class="card mb-4 mb-lg-0">
-            
-            <div class="card mb-4">
+            <!--DATOS DE BRIGADA-->
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-sm-6">
-                      <p class="mb-0">Creada</p>
-                    </div>
-                    <div class="col-sm-6">
-                      <p  id="creada" class="text-muted mb-0">xx</p>
-                    </div>
+                    <div class="col-sm-6"><p class="mb-0">Descripción</p></div>
+                    <div class="col-sm-6" id="desc_master"><p  id="descripcion" class="text-muted mb-0">Sin establecer</p></div>
                   </div>
                   <hr>
                   <div class="row">
-                    <div class="col-sm-6">
-                      <p class="mb-0">Actualizada</p>
-                    </div>
-                    <div class="col-sm-6">
-                      <p class="text-muted mb-0" id="actualizada">xx</p>
-                    </div>
+                    <div class="col-sm-6"><p class="mb-0">Grupo y letra</p></div>
+                    <div class="col-sm-6"  id="desc_grupoletra"><p  id="grupo" class="text-muted mb-0">
+                      <span id="grp"></span>
+                      <span id="lttr"></span>
+                    </p></div>
                   </div>
                   <hr>
+                  <div class="row">
+                    <div class="col-sm-6"><p class="mb-0">Regreso de Francos</p></div>
+                    <div class="col-sm-6" id="desc_francos"><p  id="francos" class="text-muted mb-0">Sin establecer</p></div>
+                  </div>                  
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-6"><p class="mb-0">Inicio del curso</p></div>
+                    <div class="col-sm-6" id="desc_inicio"><p  id="inicio" class="text-muted mb-0">&infin;</p></div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-6"><p class="mb-0">Fin de curso</p></div>
+                    <div class="col-sm-6" id="desc_fin"><p  id="fin" class="text-muted mb-0">&infin;</p></div>
+                  </div>
+                  <hr> 
+                  <div class="text-end">
+                    <button id="btn_mod_brigada" class="btn btn-sm btn-outline-warning add_fol mb-2"
+                       title="Modificar Brigada" onClick="EditBrigada();">Modificar Brigada</button>
+                       <button id="btn_closemod_brigada" class="d-none  btn btn-sm btn-outline-secondary add_fol mb-2"
+                       title="Cerrar" onClick="CancelEditBrigada();">Cerrar</button>
+                       <button id="btn_upd_brigada" class="d-none  btn btn-sm btn-outline-success add_fol mb-2"
+                       title="Guardar Cambios" onClick="PostEditBrigada();">Guardar Cambios</button>                                              
+                  </div>                                                                                 
                 </div>
-              </div>
-
+              <!--FIN DATOS DE BRIGADA-->
           </div>
         </div>
 
@@ -191,9 +196,17 @@
 
   <script>
     function actualiza_interface(data){
-      document.getElementById("creada").innerHTML=data.creada;
-      document.getElementById("actualizada").innerHTML=data.actualizada;
       document.getElementById("nombreBrigada").innerHTML=data.descripcion;
+      document.getElementById("descripcion").innerHTML=data.descripcion;
+      document.getElementById("marcas").innerHTML="| Creada: "+data.creada+" | Última actualización: "+data.actualizada+" |";
+      if (data.inicio!=null){ document.getElementById("inicio").innerHTML=data.inicio; }
+      if (data.fin!=null){ document.getElementById("fin").innerHTML=data.fin; }
+      if (data.grupo!=0 || data.letra!=null){
+        document.getElementById("grupo").innerHTML=
+          '<span id="grp">'+data.grupo+'</span>'+
+          '<span id="lttr">'+data.letra+'</span>';
+      };
+      if (data.rf!=null){ document.getElementById("francos").innerHTML=data.rf; }
 
       
     }
@@ -206,7 +219,7 @@
 ).then(res => {
   actualiza_interface(res.data)
   get_alumnos();
-  console.log(res.data);
+  //console.log(res.data);
 }));
     //}    
 
@@ -269,5 +282,71 @@ document.querySelector('#fileDatas').addEventListener('change', event => {
   
   
   }
+  </script>
+  <script>
+    function EditBrigada(){
+      document.getElementById("desc_master").innerHTML=
+        '<input id="descripcion" type="text" class="form-control" value="'+
+        document.getElementById("descripcion").innerHTML+'" placeholder="'+
+        document.getElementById("descripcion").innerHTML+'"'+
+        ' aria-label="descripcion" aria-describedby="desclbl" required>';
+
+        document.getElementById("desc_grupoletra").innerHTML=
+        '<div class="input-group"><input id="grupo" type="text" class="form-control" placeholder="'+
+        document.getElementById("grp").innerHTML+'" value="'+document.getElementById("grp").innerHTML+'"'+
+        ' aria-label="Número que identifica la brigada" aria-describedby="numerolbl"  maxlength="2">'+
+        '<input id="letra" type="text" class="form-control" placeholder="'+
+        document.getElementById("lttr").innerHTML+'" value="'+document.getElementById("lttr").innerHTML+'"'+
+        ' aria-label="Letra que identifica la brigada (ALFA, BRAVO, etc.." aria-describedby="letralbl"  maxlength="3"></div>';    
+
+        $fecha_inicio=document.getElementById("inicio").innerHTML.split('/');
+        if ($fecha_inicio.length>2){
+          $fecha_inicio=new Date($fecha_inicio[2],$fecha_inicio[1],$fecha_inicio[0]); 
+          document.getElementById("desc_inicio").innerHTML=
+          '<input id="fecha_inicio" type="date" class="form-control" aria-label="Fecha de inicio"'+
+          ' aria-describedby="fechainicio" required>'; 
+          fecha_inicio.valueAsDate = 
+            new Date(Date.UTC($fecha_inicio.getFullYear(), $fecha_inicio.getMonth()-1, $fecha_inicio.getDate()));
+        } else {
+            document.getElementById("desc_inicio").innerHTML=
+          '<input id="fecha_inicio" type="date" class="form-control" aria-label="Fecha de inicio"'+
+          ' aria-describedby="fechainicio" required>';           
+        }
+        $fecha_fin=document.getElementById("fin").innerHTML.split('/');
+        if ($fecha_fin.length>2){
+            
+          $fecha_fin=new Date($fecha_fin[2],$fecha_fin[1],$fecha_fin[0]); 
+          document.getElementById("desc_fin").innerHTML=
+          '<input id="fecha_fin" type="date" class="form-control" aria-label="Fecha de Fin"'+
+          ' aria-describedby="fecha_fin" required>'; 
+          fecha_fin.valueAsDate = 
+            new Date(Date.UTC($fecha_fin.getFullYear(), $fecha_fin.getMonth()-1, $fecha_fin.getDate())); 
+        } else {
+          document.getElementById("desc_fin").innerHTML=
+          '<input id="fecha_fin" type="date" class="form-control" aria-label="Fecha de Fin"'+
+          ' aria-describedby="fecha_fin" required>'; 
+        }
+         
+        document.getElementById("btn_mod_brigada").classList.add("d-none");
+        document.getElementById("btn_closemod_brigada").classList.remove("d-none");
+        document.getElementById("btn_upd_brigada").classList.remove("d-none");
+            
+        
+        
+                
+    }
+    function CancelEditBrigada(){
+      document.location.reload();    
+    }
+    function PostEditBrigada(){
+      console.log(
+      document.getElementById("descripcion").value,
+      document.getElementById("grupo").value,
+      document.getElementById("letra").value,
+      document.getElementById("fecha_inicio").value,
+      document.getElementById("fecha_fin").value
+      );
+
+    }
   </script>
   <th:block th:include="/pie.html"></th:block>

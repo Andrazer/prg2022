@@ -1,7 +1,8 @@
 
 		/*TODO: LEER EXCEL A OBJETO, LIBRERIA YA INTEGRADA (ADDONS/EXEL)*/
 		/*TODO: MANEJAR IMPORTACION ARCHIVOS, LIBRERIA YA INTEGRADA (UploadFIle)*/
-		/*TODO: QUITAR ARCHIVO DE PRUEBA resources:productos.xls*/
+		/*TODO: comprobar tiempo marca borrado de brigadas para limpieza
+        
 
 
 		probar QR CREATOR:

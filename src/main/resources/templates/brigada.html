@@ -36,10 +36,44 @@
 
 <script>    
     function Registrame() {
-        $nuevabrigada = document.getElementById("NuevaBrigadaInput").value;
+
+      
+        $descripcion = document.getElementById("descripcion").value;
+        $grupo = document.getElementById("grupo").value;
+        $letra = document.getElementById("letra").value;
+        $fecha_inicio = document.getElementById("fecha_inicio").value;
+        $fecha_fin = document.getElementById("fecha_fin").value;
+
+      if (!descripcion.checkValidity()){
+        descripcion.classList.add('is-invalid')
+        return;
+      } else {
+        descripcion.classList.remove('is-invalid')
+        descripcion.classList.add('is-valid')
+      }   
+      
+      if (!fecha_inicio.checkValidity()){
+        fecha_inicio.classList.add('is-invalid')
+        return;
+      } else {
+        fecha_inicio.classList.remove('is-invalid')
+        fecha_inicio.classList.add('is-valid')
+      }   
+
+      if (!fecha_fin.checkValidity()){
+        fecha_fin.classList.add('is-invalid')
+        return;
+      } else {
+        fecha_fin.classList.remove('is-invalid')
+        fecha_fin.classList.add('is-valid')
+      }         
 // create a JSON object
 const json = { 
- descripcion: $nuevabrigada
+ "descripcion": $descripcion,
+ "grupo": $grupo,
+ "letra": $letra,
+ "inicio": $fecha_inicio,
+ "fin": $fecha_fin,
 };
 
 // request options
@@ -74,9 +108,7 @@ fetch('/brigada/add', options)
 }
     
 
-window.onload = function() {
-        actualiza_tabla();
-};    
+
 </script>
 
 
@@ -93,16 +125,47 @@ window.onload = function() {
           <h5 class="modal-title" id="add_brigadaLabel">Agregar Brigada</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
+        <form id="NuevaBrigada" class="row g-3 needs-validation" novalidate>
         <div class="modal-body">
+          
             <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">Descripción:</span>
-                <input id="NuevaBrigadaInput" type="text" class="form-control" placeholder="3A 2022" aria-label="descripcion" aria-describedby="basic-addon1">
+                <span class="input-group-text" id="basic-desclbl">* Descripción:</span>
+                <input id="descripcion" type="text" class="form-control" placeholder="Tercera Alfa" 
+                aria-label="descripcion" aria-describedby="desclbl" required>
             </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="numerolbl">Número de Brigada:</span>
+              <input id="grupo" type="text" class="form-control" placeholder="1" 
+                aria-label="Número que identifica la brigada" aria-describedby="numerolbl"  maxlength="2">
+            </div>
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="letralbl">Letra de Brigada:</span>
+              <input id="letra" type="text" class="form-control" placeholder="A" 
+                aria-label="Letra que identifica la brigada (ALFA, BRAVO, etc.." aria-describedby="letralbl"  maxlength="3">
+            </div>            
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="fechainicio">* Fecha de inicio:</span>
+                <input id="fecha_inicio" type="date" class="form-control" aria-label="Fecha de inicio"
+                  aria-describedby="fechainicio" required>
+            </div>    
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="fechafin">* Fecha de Fin:</span>
+              <input id="fecha_fin" type="date" class="form-control" aria-label="Fecha de Finalizacion"
+                aria-describedby="fechafin" required>
+            </div> 
+            <div id="aclaraciones" class="small btn-outline-success disabled">
+              El número y la letra se utilizarán para generar los números de Brigada<br>
+              También servira para identificar la brigada en pantalla (Ejemplo: 6A)
+            </div>                      
+
+
+
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" style="border-top: none;">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
           <button type="button" class="btn btn-primary" onclick="Registrame();">Agregar</button>
         </div>
+      </form>
       </div>
     </div>
   </div>
@@ -215,7 +278,7 @@ children.forEach(function(item){
     botonera = document.createElement("div");
     if (!item.classList.contains("table-danger")){
       botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-success","ver");
-      botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-warning","editar");
+      //botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-warning","editar");
       botonera.appendChild(document.createElement("button")).classList.add("btn","btn-sm","btn-outline-danger","borrar");
       botonera.firstChild.setAttribute("onClick","show_brigada("+item.firstChild.textContent+")");
       botonera.lastChild.setAttribute("onClick","borra_brigada("+item.firstChild.textContent+")");
@@ -232,5 +295,14 @@ children.forEach(function(item){
 
 
 }
+</script>
+
+
+<script>
+
+window.onload = function() {
+        actualiza_tabla();
+};    
+
 </script>
 <th:block th:include="/pie.html"></th:block>
