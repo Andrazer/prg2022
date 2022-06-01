@@ -31,7 +31,7 @@ public class Brigada {
     //fin del curso
     private LocalDate fin;
     //regreso de francos
-    private LocalTime RF;
+
     //marca para borrado, al marcar se almacena tb fecha para borrado
     @Column(name = "activa", nullable = false)
     private boolean activa = true;
@@ -73,7 +73,7 @@ public class Brigada {
     public String getDescripcion() { return descripcion; }
     public LocalDate getInicio() { return inicio; }
     public LocalDate getFin() { return fin; }
-    public LocalTime getRF() { return RF; }
+    
     public Long getId() { return id; }
     public boolean getActiva() { return activa; }
     public Date getCreada() { return creada; }
@@ -85,7 +85,7 @@ public class Brigada {
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }      
     public void setInicio(LocalDate inicio) { this.inicio = inicio; } 
     public void setFin(LocalDate fin) { this.fin = fin; } 
-    public void setRF(LocalTime RF) { this.RF = RF; } 
+     
     public void setActive(boolean activa) { 
       if (!activa){
         this.borrar=new Date();

@@ -19,13 +19,13 @@ public class BrigadaResponse {
     private LocalDate fin;
     private int grupo; 
     private String letra;  
-    private LocalTime RF;     
+
     
 	public BrigadaResponse(
         Long id, String descripcion, 
         Date creada, Date actualizada,
         LocalDate inicio, LocalDate fin,
-        int grupo, String letra, LocalTime RF) {
+        int grupo, String letra) {
 		this.id = id;
 		this.descripcion = descripcion;
 		this.creada = creada;
@@ -34,7 +34,6 @@ public class BrigadaResponse {
         this.fin = fin;
         this.grupo = grupo;
         this.letra = letra;
-        this.RF = RF;
 	}
 
 	public Long getId() { return id; }
@@ -45,7 +44,6 @@ public class BrigadaResponse {
     public LocalDate getFin() { return fin; }
     public int getGrupo() { return grupo; }
     public String getLetra() { return letra; }
-    public LocalTime getRF() { return RF; }
 
     public void setId(Long id) { this.id=id; }
 	public void setDescripcion(String descripcion) { this.descripcion= descripcion; }
@@ -55,7 +53,6 @@ public class BrigadaResponse {
     public void setFin(LocalDate fin) { this.fin= fin; }
     public void setGrupo(int grupo) { this.grupo= grupo; }
     public void setLetra(String letra) { this.letra= letra; }
-    public void setRF(LocalTime RF) { this.RF = RF; }
 
 
 

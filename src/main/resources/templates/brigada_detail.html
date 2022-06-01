@@ -34,12 +34,7 @@
                     </p></div>
                   </div>
                   <hr>
-                  <div class="row">
-                    <div class="col-sm-6"><p class="mb-0">Regreso de Francos</p></div>
-                    <div class="col-sm-6" id="desc_francos"><p  id="francos" class="text-muted mb-0">Sin establecer</p></div>
-                  </div>                  
-                  <hr>
-                  <div class="row">
+                    <div class="row">
                     <div class="col-sm-6"><p class="mb-0">Inicio del curso</p></div>
                     <div class="col-sm-6" id="desc_inicio"><p  id="inicio" class="text-muted mb-0">&infin;</p></div>
                   </div>
@@ -153,6 +148,7 @@
           <input type="text" class="form-control" aria-label="Personas por rancho" 
           aria-describedby="inputGroup-sizing-sm" value="9">
         </div>
+        <div id="bdy_importando" class="container-sm"></div>
       </div>
 
       <div class="modal-footer">
@@ -242,20 +238,34 @@
   const data = new FormData();
 
   data.append('fileDatas', archivos[0]);
-
-  fetch('/usuarios/subidaUnArchivo', {
+/*
+  fetch('/usuarios/subirExcel', {
     method: 'POST',
     body: data
   })
   .then(response => response.json())
   .then(data => {
-    console.log('El archivo ' + data.path + ' se ha subido correctamente.');
+    console.log(data.json);
     document.getElementById("agregando_usuarios").classList.add("d-none");
     document.getElementById("agregando_usuarios2").classList.remove("d-none");
   })
   .catch(error => {
     console.error(error);
-  });
+  });*/
+
+
+  fetch('/usuarios/subirExcel', { method: "POST", body: data }).then(response => 
+    response.json().then(data => ({
+        data: data,
+        status: response.status
+    })
+).then(res => {
+    document.getElementById("agregando_usuarios").classList.add("d-none");
+    document.getElementById("agregando_usuarios2").classList.remove("d-none");
+    console.log(res.data);
+    importacion(res.data);
+}));  
+  
 }
 
 document.querySelector('#fileDatas').addEventListener('change', event => {
@@ -339,14 +349,121 @@ document.querySelector('#fileDatas').addEventListener('change', event => {
       document.location.reload();    
     }
     function PostEditBrigada(){
-      console.log(
-      document.getElementById("descripcion").value,
-      document.getElementById("grupo").value,
-      document.getElementById("letra").value,
-      document.getElementById("fecha_inicio").value,
-      document.getElementById("fecha_fin").value
-      );
+      let xhr = new XMLHttpRequest();
+      xhr.open("POST", "/brigada/update/[[${id}]]");
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          console.log(xhr.status);
+          if (xhr.status===200){
+            location.reload();
+          } else{
+            alert("Revise los datos introducidos, cambios no admitidos.");
+          }
+        }};
+$descripcion = document.getElementById("descripcion").value;
+$grupo = document.getElementById("grupo").value;
+$letra = document.getElementById("letra").value;
+$fecha_inicio = document.getElementById("fecha_inicio").value;
+$fecha_fin = document.getElementById("fecha_fin").value;
+const data = { 
+ "descripcion": $descripcion,
+ "grupo": $grupo,
+ "letra": $letra,
+ "inicio": $fecha_inicio,
+ "fin": $fecha_fin,
+};
+
+xhr.send(JSON.stringify(data));
 
     }
+
+
+
   </script>
+  <script>
+function importacion(data){
+//generamos la tabla a través del DOM automáticamente
+var table = document.createElement("table");
+    table.setAttribute("id", "tbl_brigadas");
+    table.classList.add("tableSection");
+var body = document.getElementById("bdy_importando");
+    body.innerHTML = '';
+    body.appendChild(table).classList.add("table", "table-hover"); 
+//campos a mostrar
+const mostrar = ["nombre","apellido1","apellido2", "dni"];
+
+if (data.length) {
+  var thead = document.createElement("thead"); 
+  var row = document.createElement("tr");
+  thead.appendChild(row);
+  table.appendChild(thead).classList.add("table-light"); 
+  Object.keys(data[0]).forEach(function(v,i=0) {
+    if (mostrar.includes(v)){
+      i++;
+      var cell = document.createElement("th");
+      row.appendChild(cell).setAttribute("scope", "col");
+      //oculto en movil, resto de columnas, dejando solo 1 y 2
+      if (i>2){ cell.classList.add("d-none","d-sm-table-cell"); }
+      //fin ocultacion
+      cell.innerHTML = v.toUpperCase();
+    }
+  });
+}
+
+
+
+//lo anterior genera la tabla sola a partir del JSON
+//si quiero meter funcionalidades a mayores, tengo que incluirlas.
+//agregando botones, necesito un th mas para los botones:
+//row.appendChild(document.createElement("th")).setAttribute("scope", "col");
+//row.lastChild.innerHTML = "ACCIONES";
+// ahora ya tenemos una columna para acciones, generamos filas en auto:
+var tbody = document.createElement("tbody"); 
+
+for (var i = 0; i < data.length; i++) {
+  
+  var row = document.createElement("tr");
+  tbody.appendChild(row);
+  table.appendChild(tbody);
+  j=0;
+  for (key in data[i]) {
+    if (mostrar.includes(key)){
+      j++;
+      var cell = document.createElement("td");
+      row.appendChild(cell).setAttribute("scope", "row");
+      cell.innerHTML = data[i][key];
+    }
+  }
+   
+}
+
+}
+  </script>
+  <style>
+    /*
+
+
+
+table.tableSection tr {
+    width: 100%;
+    display: table;
+    text-align: left;
+}
+*/
+
+table.tableSection tbody {
+    overflow: auto;
+    height: 150px;
+}
+table.tableSection tbody {
+    float: left;
+    width: 100%;
+}
+table.tableSection thead {
+  display: none;
+}
+  </style>
   <th:block th:include="/pie.html"></th:block>

@@ -82,6 +82,38 @@ public class BrigadaController {
       return new ResponseEntity<>(id, HttpStatus.NOT_FOUND);
     }
 
+    @PostMapping(value = "/update/{id}")
+    @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<Long> actualiza(@Valid @RequestBody AddBrigadaRequest brigadaactualizar, @PathVariable Long id) {
+      Brigada actualizar = brepository.getById(id);
+      if (actualizar.getId()>1){
+        if ( (actualizar.getDescripcion()!=brigadaactualizar.getDescripcion()) && (
+          brigadaactualizar.getDescripcion().length()>0
+        )){
+          actualizar.setDescripcion(brigadaactualizar.getDescripcion());
+        }
+        if ( (actualizar.getInicio()!=brigadaactualizar.getInicio()) ){
+          actualizar.setInicio(brigadaactualizar.getInicio());
+        }
+        if ( (actualizar.getFin()!=brigadaactualizar.getFin()) ){
+          actualizar.setFin(brigadaactualizar.getFin());
+        }
+        if ( (actualizar.getGrupo()!=brigadaactualizar.getGrupo()) && (
+          brigadaactualizar.getGrupo()>0
+        )){
+          actualizar.setGrupo(brigadaactualizar.getGrupo());
+        }
+        if ( (actualizar.getLetra()!=brigadaactualizar.getLetra()) && (
+          brigadaactualizar.getLetra().length()>0
+        )){
+          actualizar.setLetra(brigadaactualizar.getLetra());
+        }                
+        brepository.save(actualizar);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+      }
+      return new ResponseEntity<>(id, HttpStatus.NOT_FOUND);
+    }    
+
     @GetMapping("/show/{id}")
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
     public ModelAndView showBrigada(@PathVariable Long id, ModelAndView modelAndView) {
@@ -108,8 +140,7 @@ public class BrigadaController {
               brigada.getInicio(),
               brigada.getFin(),
               brigada.getGrupo(),
-              brigada.getLetra(),
-              brigada.getRF());
+              brigada.getLetra());
         return ResponseEntity.ok(respuesta);
     }    
     

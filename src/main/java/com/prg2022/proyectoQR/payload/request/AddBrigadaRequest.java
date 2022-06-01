@@ -19,7 +19,6 @@ public class AddBrigadaRequest {
     //@JsonFormat(pattern="d-m-Y")
     private LocalDate fin;
 
-    private LocalTime RF;
 
     private int grupo; 
     @Size(max = 4)  
@@ -28,14 +27,12 @@ public class AddBrigadaRequest {
     public String getDescripcion() { return descripcion; }
     public LocalDate getInicio() { return inicio; }
     public LocalDate getFin() { return fin; }
-    public LocalTime getRF() { return RF; }
     public int getGrupo() { return grupo; }
     public String getLetra() { return letra; }
  
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
     public void setInicio(LocalDate inicio) { this.inicio = inicio; }
     public void setFin(LocalDate fin) { this.fin = fin; }
-    public void setRF(LocalTime RF) { this.RF = RF; }
     public void setGrupo(int grupo) { this.grupo = grupo; }
     public void setLetra(String letra) { this.letra = letra; }
 }
