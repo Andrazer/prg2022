@@ -127,10 +127,10 @@
            <button type="button" class="btn btn-primary btn-sm"  data-bs-toggle="modal" data-bs-target="#add_user_ind">Alta individual</button>
            <span role="button" class="btn btn-primary btn-sm" 
             accept=".xls, .csv, .xlsx"
-            onclick="document.getElementById('fileDatas').click();">Importar XLS / CSV </span>
+            onclick="document.getElementById('fileDatas').click();">Importar archivo Excel</span>
        </form>
           <div class="text-start btn btn-outline-success disabled my-4 btn-sm">
-            Formato del archivo a importar (Excel o CSV separado por comas)<br><br>
+            Formato del archivo a importar (Excel)<br><br>
             
             <strong>Formato corto excel</strong><br>
           nombre | apellido1 | apellido2 | dni<br>
@@ -148,7 +148,11 @@
           <input type="text" class="form-control" aria-label="Personas por rancho" 
           aria-describedby="inputGroup-sizing-sm" value="9">
         </div>
+        <div id="detalles" class="container-sm">Sin Brigada definida (Grupo/Letra)</div>
         <div id="bdy_importando" class="container-sm"></div>
+        <div id="operacion" class="container-sm">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="finalizar_imp()">Importar</button>
+        </div>
       </div>
 
       <div class="modal-footer">
@@ -198,6 +202,7 @@
       if (data.inicio!=null){ document.getElementById("inicio").innerHTML=data.inicio; }
       if (data.fin!=null){ document.getElementById("fin").innerHTML=data.fin; }
       if (data.grupo!=0 || data.letra!=null){
+        document.getElementById("detalles").innerHTML='Se importarán en la brigada '+data.grupo+data.letra;
         document.getElementById("grupo").innerHTML=
           '<span id="grp">'+data.grupo+'</span>'+
           '<span id="lttr">'+data.letra+'</span>';
@@ -218,6 +223,24 @@
   //console.log(res.data);
 }));
     //}    
+
+
+function finalizar_imp(){
+fetch('/usuarios/ProcesaExcel/[[${id}]]', { method: "POST" })
+.then(async response => {
+  if (!response.ok) {
+  const error = (data && data.message) || response.status;
+  return Promise.reject(error);
+  }
+  else {
+  alert("Importación realizada");
+  window.location.reload();
+  }
+})
+.catch(err => {
+  alert("No ha sido posible importar los usuarios");
+  })
+};
 
 
  function get_alumnos(){
@@ -253,8 +276,8 @@
     console.error(error);
   });*/
 
-
-  fetch('/usuarios/subirExcel', { method: "POST", body: data }).then(response => 
+//fetch('/usuarios/subirExcel', { method: "POST", body: data }).then(response => 
+  fetch('/usuarios/NuevoExcel', { method: "POST", body: data }).then(response => 
     response.json().then(data => ({
         data: data,
         status: response.status
@@ -262,10 +285,8 @@
 ).then(res => {
     document.getElementById("agregando_usuarios").classList.add("d-none");
     document.getElementById("agregando_usuarios2").classList.remove("d-none");
-    console.log(res.data);
     importacion(res.data);
 }));  
-  
 }
 
 document.querySelector('#fileDatas').addEventListener('change', event => {
@@ -274,6 +295,21 @@ document.querySelector('#fileDatas').addEventListener('change', event => {
   </script>
   
 <script>
+  function getOperacion() {
+  let name = "operacion=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
   function show_nombres(){
   console.log("s");
   const nombres = document.querySelectorAll('span.nombres');

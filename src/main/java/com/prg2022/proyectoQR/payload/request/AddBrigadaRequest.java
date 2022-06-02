@@ -34,5 +34,5 @@ public class AddBrigadaRequest {
     public void setInicio(LocalDate inicio) { this.inicio = inicio; }
     public void setFin(LocalDate fin) { this.fin = fin; }
     public void setGrupo(int grupo) { this.grupo = grupo; }
-    public void setLetra(String letra) { this.letra = letra; }
+    public void setLetra(String letra) { this.letra = letra.toUpperCase(); }
 }
