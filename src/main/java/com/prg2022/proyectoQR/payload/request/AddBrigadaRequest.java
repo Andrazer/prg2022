@@ -1,11 +1,10 @@
 package com.prg2022.proyectoQR.payload.request;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+
 
 import javax.validation.constraints.*;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 public class AddBrigadaRequest {

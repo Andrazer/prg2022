@@ -130,7 +130,8 @@
             onclick="document.getElementById('fileDatas').click();">Importar archivo Excel</span>
        </form>
           <div class="text-start btn btn-outline-success disabled my-4 btn-sm">
-            Formato del archivo a importar (Excel)<br><br>
+            Formato del archivo a importar (Excel)<br>
+            Extensión xls, xlsx<br>
             
             <strong>Formato corto excel</strong><br>
           nombre | apellido1 | apellido2 | dni<br>
@@ -144,13 +145,14 @@
       <div id="agregando_usuarios2" class="modal-body text-center d-none">
         <input type="hidden" value="" name="fichero" id="fichero">
         <div class="input-group input-group-sm mb-3">
-          <span class="input-group-text" id="inputGroup-sizing-sm">Personas por rancho</span>
-          <input type="text" class="form-control" aria-label="Personas por rancho" 
-          aria-describedby="inputGroup-sizing-sm" value="9">
+          <span class="input-group-text" id="pprancho">Personas por rancho</span>
+          <input id="ranchodef" type="text" class="form-control" aria-label="Personas por rancho" 
+          aria-describedby="pprancho" value="9">
         </div>
         <div id="detalles" class="container-sm">Sin Brigada definida (Grupo/Letra)</div>
         <div id="bdy_importando" class="container-sm"></div>
         <div id="operacion" class="container-sm">
+          <span class="text-danger">Atención: Cualquier usuario existente en esta brigada se eliminará del sistema.</span><br>
           <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="finalizar_imp()">Importar</button>
         </div>
       </div>
@@ -226,7 +228,7 @@
 
 
 function finalizar_imp(){
-fetch('/usuarios/ProcesaExcel/[[${id}]]', { method: "POST" })
+fetch('/usuarios/ProcesaExcel/[[${id}]]/'+document.getElementById("ranchodef").value, { method: "POST" })
 .then(async response => {
   if (!response.ok) {
   const error = (data && data.message) || response.status;
@@ -277,21 +279,70 @@ fetch('/usuarios/ProcesaExcel/[[${id}]]', { method: "POST" })
   });*/
 
 //fetch('/usuarios/subirExcel', { method: "POST", body: data }).then(response => 
-  fetch('/usuarios/NuevoExcel', { method: "POST", body: data }).then(response => 
-    response.json().then(data => ({
-        data: data,
-        status: response.status
+/*
+fetch('/usuarios/NuevoExcel', { method: "POST", body: data })
+.then(response => response.json()
+  .then(data => ({
+    data: data,
+    status: response.status
     })
-).then(res => {
+  )
+  .then(res => {
     document.getElementById("agregando_usuarios").classList.add("d-none");
     document.getElementById("agregando_usuarios2").classList.remove("d-none");
     importacion(res.data);
-}));  
+}));  */
+
+fetch('/usuarios/NuevoExcel', { method: "POST", body: data })
+.then(response => response.json()
+  .then(data => ({
+    data: data,
+    status: response.status
+    })
+  )
+  .then(res => {
+    document.getElementById("agregando_usuarios").classList.add("d-none");
+    document.getElementById("agregando_usuarios2").classList.remove("d-none");
+    importacion(res.data);
+}))
+.catch(error =>{
+    alert("El servidor no puede procesar el archivo, compruebe formato Excel");
+  }); 
+
+
+
+
+
+
+
 }
 
 document.querySelector('#fileDatas').addEventListener('change', event => {
     subirImagen(event);
 });
+
+
+
+
+
+
+/*
+var payload = {
+    a: 1,
+    b: 2
+};
+
+var data = new FormData();
+data.append( "json", JSON.stringify( payload ) );
+
+fetch("/echo/json/",
+{
+    method: "POST",
+    body: data
+})
+.then(function(res){ return res.json(); })
+.then(function(data){ alert( JSON.stringify( data ) ) })
+*/
   </script>
   
 <script>
@@ -311,19 +362,17 @@ document.querySelector('#fileDatas').addEventListener('change', event => {
 }
 
   function show_nombres(){
-  console.log("s");
   const nombres = document.querySelectorAll('span.nombres');
-  
   if(document.getElementById("flexCheckDefault").checked){
-  for (const nombre of nombres) {
-  nombre.classList.remove('d-none');
-  nombre.parentNode.classList.remove('float-start');
-  }
+    for (const nombre of nombres) {
+      nombre.classList.remove('d-none');
+      nombre.parentNode.classList.remove('float-start');
+    }
   } else{
-  for (const nombre of nombres) {
-  nombre.classList.add('d-none');
-  nombre.parentNode.classList.add('float-start');
-  }      
+    for (const nombre of nombres) {
+      nombre.classList.add('d-none');
+      nombre.parentNode.classList.add('float-start');
+    }      
   }
   
   

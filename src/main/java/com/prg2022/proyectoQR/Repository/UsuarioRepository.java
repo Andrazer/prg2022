@@ -3,6 +3,7 @@ package com.prg2022.proyectoQR.Repository;
 import java.util.List;
 import java.util.Optional;
 
+
 import com.prg2022.proyectoQR.modelos.Brigada;
 import com.prg2022.proyectoQR.modelos.Usuario;
 

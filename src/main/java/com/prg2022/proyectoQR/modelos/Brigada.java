@@ -1,6 +1,5 @@
 package com.prg2022.proyectoQR.modelos;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.Set;
 import javax.persistence.*;
@@ -24,7 +23,7 @@ public class Brigada {
     private Long id;
     //descripción en texto de la brigada
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 30)
     private String descripcion;   
     //inicio del curso
     private LocalDate inicio;
@@ -62,6 +61,11 @@ public class Brigada {
 
     public Brigada() {}
     public Brigada(String descripcion) { this.descripcion = descripcion; }
+    public Brigada(String descripcion,int grupo, String letra) { 
+      this.descripcion = descripcion; 
+      this.grupo = grupo;
+      this.letra = letra;      
+    }
     public Brigada(String descripcion, LocalDate inicio, LocalDate fin, int grupo, String letra) { 
       this.descripcion = descripcion; 
       this.inicio = inicio;

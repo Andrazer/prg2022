@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
 import com.prg2022.proyectoQR.Repository.UsuarioRepository;
@@ -49,30 +50,52 @@ public class UploadFileController {
     private BrigadaRepository brepository;    
 
     @RequestMapping(        
-        value = "/usuarios/ProcesaExcel/{id}", 
+        value = "/usuarios/ProcesaExcel/{id}/{rancho}", 
         method = RequestMethod.POST, 
         produces= MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
     @ResponseBody
-    public String Procesado(@CookieValue(name = "operacion") String operacion,@PathVariable Long id){
+    public String Procesado(@CookieValue(name = "operacion") String operacion,
+        @PathVariable Long id,
+        @PathVariable int rancho
+        ){
         File carpeta = new File("archivos_subidos/"+operacion);
         String contents[] = carpeta.list();
         ReadExcel leer = new ReadExcel();
         Brigada brigadaUp = brepository.getById(id);
-        generador NumBrigada =  new generador(brigadaUp.getGrupo(), brigadaUp.getLetra());
+        /*TAL COMO ADVIERTE, LIMPIAMOS DE USUARIOS LA BRIGADA */
+        List<Usuario> borrados = urepository.findByBrigada(brigadaUp);
+        for (Usuario borra : borrados){
+            urepository.deleteById(borra.getId());
+        }
+        
+
+        generador NumBrigada =  new generador(brigadaUp.getGrupo(), brigadaUp.getLetra(),rancho);
         List<UsuarioExcelResponse> leidos = leer.leer("archivos_subidos/"+operacion+"/"+contents[0]);
         for (UsuarioExcelResponse leido : leidos) {
+
+
             Object[] usuarioNumero = NumBrigada.getRancho();
+            int meteRancho = (int)usuarioNumero[0];
+            int meteNumero = (int)usuarioNumero[1];
+            int meteGrupo = (int)usuarioNumero[2];
+            String meteLetra = (String)usuarioNumero[3];   
+            
+            if ((leido.getRancho()>0) && (leido.getNumero()>0)){
+                meteRancho = leido.getRancho();
+                meteNumero = leido.getNumero();                
+            }                    
+            
             urepository.save(new Usuario(
                 leido.getNombre(), 
                 leido.getApellido1(), 
                 leido.getApellido2(), 
                 leido.getDni(), 
                 brigadaUp, 
-                (int)usuarioNumero[0],
-                (int)usuarioNumero[1],
-                (int)usuarioNumero[2],
-                (String)usuarioNumero[3]
+                meteRancho,
+                meteNumero,
+                meteGrupo,
+                meteLetra
                 ));            
         }
         return operacion;
@@ -105,8 +128,7 @@ public class UploadFileController {
             if(false==(
                 nombre.endsWith(".XLSX")|| 
                 nombre.endsWith(".xlsx") || 
-                nombre.endsWith(".XLSM") || 
-                nombre.endsWith(".xlsm") ||
+                nombre.endsWith(".XLS") ||
                 nombre.endsWith(".xls")
                 )) {
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El archivo debe ser Excel");

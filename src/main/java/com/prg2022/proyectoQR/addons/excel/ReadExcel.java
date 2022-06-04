@@ -11,8 +11,7 @@ import com.prg2022.proyectoQR.payload.response.UsuarioExcelResponse;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+
 
 public class ReadExcel {
    
@@ -31,6 +30,8 @@ public class ReadExcel {
             while (filas.hasNext()){
                 fila = filas.next();
                 String DNI;
+                int rancho=0;
+                int numero=0;
                 switch(fila.getCell(3).getCellType()){
                     case NUMERIC:
                         DNI = Integer.toString((int) fila.getCell(3).getNumericCellValue());
@@ -42,11 +43,30 @@ public class ReadExcel {
                         DNI ="";
                         break;
                 }
+                
+                if (fila.getCell(4) != null) {
+                    switch(fila.getCell(4).getCellType()){
+                        case NUMERIC:
+                            rancho = (int) fila.getCell(4).getNumericCellValue();
+                        default:
+                            break;
+                    }
+                }
+                if (fila.getCell(5) != null) {
+                    switch(fila.getCell(5).getCellType()){
+                        case NUMERIC:
+                            numero = (int) fila.getCell(5).getNumericCellValue();
+                        default:
+                            break;
+                    }              
+                }
                 UsuarioExcelResponse leido = new UsuarioExcelResponse(
                     fila.getCell(0).getStringCellValue(), 
                     fila.getCell(1).getStringCellValue(), 
-                    fila.getCell(2).getStringCellValue(), DNI);               
-                //System.out.println(leido.datos());
+                    fila.getCell(2).getStringCellValue(), 
+                    DNI,
+                    rancho,
+                    numero);               
                 usuarios.add(leido);
 
             }

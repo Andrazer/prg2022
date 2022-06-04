@@ -1,7 +1,7 @@
 package com.prg2022.proyectoQR.payload.response;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;

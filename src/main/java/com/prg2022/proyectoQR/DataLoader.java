@@ -95,63 +95,61 @@ public class DataLoader implements ApplicationRunner {
         //creando usuarios de ejemplo
         try {
             List<Brigada> existe;                     
-            existe = bRepository.findByDescripcion("1A");
+            existe = bRepository.findByDescripcion("Primera Alfa");
         if (existe.isEmpty()){
             String[] valor;
             Usuario nuevos_alumnos;
-            Set<Role> permisosar = new HashSet<>();
+            /*Set<Role> permisosar = new HashSet<>();
             Role userRols = rRepository.findByDescripcion(EnumRole.ROLE_USER).get();
-            permisosar.add(userRols);            
+            permisosar.add(userRols);    */    
+              
             Resource resource = new ClassPathResource("data1.csv");
             FileInputStream f = new FileInputStream(resource.getFile());
-            Scanner sc = new Scanner(f);             
-            bRepository.save(new Brigada("1A"));
-            generador NumBrigada =  new generador(1, "A");
+            Scanner sc = new Scanner(f);  
+              
+            Brigada creada = bRepository.save(new Brigada("Primera Alfa", 1, "A"));
+            generador NumBrigada =  new generador(creada.getGrupo(), creada.getLetra());
+            
             while (sc.hasNext())   
             {  
                 Object[] usuarioNumero = NumBrigada.getRancho();
                 valor = sc.next().split(",");
                 nuevos_alumnos = aRepository.save( 
                     new Usuario(valor[0],valor[1],valor[2], valor[3], 
-                    bRepository.findByDescripcion("1A").get(0),
+                    creada,
                     (int)usuarioNumero[0],
                     (int)usuarioNumero[1],
                     (int)usuarioNumero[2],
                     (String)usuarioNumero[3]));
-                nuevos_alumnos.setRoles(permisosar);
+                /*nuevos_alumnos.setRoles(permisosar);*/
                 aRepository.save(nuevos_alumnos);
             }             
-            sc.close();  //closes the scanner 
+            sc.close();  
         }
         
 
         
 
         //ver si hay movimiento
-        if (mrepository.countByIdGreaterThan(Long.valueOf(1))<1) {
-            List<Usuario> UsuariosNuevos = aRepository.findByBrigada(bRepository.findByDescripcion("1A").get(0));
-            for (int i=0;i<UsuariosNuevos.size();i++) {
-        
-                System.out.println(UsuariosNuevos.get(i).getId());
-                Usuario autorize = aRepository.getById(Long.valueOf(1));
-                
 
+        
+        if (mrepository.countByIdGreaterThan(Long.valueOf(1))<1) {
+            List<Usuario> UsuariosNuevos = aRepository.findByBrigada(bRepository.findByDescripcion("Primera Alfa").get(0));
+            for (int i=0;i<UsuariosNuevos.size();i++) {
+                Usuario autorize = aRepository.getById(Long.valueOf(1));
                 for(int j=1;j<=YearMonth.of(2022, 04).lengthOfMonth();j++){
                     LocalDate dia = LocalDate.parse("2022-04-"+String.format("%1$02d",j));
                     switch(dia.get(ChronoField.DAY_OF_WEEK)){
                         case 7: break;
                         case 6: break;
                         default:
-                        //de luneas a viernes, llegan por la mañana y se van por la tarde
-                        // llegan entre las 07:00 y las 07:45
-                        //se marchan entre las 14:00 y las 14:59
-                        LocalDateTime llega = dia.atTime(07,(int) (Math.random() * 45));
-                        LocalDateTime ssale = dia.atTime(14,(int) (Math.random() * 59));
-                        mrepository.save(new Movimiento(true,llega,UsuariosNuevos.get(i),autorize));
-                        mrepository.save(new Movimiento(false,ssale,UsuariosNuevos.get(i),autorize));
-                        //System.out.println(llega);
-                        //System.out.println(ssale);
-                        //#SET ABORDO
+                            //de luneas a viernes, llegan por la mañana y se van por la tarde
+                            // llegan entre las 07:00 y las 07:45
+                            //se marchan entre las 14:00 y las 14:59
+                            LocalDateTime llega = dia.atTime(07,(int) (Math.random() * 45));
+                            LocalDateTime ssale = dia.atTime(14,(int) (Math.random() * 59));
+                            mrepository.save(new Movimiento(true,llega,UsuariosNuevos.get(i),autorize));
+                            mrepository.save(new Movimiento(false,ssale,UsuariosNuevos.get(i),autorize));
                             break;
                     }          
                 }
