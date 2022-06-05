@@ -161,6 +161,7 @@ public class Usuario implements Serializable{
 
     public Long getId() { return id; }
 
+
     public Set<Role> getRoles() { return roles; }
     public void setRoles(Set<Role> roles) { this.roles = roles; }
 

@@ -183,13 +183,37 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body text-center">
-      <form>
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Nombre</span>
-          <input type="text" class="form-control" placeholder="Nombre y Apellidos" aria-label="Nombre y Apellidos" aria-describedby="basic-addon1">
+
+      <form id="add_usr" >
+        <div class="input-group mb-1 pt-2">
+          <span class="input-group-text" id="nombre_lbl">Nombre</span>
+          <input value="" id="edit_nombre" type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" aria-describedby="nombre_lbl">
         </div>
-        <button type="button" class="btn btn-primary btn-sm" disabled>Alta usuario</button>
-      </form>
+        <div class="input-group mb-1">
+          <span class="input-group-text" id="er1">1er Apellido</span>
+          <input value="" id="edit_apellido" type="text" class="form-control" placeholder="1er Apellido" aria-label="1er Apellido" aria-describedby="er1">
+        </div>
+        <div class="input-group mb-1">
+          <span class="input-group-text" id="do2_lbl">2do Apellido</span>
+          <input value="" id="edit_apellido2" type="text" class="form-control" placeholder="2do Apellido" aria-label="2do Apellido" aria-describedby="do2_lbl">
+        </div>
+        <div class="input-group mb-1">
+          <span class="input-group-text" id="dni_lbl">DNI</span>
+          <input value="" id="edit_dni" type="text" class="form-control" placeholder="DNI" aria-label="DNI" aria-describedby="dni_lbl">
+        </div>   
+        <div class="input-group mb-1">
+          <span class="input-group-text" id="rancho_lbl">Rancho</span>
+          <input value="" id="edit_rancho" type="text" class="form-control" placeholder="rancho" aria-label="#" aria-describedby="rancho_lbl">
+          <span class="input-group-text" id="num_lbl">#</span>
+          <input value="" id="edit_numero" type="text" class="form-control" placeholder="Numero" aria-label="#" aria-describedby="num_lbl">
+          <span class="input-group-text" id="nubrig_lblm_lbl">#</span>
+          <input id="edit_grp" type="text" class="form-control" readonly aria-label="#" aria-describedby="brig_lbl">
+          <span class="input-group-text" id="letra_lbl">#</span>
+          <input id="edit_letra" type="text" class="form-control" readonly aria-label="#" aria-describedby="letra_lbl">                    
+        </div>  
+        <button class="my-2 btn btn-warning btn-sm float-end" type="submit">Agregar</button>
+        </form>      
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -198,7 +222,40 @@
     </div>
   </div>
 </div>
+<script>
+  
+const add_user= event => {
+   const data = new FormData();
+   data.append('nombre', document.getElementById("edit_nombre").value);
+   data.append('dni', document.getElementById("edit_dni").value);
+   data.append('ape', document.getElementById("edit_apellido").value);
+   data.append('ape2', document.getElementById("edit_apellido2").value);
+   data.append('numero', document.getElementById("edit_numero").value);
+   data.append('rancho', document.getElementById("edit_rancho").value);
 
+
+ 
+ fetch('/usuarios/addfull/[[${id}]]', { method: "POST", body: data })
+ .then(async response => {
+   if (!response.ok) {
+   const error = (data && data.message) || response.status;
+   return Promise.reject(error);
+   }
+   else {
+   alert("Alta recibida");
+   window.location.reload();
+   }
+ })
+ .catch(err => {
+   alert("No ha sido posible actualizar los datos");
+   })
+ }
+ 
+ document.querySelector('#add_usr').addEventListener('submit', event => {
+  add_user(event);
+  event.preventDefault();
+ }); 
+</script>
 
 
 
@@ -281,6 +338,9 @@
         document.getElementById("grupo").innerHTML=
           '<span id="grp">'+data.grupo+'</span>'+
           '<span id="lttr">'+data.letra+'</span>';
+          document.getElementById("edit_grp").value=data.grupo;
+          document.getElementById("edit_letra").value=data.letra;
+
       };
       if (data.rf!=null){ document.getElementById("francos").innerHTML=data.rf; }
 

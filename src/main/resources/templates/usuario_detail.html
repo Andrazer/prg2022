@@ -106,7 +106,10 @@
                         <input th:value="${usuario.numero}" id="edit_numero" type="text" class="form-control" placeholder="num" aria-label="#" aria-describedby="num_lbl">
                         <span class="input-group-text" id="rancho_lbl">Rancho</span>
                         <input th:value="${usuario.rancho}" id="edit_rancho" type="text" class="form-control" placeholder="rancho" aria-label="#" aria-describedby="rancho_lbl">
-                      </div>   
+                      </div>  
+                      <button class="btn btn-warning btn-sm float-end" type="submit">Actualizar</button>
+                      <button id="cacenla" class="btn btn-sm btn-outline-secondary add_fol mb-2 float-start"
+                       title="Cancelar" onClick="document.location.reload();">Cancelar</button> 
                       </form>                    
 
                       
@@ -133,6 +136,38 @@
     </style>
     
 <script>
+
+const edita_usr= event => {
+   const data = new FormData();
+   data.append('nombre', document.getElementById("edit_nombre").value);
+   data.append('dni', document.getElementById("edit_dni").value);
+   data.append('ape', document.getElementById("edit_apellido").value);
+   data.append('ape2', document.getElementById("edit_apellido2").value);
+   data.append('numero', document.getElementById("edit_numero").value);
+   data.append('rancho', document.getElementById("edit_rancho").value);
+
+
+ 
+ fetch('/usuarios/update/[[${id}]]', { method: "POST", body: data })
+ .then(async response => {
+   if (!response.ok) {
+   const error = (data && data.message) || response.status;
+   return Promise.reject(error);
+   }
+   else {
+   alert("Datos recibidos");
+   window.location.reload();
+   }
+ })
+ .catch(err => {
+   alert("No ha sido posible actualizar los datos");
+   })
+ }
+ 
+ document.querySelector('#edita_usuario').addEventListener('submit', event => {
+  edita_usr(event);
+  event.preventDefault();
+ });  
 
 function borra_usuario(){
 fetch('/usuarios/del/[[${id}]]', { method: "DELETE" })
