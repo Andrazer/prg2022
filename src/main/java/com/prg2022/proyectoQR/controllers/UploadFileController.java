@@ -50,6 +50,18 @@ public class UploadFileController {
     @Autowired
     private BrigadaRepository brepository;    
 
+    @RequestMapping(value = "/subeFoto/{id}", method = RequestMethod.POST)
+    @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<String>  subeFoto(
+                                        @PathVariable Long id,
+                                        HttpServletRequest request,
+                                        UploadFileRequest archivos) {
+                /*this.subir(request, archivos);*/
+        return ResponseEntity.ok("Recibido");
+    }
+
+
+
     @RequestMapping(        
         value = "/usuarios/ProcesaExcel/{id}/{rancho}", 
         method = RequestMethod.POST, 

@@ -11,7 +11,6 @@ import java.util.Set;
 
 
 import com.prg2022.proyectoQR.Repository.UsuarioRepository;
-import com.prg2022.proyectoQR.addons.borrarArchivosAntiguos;
 import com.prg2022.proyectoQR.addons.numeroBrigada.generador;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
 import com.prg2022.proyectoQR.Repository.MovimientoRepository;

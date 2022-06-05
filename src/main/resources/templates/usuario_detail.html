@@ -14,16 +14,36 @@
           </nav>
         </div>
       </div>
-  
+  <style>
+  .edit_foto{
+    display: none;
+  }
+  .fotog:hover + div{
+    display: block;
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    /*transform: translate(-50%, -50%);*/
+  }
+  </style>
+
+
+
       <div class="row">
         <div class="col-lg-4">
           <div class="card mb-4">
             <div class="card-body text-center">
-              <img th:src="'/qr-'+${id}+'.png'" src="xxx" alt="avatar"
-                class="rounded-circle img-fluid" style="width: 150px;border-radius: 10%!important;">
+              <div class="container">
+              <img th:src="'/fotos/'+${usuario.getFoto}" alt="Foto"
+                class="rounded-circle img-fluid fotog" style="width: 150px;border-radius: 10%!important;">
+                <div class="edit_foto" style="background-color: white;">Haz click para editar</div>
+              </div>
               <h5 th:text="${usuario.NombreCompleto}" class="my-3">John Smith</h5>
-              <p th:text="${usuario.dni}" class="text-muted mb-1">Nombre</p>
+              <p th:text="${usuario.dni}" class="text-muted mb-1">DNI</p>
               <p th:text="'Brigada '+${usuario.getBrigadaDescripcion}" class="text-muted mb-4">Brigada</p>
+              <img th:src="'/qr-'+${id}+'.png'" src="xxx" alt="QR"
+                class="rounded-circle img-fluid" style="width: 150px;border-radius: 10%!important;">
+                <br><br>
               <div class="d-flex justify-content-center mb-2">
                 <button th:if="${usuario.NumBrigada}!='000null'" type="button" class="btn btn-primary" th:text="${usuario.NumBrigada}" disabled>Num Brigada</button>
               </div>

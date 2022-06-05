@@ -57,6 +57,8 @@ public class Usuario implements Serializable{
 
     private String clave;
 
+    private String foto;
+
     
 
     @Column(columnDefinition = "TINYINT")
@@ -181,5 +183,13 @@ public class Usuario implements Serializable{
 
     public Empleo getEmpleo(){ return this.empleo; }
     public Especialidad getEspecialidad(){ return this.especialidad; }
+
+    public String getFoto(){ 
+        if ((this.foto=="") || (this.foto==null)){
+            return "default.jpg";
+        }
+        return this.foto; 
+    }
+    public void setFoto(String foto){ this.foto = foto; }
 
 }
