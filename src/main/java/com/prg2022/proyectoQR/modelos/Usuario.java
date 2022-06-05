@@ -8,6 +8,10 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 
 
 
@@ -45,6 +49,7 @@ public class Usuario implements Serializable{
     @JoinTable(name = "user_roles", 
                joinColumns = @JoinColumn(name = "user_id"),
                inverseJoinColumns = @JoinColumn(name = "role_id"))
+               
     private Set<Role> roles = new HashSet<>();
     
     @NotBlank
@@ -72,7 +77,10 @@ public class Usuario implements Serializable{
     private Empleo empleo;
     private Especialidad especialidad;
 
+    @Formula( "CONCAT_WS( '', rancho, numero, grupo, letra ) " )
+    private String numeroDeBrigada;
 
+    
     public Usuario() {
     }
 
@@ -145,6 +153,12 @@ public class Usuario implements Serializable{
     public String getDni() { return dni; }
     public void setDni(String dni) { this.dni = dni;}
 
+    public int getRancho() { return rancho; }
+    public void setRancho(int rancho) { this.rancho = rancho;}
+
+    public int getNumero() { return numero; }
+    public void setNumero(int numero) { this.numero = numero;}
+
     public Long getId() { return id; }
 
     public Set<Role> getRoles() { return roles; }
@@ -191,5 +205,7 @@ public class Usuario implements Serializable{
         return this.foto; 
     }
     public void setFoto(String foto){ this.foto = foto; }
+
+    public String getNumeroDeBrigada(){ return this.numeroDeBrigada;}
 
 }

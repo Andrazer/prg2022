@@ -13,5 +13,6 @@ public interface MovimientoRepository  extends JpaRepository<Movimiento, Long>{
 
     Long countByIdGreaterThan(Long id);
     List<Movimiento> findTop10ByUsuario(Usuario usuario);
+    List<Movimiento> findByUsuario(Usuario usuario);
     
 }

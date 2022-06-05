@@ -3,9 +3,14 @@ package com.prg2022.proyectoQR.controllers;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,7 +29,6 @@ import com.prg2022.proyectoQR.payload.response.UsuarioExcelResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,18 +51,111 @@ import org.springframework.http.ResponseCookie;
 public class UploadFileController {
     @Autowired
     private UsuarioRepository urepository;    
-
     @Autowired
     private BrigadaRepository brepository;    
+
+
+
+    @RequestMapping(value = "/subeFotos/{id}", method = RequestMethod.POST)
+    @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<String> subeFotos (
+                                    @PathVariable Long id,
+                                    HttpServletRequest request,
+                                    UploadFileRequest subeFoto){
+        
+        MultipartFile[] fileDatas = subeFoto.getFileDatas();
+        for (MultipartFile subidos : fileDatas) {
+            /* COMPRUEBA CADA ARCHIVO SUBIDO */
+            String extension = FilenameUtils.getExtension(subidos.getOriginalFilename()).toLowerCase();
+            String[] permitidos = {"jpg","jpeg","png","bmp"};
+            /* segun la extension podemos hacer una cosa u otra */
+            if (extension.equalsIgnoreCase("zip")){
+                try {
+                    ZipEntry entry = null;
+                    ZipInputStream zis = new ZipInputStream(subidos.getInputStream());
+                    while (( entry = zis.getNextEntry()) != null) {
+                        String zipPath = entry.getName();
+                        String extUnziped = FilenameUtils.getExtension(zipPath).toLowerCase();
+
+                        if(Arrays.stream(permitidos).anyMatch(extUnziped::equals)){
+                            String quienEs = zipPath.replaceFirst("[.][^.]+$", "");
+                            Optional<Usuario> pepe = urepository.findBynumeroDeBrigadaIs(quienEs);
+                            // si encontramos al usuario y tenemos el archivo, seteamos la foto
+                            if (!pepe.isEmpty()){
+                                Usuario encontrado = pepe.get();
+                                if (encontrado.getBrigadaId()==id){
+                                    //el usuario pertenece a la brigada que estamos editando
+                                    String rutaCorta = encontrado.getBrigadaId()+"/";
+                                    String rutaLarga = "src/main/resources/static/fotos/"+rutaCorta;
+                                    File file = new File(rutaLarga+""+encontrado.getId()+"."+extension);
+                                    if (!file.exists()) {
+                                        File pathDir = file.getParentFile();
+                                        pathDir.mkdirs();
+                                        file.createNewFile();
+                                     }
+                                    FileOutputStream fos = new FileOutputStream(file);
+                                    int bread;
+                                    while ((bread = zis.read()) != -1) { 
+                                        fos.write(bread);
+                                    }
+                                    fos.close();
+                                    encontrado.setFoto(rutaCorta+""+encontrado.getId()+"."+extension);
+                                    urepository.save(encontrado);
+                                }
+                            }
+                        } else {
+                            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IMAGEN NO PROCESADA");
+                        }
+                    }                    
+                } catch (IOException e) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IMAGEN NO PROCESADA");
+                }
+
+            } else if(Arrays.stream(permitidos).anyMatch(extension::equals)) {
+
+                String quienEs = subidos.getOriginalFilename().replaceFirst("[.][^.]+$", "");
+                Optional<Usuario> pepe = urepository.findBynumeroDeBrigadaIs(quienEs);
+                if (!pepe.isEmpty()){
+                    Usuario encontrado = pepe.get();
+                    String rutaCorta = encontrado.getBrigadaId()+"/";
+                    String rutaLarga = "src/main/resources/static/fotos/"+rutaCorta;
+                    File carpeta = new File(rutaLarga);
+
+                    if (!carpeta.exists()) { carpeta.mkdirs(); }
+                    File archivoServidor = new File(rutaLarga+""+encontrado.getId()+"."+extension);
+                    try {
+                        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(archivoServidor));
+                        stream.write(fileDatas[0].getBytes());
+                        stream.close();
+                    } catch (Exception e) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IMAGEN NO PROCESADA");
+                    }
+
+                    encontrado.setFoto(rutaCorta+""+encontrado.getId()+"."+extension);
+                    urepository.save(encontrado);
+               }
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IMAGEN NO PROCESADA");
+            }  
+            
+        }
+
+        return ResponseEntity.ok("");
+    }
+
+
 
     @RequestMapping(value = "/subeFoto/{id}", method = RequestMethod.POST)
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<String>  subeFoto(
                                         @PathVariable Long id,
                                         HttpServletRequest request,
-                                        UploadFileRequest archivos) {
-                /*this.subir(request, archivos);*/
-        return ResponseEntity.ok("Recibido");
+                                        UploadFileRequest subeFoto) {
+        if (setFoto(id, subeFoto.getFileDatas())) {
+            return ResponseEntity.ok("");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("IMAGEN NO PROCESADA");
+        }
     }
 
 
@@ -134,21 +232,12 @@ public class UploadFileController {
             List<UsuarioExcelResponse> leidos = new ArrayList<UsuarioExcelResponse>();
             String ruta = "";
             if (!carpeta.exists()) { carpeta.mkdirs(); }
-
-
-            
-
-
-            //solo usaré el primer archivo
             String nombre = fileDatas[0].getOriginalFilename();
-            if(false==(
-                nombre.endsWith(".XLSX")|| 
-                nombre.endsWith(".xlsx") || 
-                nombre.endsWith(".XLS") ||
-                nombre.endsWith(".xls")
-                )) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El archivo debe ser Excel");
-            }
+            String extension = FilenameUtils.getExtension(nombre).toLowerCase();
+            String[] permitidos = {"XLSX","xlsx","XLS","xls"};
+            if(!Arrays.stream(permitidos).anyMatch(extension::equals)) { 
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El archivo debe ser Excel"); 
+            }      
 
             if (nombre != null && nombre.length() > 0) {
                 ruta = carpeta.getAbsolutePath() + File.separator + nombre;
@@ -161,7 +250,7 @@ public class UploadFileController {
                     ReadExcel leer = new ReadExcel();
                     leidos = leer.leer(ruta);
                 } catch (Exception e) {
-                    //
+                    ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El archivo debe ser Excel"); 
                 }
             }
             ResponseCookie cookie = ResponseCookie.from("operacion", identificador)
@@ -170,28 +259,15 @@ public class UploadFileController {
                 .httpOnly(true).build();   
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
             .body(leidos);
-            
-          
-
         }
 
-
-
-
-    /*@RequestMapping(value = "/usuarios/subidaUnArchivo", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<String>>  uploadOneFileHandlerPOST(
-            HttpServletRequest request, 
-            @ModelAttribute("miformulario") UploadFileRequest archivos) {
-        return ResponseEntity.ok(this.subir(request, archivos));
-    }*/
+/* 
     @RequestMapping(value = "/usuarios/subirExcel", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<?>>  uploadOneFileHandlerPOST(
             HttpServletRequest request, 
             @ModelAttribute("cargando") UploadFileRequest archivos) {
         return ResponseEntity.ok(this.subir(request, archivos));
     }
-
-
     private List<?> subir(HttpServletRequest request, UploadFileRequest archivos) {
         //Carlos: al subir hace limpieza, si los archivos o carpetas dentro de archivos_subidos
         // llevan mas de 24h, borrar
@@ -237,4 +313,30 @@ public class UploadFileController {
         //JSONObject crunchifyJSON1 = new JSONObject();
         return archivoSubido;
     }
+*/
+    private boolean setFoto(Long id,  MultipartFile[] fileDatas){
+        Optional<Usuario> buscado = urepository.findById(id);
+        if (buscado.isEmpty()){return false;}
+        Usuario usuario = buscado.get();
+        String extension = FilenameUtils.getExtension(fileDatas[0].getOriginalFilename()).toLowerCase();
+        String[] permitidos = {"jpg","jpeg","png","bmp"};
+        if(!Arrays.stream(permitidos).anyMatch(extension::equals)) { return false; }        
+        String rutaCorta = usuario.getBrigadaId()+"/";
+        String rutaLarga = "src/main/resources/static/fotos/"+rutaCorta;
+        File carpeta = new File(rutaLarga);
+        if (!carpeta.exists()) { carpeta.mkdirs(); }
+        File archivoServidor = new File(rutaLarga+""+usuario.getId()+"."+extension);
+        try {
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(archivoServidor));
+            stream.write(fileDatas[0].getBytes());
+            stream.close();
+        } catch (Exception e) {
+            return false;
+        }
+        usuario.setFoto(rutaCorta+""+usuario.getId()+"."+extension);
+        urepository.save(usuario);
+        return true;
+    }
+
+
 }

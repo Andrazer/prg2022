@@ -157,9 +157,6 @@ public class DataLoader implements ApplicationRunner {
 
           }
 
-
-
-
         }
         catch (IOException ex) {
         }

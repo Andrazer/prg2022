@@ -12,15 +12,18 @@ import com.prg2022.proyectoQR.payload.request.AddUsuarioRequest;
 import com.prg2022.proyectoQR.payload.response.MessageResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import com.prg2022.proyectoQR.payload.request.UploadFileRequest;
 
 @Controller
 @RequestMapping("/usuarios")
@@ -52,14 +55,43 @@ public class UsuarioController {
         Usuario usuario = urepository.getById(id);
         List<Movimiento> movimientos = mrepository.findTop10ByUsuario(usuario);
         //List<Usuario> usuarios = urepository.findByBrigada(brigada);
-        //UploadFileRequest importarArchivo = new UploadFileRequest();
+        UploadFileRequest subeFoto = new UploadFileRequest();
         modelAndView.addObject("movimientos", movimientos);
         modelAndView.addObject("usuario", usuario);
         modelAndView.addObject("id", id);
         modelAndView.setViewName("usuario_detail");
-        //modelAndView.addObject("importarArchivo", importarArchivo);
+        modelAndView.addObject("subeFoto", subeFoto);
         return modelAndView;
     }
 
+    @DeleteMapping(value = "/del/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Long> Borrar(@PathVariable Long id) {
+      Usuario aborrar = urepository.getById(id);
+      if (aborrar.getId()>1){
+        List<Movimiento> movida = mrepository.findByUsuario(aborrar);
+        mrepository.deleteAll(movida);
+        urepository.deleteById(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+      }
+      return new ResponseEntity<>(id, HttpStatus.NOT_FOUND);
+    }
+/* 
+    @PostMapping(value = "/update/{id}")
+    @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
+    public ResponseEntity<Long> actualiza(@Valid @RequestBody AddUsuarioRequest Upd, @PathVariable Long id) {
+      Usuario actual = urepository.getById(id);
+      if (actual.getId()>1){
+        if ( (actual.getDescripcion()!=Upd.getDescripcion()) && (
+          Upd.getDescripcion().length()>0
+        )){
+          actual.setDescripcion(Upd.getDescripcion());
+        }          
+        urepository.save(actual);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+      }
+      return new ResponseEntity<>(id, HttpStatus.NOT_FOUND);
+    }    
+*/
 
 }

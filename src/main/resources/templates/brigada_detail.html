@@ -45,6 +45,11 @@
                   </div>
                   <hr> 
                   <div class="text-end">
+                    <button id="btn_sube_fotos" class="btn btn-sm btn-outline-success add_fol mb-2 float-start"
+                       title="Subir Fotos" 
+                       data-bs-toggle="modal" 
+                       data-bs-target="#add_fotos"
+                       >Subir Fotos</button>                    
                     <button id="btn_mod_brigada" class="btn btn-sm btn-outline-warning add_fol mb-2"
                        title="Modificar Brigada" onClick="EditBrigada();">Modificar Brigada</button>
                        <button id="btn_closemod_brigada" class="d-none  btn btn-sm btn-outline-secondary add_fol mb-2"
@@ -128,7 +133,7 @@
            <span role="button" class="btn btn-primary btn-sm" 
             accept=".xls, .csv, .xlsx"
             onclick="document.getElementById('fileDatas').click();">Importar archivo Excel</span>
-       </form>
+          </form>
           <div class="text-start btn btn-outline-success disabled my-4 btn-sm">
             <strong>Formato del archivo a importar (Excel) </strong>[Extensión xls, xlsx]<br><br>
 
@@ -195,6 +200,74 @@
 </div>
 
 
+
+
+
+<!-- Modal AGREGAR FOTOS-->
+<div class="modal fade" id="add_fotos" tabindex="-1" aria-labelledby="add_fotosLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="add_fotosLabel">Agregar Fotos</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body text-center">
+
+
+          <form>
+          <input type="file" style="display:none" id="fotoszip" name="fileDatas">
+          <span role="button" class="btn btn-primary btn-sm" 
+           onclick="document.getElementById('fotoszip').click();">Importar archivo de Fotos</span>
+         </form>
+         <div class="text-start btn btn-outline-success disabled my-4 btn-sm">
+           <strong>Opción A: Importar fotos sueltas </strong><br><br>
+
+           
+           <strong>Opción B: Archivo zip con varias fotos</strong><br>
+         <br>
+         <strong>Cada foto debe llevar de nombre el Numero de Brigada
+           <br> (Ej: 112A) -> 112A.jpg</strong><br>
+         Formatos admitidos: jpg, png, bmp, gif.
+         <br><br>
+         </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  
+  const subirFotos= event => {
+   const archivos = event.target.files;
+   const data = new FormData();
+   data.append('fileDatas', archivos[0]);
+ 
+ fetch('/subeFotos/[[${id}]]', { method: "POST", body: data })
+ .then(async response => {
+   if (!response.ok) {
+   const error = (data && data.message) || response.status;
+   return Promise.reject(error);
+   }
+   else {
+   alert("Fotos subidas correctamente");
+   window.location.reload();
+   }
+ })
+ .catch(err => {
+   alert("No ha sido posible subir las fotos");
+   })
+ }
+ 
+ document.querySelector('#fotoszip').addEventListener('change', event => {
+  subirFotos(event);
+ });
+ </script>
 
   <script>
     function actualiza_interface(data){
@@ -425,7 +498,9 @@ fetch("/echo/json/",
         document.getElementById("btn_mod_brigada").classList.add("d-none");
         document.getElementById("btn_closemod_brigada").classList.remove("d-none");
         document.getElementById("btn_upd_brigada").classList.remove("d-none");
+        document.getElementById("btn_sube_fotos").classList.add("d-none");
             
+        
         
         
                 
@@ -441,7 +516,6 @@ fetch("/echo/json/",
 
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
-          console.log(xhr.status);
           if (xhr.status===200){
             location.reload();
           } else{

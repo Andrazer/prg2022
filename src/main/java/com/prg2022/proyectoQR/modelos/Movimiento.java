@@ -1,6 +1,10 @@
 package com.prg2022.proyectoQR.modelos;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
@@ -28,6 +32,8 @@ public class Movimiento {
     @ManyToOne(targetEntity=Usuario.class) 
     @JoinColumn(name="autorizador_id")
     private Usuario autorizador; 
+
+    
 
     public Movimiento(){
 
