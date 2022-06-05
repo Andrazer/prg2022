@@ -17,7 +17,7 @@ public class ReadExcel {
    
     public List<UsuarioExcelResponse> leer(String pathArchivoExcel){
         try {
-            System.out.println("Leyendo: "+pathArchivoExcel);
+            /*System.out.println("Leyendo: "+pathArchivoExcel);*/
             //Resource resource = new ClassPathResource(pathArchivoExcel);
 
             List<UsuarioExcelResponse> usuarios = new ArrayList<UsuarioExcelResponse>();

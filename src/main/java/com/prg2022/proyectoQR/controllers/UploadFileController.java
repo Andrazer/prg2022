@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
 import com.prg2022.proyectoQR.Repository.UsuarioRepository;
+import com.prg2022.proyectoQR.addons.borrarArchivosAntiguos;
 import com.prg2022.proyectoQR.addons.excel.ReadExcel;
 import com.prg2022.proyectoQR.addons.numeroBrigada.generador;
 import com.prg2022.proyectoQR.modelos.Brigada;
@@ -110,6 +111,9 @@ public class UploadFileController {
     public ResponseEntity<?> SubeExcelPOST(
         HttpServletRequest request,UploadFileRequest archivos,Model model) throws JsonProcessingException { 
 
+            borrarArchivosAntiguos borrado = new borrarArchivosAntiguos();
+            borrado.borrar();
+            
             String identificador = UUID.randomUUID().toString();
             String tmpUploadFolder = "archivos_subidos/"+identificador;
             File carpeta = new File(tmpUploadFolder);

@@ -11,6 +11,7 @@ import java.util.Set;
 
 
 import com.prg2022.proyectoQR.Repository.UsuarioRepository;
+import com.prg2022.proyectoQR.addons.borrarArchivosAntiguos;
 import com.prg2022.proyectoQR.addons.numeroBrigada.generador;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
 import com.prg2022.proyectoQR.Repository.MovimientoRepository;
@@ -63,7 +64,6 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
         Optional<Usuario> alumno = aRepository.findByDni("Admin");
         List<Brigada> brigada = bRepository.findByDescripcion("Sistema");
         Optional<Role> roles = rRepository.findByDescripcion(EnumRole.ROLE_ADMIN);
