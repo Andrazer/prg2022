@@ -25,13 +25,6 @@ public class cryptos {
         int iterationCount = 40000;
         int keyLength = 128;
         this.key = createSecretKey(password.toCharArray(),salt, iterationCount, keyLength);
-        /*
-        String originalPassword = "secret";
-        System.out.println("Original password: " + originalPassword);
-        String encryptedPassword = encrypt(originalPassword, key);
-        System.out.println("Encrypted password: " + encryptedPassword);
-        String decryptedPassword = decrypt(encryptedPassword, key);
-        System.out.println("Decrypted password: " + decryptedPassword);*/
     }
 
     private static SecretKeySpec createSecretKey(char[] password, byte[] salt, int iterationCount, int keyLength) throws NoSuchAlgorithmException, InvalidKeySpecException {

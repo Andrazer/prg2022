@@ -260,60 +260,7 @@ public class UploadFileController {
             return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
             .body(leidos);
         }
-
-/* 
-    @RequestMapping(value = "/usuarios/subirExcel", method = RequestMethod.POST, produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<?>>  uploadOneFileHandlerPOST(
-            HttpServletRequest request, 
-            @ModelAttribute("cargando") UploadFileRequest archivos) {
-        return ResponseEntity.ok(this.subir(request, archivos));
-    }
-    private List<?> subir(HttpServletRequest request, UploadFileRequest archivos) {
-        //Carlos: al subir hace limpieza, si los archivos o carpetas dentro de archivos_subidos
-        // llevan mas de 24h, borrar
-        String tmpUploadFolder = "archivos_subidos/"+UUID.randomUUID().toString();
-        File carpeta = new File(tmpUploadFolder);
-
-        
-        MultipartFile[] fileDatas = archivos.getFileDatas();
-        //List<File> archivoSubido = new ArrayList<File>();
-        List<String> archivoSubido = new ArrayList<String>();
-        List<String> failedFiles = new ArrayList<String>();
-
-        if (!carpeta.exists()) { carpeta.mkdirs(); }
-
-        for (MultipartFile fileData : fileDatas) {
-            String nombre = fileData.getOriginalFilename();
-            if (nombre != null && nombre.length() > 0) {
-                try {
-                    String ruta = carpeta.getAbsolutePath() + File.separator + nombre;
-                    File archivoServidor = new File(ruta);
-                    //String miruta=carpeta.getAbsolutePath();
-                    BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(archivoServidor));
-                    stream.write(fileData.getBytes());
-                    stream.close();
-                    //archivoSubido.add(archivoServidor);
-                    archivoSubido.add(nombre);
-                    //suponemos que es un excel
-                    ReadExcel leer = new ReadExcel();
-                    List<UsuarioExcelResponse> leidos = leer.leer(ruta);
-                    for (UsuarioExcelResponse leido : leidos) {
-                        System.out.println(leido.datos());
-                    }
-                    return leidos;
-                } catch (Exception e) {
-                    failedFiles.add(nombre);
-                }
-            }
-        }
-        //aqui si tenemos xls o csv... alta de usuarios, si tenemos fotos... a fotos de usuario
-        //si falla, devolvemos error con motivo del fallo
-        //modelo.addAttribute("archivoSubido", archivoSubido);
-        //modelo.addAttribute("failedFiles", failedFiles);
-        //JSONObject crunchifyJSON1 = new JSONObject();
-        return archivoSubido;
-    }
-*/
+ 
     private boolean setFoto(Long id,  MultipartFile[] fileDatas){
         Optional<Usuario> buscado = urepository.findById(id);
         if (buscado.isEmpty()){return false;}

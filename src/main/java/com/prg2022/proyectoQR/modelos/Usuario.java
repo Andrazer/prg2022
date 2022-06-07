@@ -159,6 +159,10 @@ public class Usuario implements Serializable{
     public int getNumero() { return numero; }
     public void setNumero(int numero) { this.numero = numero;}
 
+    public int getGrupo() { return grupo; }
+    public String getLetra() { return letra; }
+
+
     public Long getId() { return id; }
 
 

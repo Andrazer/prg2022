@@ -76,36 +76,36 @@ public class AuthController {
     Set<Role> roles = new HashSet<>();
     if (strRoles == null) {
       Role userRole = roleRepository.findByDescripcion(EnumRole.ROLE_USER)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          .orElseThrow(() -> new RuntimeException("Error: Roles."));
       roles.add(userRole);
     } else {
       strRoles.forEach(role -> {
         switch (role) {
         case "admin":
           Role adminRole = roleRepository.findByDescripcion(EnumRole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              .orElseThrow(() -> new RuntimeException("Error: Roles."));
           roles.add(adminRole);
           break;
         case "mod":
           Role modRole = roleRepository.findByDescripcion(EnumRole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              .orElseThrow(() -> new RuntimeException("Error: Roles."));
           roles.add(modRole);
           break;
         default:
           Role userRole = roleRepository.findByDescripcion(EnumRole.ROLE_USER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+              .orElseThrow(() -> new RuntimeException("Error: Roles."));
           roles.add(userRole);
         }
       });
     }
     user.setRoles(roles);
     userRepository.save(user);
-    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    return ResponseEntity.ok(new MessageResponse("Usuario registrado!"));
   }
   @PostMapping("/signout")
   public ResponseEntity<?> logoutUser() {
     ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(new MessageResponse("You've been signed out!"));
+        .body(new MessageResponse("Salida correcta!"));
   }
 }

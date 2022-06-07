@@ -61,7 +61,7 @@ public class UsuarioController {
 
     public ModelAndView showUser(@PathVariable Long id, ModelAndView modelAndView) {
         Usuario usuario = urepository.getById(id);
-        List<Movimiento> movimientos = mrepository.findTop10ByUsuario(usuario);
+        List<Movimiento> movimientos = mrepository.findTop10ByUsuarioOrderByIdDesc(usuario);
         //List<Usuario> usuarios = urepository.findByBrigada(brigada);
         UploadFileRequest subeFoto = new UploadFileRequest();
         modelAndView.addObject("movimientos", movimientos);
@@ -103,7 +103,6 @@ public class UsuarioController {
       if ( (numero!=actual.getNumero()) && (numero>0) ) { actual.setNumero(numero);}
       if ( (rancho!=actual.getRancho()) && (rancho>0) ) { actual.setRancho(rancho);}
       urepository.save(actual);
-      System.out.println(nombre+" | "+dni);
 
       /*
       if (actual.getId()>1){

@@ -63,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/").permitAll()
       .antMatchers(h2ConsolePath + "/**").permitAll()
       .antMatchers("/login", "/salir").permitAll()
-      .antMatchers("/css/**", "/index", "/js/**", "/manifest.json", "/*.png","/*.ico").permitAll()
+      .antMatchers("/fotos/**", "/index", "/js/**", "/manifest.json", "/*.png","/*.ico").permitAll()
       .anyRequest().authenticated()
       .and().formLogin().loginPage("/login");
     
