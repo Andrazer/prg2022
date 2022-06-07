@@ -28,8 +28,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -47,6 +50,8 @@ public class DataLoader implements ApplicationRunner {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ResourceLoader resourceLoader;
 
 
     @Autowired
@@ -102,8 +107,13 @@ public class DataLoader implements ApplicationRunner {
             Role userRols = rRepository.findByDescripcion(EnumRole.ROLE_USER).get();
             permisosar.add(userRols);    */    
               
-            Resource resource = new ClassPathResource("data1.csv");
-            FileInputStream f = new FileInputStream(resource.getFile());
+            //Resource resource = new ClassPathResource("/data1.csv");
+             //Resource resource = resourceLoader.getResource("classpath:data1.csv");
+            //Resource resource = new ClassPathResource("data1.csv");
+            //FileInputStream f = new FileInputStream(resource.getFile());
+
+            InputStream f = new ClassPathResource("/data1.csv").getInputStream();
+
             Scanner sc = new Scanner(f);  
               
             Brigada creada = bRepository.save(new Brigada("Primera Alfa", 1, "A"));
@@ -159,6 +169,7 @@ public class DataLoader implements ApplicationRunner {
 
         }
         catch (IOException ex) {
+            System.out.println(ex.toString());
         }
     }
 }

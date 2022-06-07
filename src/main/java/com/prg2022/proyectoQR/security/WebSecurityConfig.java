@@ -26,8 +26,8 @@ import com.prg2022.proyectoQR.services.UserDetailsServiceImpl;
     prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   
-  @Value("${spring.h2.console.path}")
-  private String h2ConsolePath;
+  //@Value("${spring.h2.console.path}")
+  //private String h2ConsolePath;
   
   @Autowired
   UserDetailsServiceImpl userDetailsService;
@@ -61,8 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
       .antMatchers("/api/auth/**").permitAll()
       .antMatchers("/api/test/**").permitAll()
       .antMatchers("/").permitAll()
-      .antMatchers(h2ConsolePath + "/**").permitAll()
+      //.antMatchers(h2ConsolePath + "/**").permitAll()
       .antMatchers("/login", "/salir").permitAll()
+      .antMatchers("/css/**").permitAll()
       .antMatchers("/fotos/**", "/index", "/js/**", "/manifest.json", "/*.png","/*.ico").permitAll()
       .anyRequest().authenticated()
       .and().formLogin().loginPage("/login");
