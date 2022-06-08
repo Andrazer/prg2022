@@ -1,11 +1,28 @@
+
+buildscript {
+    repositories {
+      maven {
+        url "https://plugins.gradle.org/m2/"
+      }
+      mavenCentral()
+    }
+    dependencies {
+        classpath('org.springframework.boot:spring-boot-gradle-plugin:2.2.1.RELEASE')
+        classpath('com.google.cloud.tools.jib:com.google.cloud.tools.jib.gradle.plugin:3.2.1')
+    }
+}
+
+
+
 plugins {
 	id 'org.springframework.boot' version '2.6.7'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'com.google.cloud.tools.jib' version '1.8.0'
 }
 
 group = 'com.prg2022'
-version = '0.0.1-SNAPSHOT'
+version = '1.0'
 sourceCompatibility = '11'
 
 repositories {
@@ -24,7 +41,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'com.google.zxing:core:3.4.0'
 	implementation 'com.google.zxing:javase:3.4.0'
-	
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	
 	runtimeOnly 'com.h2database:h2'

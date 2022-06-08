@@ -131,7 +131,7 @@ public class DataLoader implements ApplicationRunner {
                     (int)usuarioNumero[2],
                     (String)usuarioNumero[3]));
                 /*nuevos_alumnos.setRoles(permisosar);*/
-                aRepository.save(nuevos_alumnos);
+                //aRepository.save(nuevos_alumnos);
             }             
             sc.close();  
         }
@@ -166,6 +166,7 @@ public class DataLoader implements ApplicationRunner {
 
 
           }
+
 
         }
         catch (IOException ex) {
