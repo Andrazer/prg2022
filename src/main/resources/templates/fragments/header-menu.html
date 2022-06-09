@@ -37,10 +37,8 @@
           -->
         </ul>
         <form class="d-flex">
-          <a class="mt-2" href="/salir"><button class="btn btn-sm btn-outline-warning" type="button">Cambiar clave</button></a>
-        </form>        
-        <form class="d-flex">
-          <a class="mt-2" href="/salir"><button class="btn btn-sm btn-outline-danger" type="button">Salir</button></a>
+          <button type="button" class="my-2 btn btn-sm btn-outline-warning"  data-bs-toggle="modal" data-bs-target="#chgpwd">Cambiar clave</button>
+          <a class="mt-2" href="/salir"><button class="mx-2 btn btn-sm btn-outline-danger" type="button">Salir</button></a>
         </form>
       </div>
     </div>
@@ -49,3 +47,92 @@
 </div>
 </div>
 </header>  
+
+
+
+<!-- Modal PWD-->
+<div class="modal fade" id="chgpwd" tabindex="-1" aria-labelledby="chgpwdLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chgpwdLabel">Cambiar clave</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body text-center">
+
+      
+        <div class="input-group mb-1 pt-2">
+          <span class="input-group-text" id="nombre_lbl">Clave anterior</span>
+          <input value="" id="oldpasswd" type="password" class="form-control" aria-label="Clave anterior" aria-describedby="nombre_lbl">
+        </div>
+        <div class="input-group mb-1">
+          <span class="input-group-text" id="er1">Nueva clave</span>
+          <input value="" id="passwd" type="password" class="form-control" aria-label="Nueva clave" aria-describedby="er1">
+        </div>
+        <div class="input-group mb-1">
+          <span class="input-group-text" id="do2_lbl">Repetir clave</span>
+          <input value="" id="passwd2" type="password" class="form-control" aria-label="Repetir clave" aria-describedby="do2_lbl">
+        </div>
+        <button id="cambiapaswdord" class="my-2 btn btn-warning btn-sm float-end">Cambiar</button>
+        
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function chgpassword(){
+    oldpasswd = document.getElementById("oldpasswd");
+    passwd =  document.getElementById("passwd");
+    passwd2 =  document.getElementById("passwd2");
+    if (passwd.value.length == 0 || oldpasswd.value.length == 0) {
+        return false;
+    }
+   
+    if (passwd2.value!=passwd.value) {
+      alert("Las contraseñas no coinciden");
+      return;
+    } 
+    var ctr=0;
+    matchedCase = new Array();
+      matchedCase.push("[$@$!%*~#&()_-]"); 
+      matchedCase.push("[A-Z]");      
+      matchedCase.push("[0-9]");      
+      matchedCase.push("[a-z]");     
+    for (var i = 0; i < matchedCase.length; i++) {
+      if (new RegExp(matchedCase[i]).test(passwd.value)) {
+        ctr++;
+      }
+    }
+    if (ctr<4){
+      alert("La clave no cumple los requisitos de seguridad"+
+      "\n- Utilice Mayúsculas,minúsculas y números"+
+      "\n- Incluya algún caractér especial @$!%*~#&()_-");
+      return;
+    }
+    enviaCambioPwd(passwd.value, oldpasswd.value);
+  }
+
+  function enviaCambioPwd(passwd, oldpasswd){
+    const data = new FormData();
+    data.append('passwd', passwd);
+    data.append('oldpasswd', oldpasswd);
+    fetch('/usuarios/cambiapass', { method: "POST", body: data })
+      .then(response => {
+        if (response.status==200) {
+        alert("contraseña cambiada con éxito");
+        window.location.assign('/salir');
+        } else {
+        alert("No ha sido posible cambiar la clave");
+        }
+      })
+      .catch(error =>{
+        alert("No ha sido posible cambiar la clave");
+      }); 
+  }
+document.getElementById("cambiapaswdord").addEventListener('click', chgpassword , false);
+</script>

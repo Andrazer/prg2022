@@ -125,10 +125,12 @@ public class UsuarioController {
 
     @PostMapping(value = "/cambiapass")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public ResponseEntity<?> pwd(@RequestParam("passwd") String passwd, @RequestParam("oldpasswd") String oldpasswd) {
+    public ResponseEntity<?> pwd(
+      @RequestParam("passwd") String passwd, 
+      @RequestParam("oldpasswd") String oldpasswd) {
       //comprobar dificultad de la contraseña >8, letras, numeros, digito
       if (!checkPasswd.check(passwd)){
-        return new ResponseEntity<>("no cumple los requisitos", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
       }
       //obtener usuario actual logeado
       UserDetailsImpl userDetails = 
@@ -137,13 +139,12 @@ public class UsuarioController {
       //comprueba clave anterior
       Usuario usrActual = urepository.getById(userDetails.getId());
       if (!passwordEncoder.matches(oldpasswd, usrActual.getClave())){
-        return new ResponseEntity<>("no cumple los requisitos", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
       }
 
         usrActual.setClave(passwordEncoder.encode(passwd));  
         urepository.save(usrActual);
-
-      return new ResponseEntity<>("ok", HttpStatus.OK);
+      return new ResponseEntity<>("", HttpStatus.OK);
     }        
 
     @PostMapping(value = "/addfull/{id}")

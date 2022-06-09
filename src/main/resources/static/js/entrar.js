@@ -39,7 +39,8 @@ function CallWebAPI() {
         //.catch(err => console.error(err))
         .then(function(response){
             if(response.status==200){
-                window.location.pathname = "/";
+                //window.location.pathname = "/";
+                window.location.assign('/');
             } else {
                 throw new Error(response.status);             
             }

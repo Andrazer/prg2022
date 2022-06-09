@@ -62,7 +62,7 @@ public class AuthController {
         .body(new UserInfoResponse(userDetails.getId(),
                                    userDetails.getUsername(),
                                    roles));
-  }
+  }/* 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     if (userRepository.existsByDni(signUpRequest.getUsername())) {
@@ -101,7 +101,7 @@ public class AuthController {
     user.setRoles(roles);
     userRepository.save(user);
     return ResponseEntity.ok(new MessageResponse("Usuario registrado!"));
-  }
+  }*/
   @PostMapping("/signout")
   public ResponseEntity<?> logoutUser() {
     ResponseCookie cookie = jwtUtils.getCleanJwtCookie();

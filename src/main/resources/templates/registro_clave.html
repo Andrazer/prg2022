@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>vamos alla</title>
+</head>
+<body>
+
+
+  
+  <h1>INTRODUCE USUARIO Y CONTRASEÑA PARA CREAR CUENTA</h1>
+
+ 
+
+  <form action="/establecer" method="post">
+    <div>
+      <input type="hidden" th:value="${referencia}" name="referencia">
+    </div>
+
+    <div>
+      <label>CONTRASEÑA</label>
+      <input name="contrasenausuario"  type="password">
+    </div>
+
+    <div>
+        <label>REPITE CONTRASEÑA</label>
+        <input name="contrasenausuario2"  type="password">
+    </div>
+
+    <input  type="submit" value="enviar"/>
+</body>
+</html>
+
+

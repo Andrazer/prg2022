@@ -13,7 +13,7 @@ public class checkPasswd {
             if( password.matches("(?=.*[a-z]).*") )
                 flagLowercase = true;
             if( password.matches("(?=.*[A-Z]).*") )
-                flagLowercase = true;  
+                flagUppercase = true;  
             if( password.matches("(?=.*[~!@#$%^&*()_-]).*") )
                 flagChar = true; 
         }
