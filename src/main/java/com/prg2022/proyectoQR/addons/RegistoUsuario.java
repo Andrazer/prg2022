@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.prg2022.proyectoQR.Repository.RoleRepository;
@@ -17,19 +16,19 @@ import com.prg2022.proyectoQR.modelos.Usuario;
 
 
 public class RegistoUsuario {
-    @Autowired
     private PasswordEncoder passwordEncoder;      
-
     private UsuarioRepository uRepository;
     private RoleRepository rRepository;
 
-    public RegistoUsuario(UsuarioRepository uRepository) {
+    public RegistoUsuario(UsuarioRepository uRepository, PasswordEncoder passwordEncoder) {
         this.uRepository = uRepository;
+        this.passwordEncoder = passwordEncoder;
       }
 
-    public RegistoUsuario(UsuarioRepository uRepository, RoleRepository rRepository) {
+    public RegistoUsuario(UsuarioRepository uRepository, RoleRepository rRepository, PasswordEncoder passwordEncoder) {
     this.uRepository = uRepository;
     this.rRepository = rRepository;
+    this.passwordEncoder = passwordEncoder;
     }      
     
     public void habilita(Long id){

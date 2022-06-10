@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
@@ -66,6 +67,8 @@ public class UsuarioController {
     }*/
 
     public ModelAndView showUser(@PathVariable Long id, ModelAndView modelAndView) {
+        boolean enespera = false;
+        boolean registrable = false;
         Usuario usuario = urepository.getById(id);
         List<Movimiento> movimientos = mrepository.findTop10ByUsuarioOrderByIdDesc(usuario);
         //List<Usuario> usuarios = urepository.findByBrigada(brigada);
@@ -74,6 +77,16 @@ public class UsuarioController {
         modelAndView.addObject("usuario", usuario);
         modelAndView.addObject("id", id);
         modelAndView.setViewName("usuario_detail");
+        System.out.println("**"+usuario.getClave()+"**");
+        if (usuario.getClave()==null){
+          registrable=true;
+        } else {
+          if (BCrypt.checkpw(usuario.getDni(), usuario.getClave())){
+            enespera=true;
+          } 
+        }
+        modelAndView.addObject("registrable", registrable);
+        modelAndView.addObject("enespera", enespera);
         modelAndView.addObject("subeFoto", subeFoto);
         return modelAndView;
     }

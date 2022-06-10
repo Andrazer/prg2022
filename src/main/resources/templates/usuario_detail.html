@@ -74,6 +74,15 @@
                 <div class="card my-4 mb-md-0">
                   <div class="card-body">
                       <p class="mb-4"><span class="text-primary font-italic me-1">Acciones</span></p>
+                      <p><span  th:if="${registrable}" role="button" class="btn btn-success btn-sm" 
+                            onclick="habilita();" >Habilitar registro</span>
+                            <span  th:if="${!registrable} and ${!enespera}" role="button" class="btn btn-danger btn-sm" 
+                            onclick="habilita();" >Reiniciar clave para registro</span>    
+                            <h3  th:if="${enespera}" role="button" class="btn btn-warning disabled btn-sm" 
+                             >Usuario en espera de registro</h3>                       
+                      </p>
+
+
                       <form id="panel">
                         <input type="file" style="display:none" id="fileDatas" name="fileDatas">
                          <span role="button" class="btn btn-primary btn-sm" 
@@ -136,6 +145,23 @@
     </style>
     
 <script>
+
+function habilita(){
+  fetch('/habilitaUser/[[${id}]]', { method: "GET" })
+ .then(async response => {
+   if (!response.ok) {
+   const error = (data && data.message) || response.status;
+   return Promise.reject(error);
+   }
+   else {
+   alert("Usuario habilitado");
+   window.location.reload();
+   }
+ })
+ .catch(err => {
+   alert("No ha sido posible habilitar el usuario");
+   })
+}
 
 const edita_usr= event => {
    const data = new FormData();

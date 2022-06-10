@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.prg2022.proyectoQR.Repository.RoleRepository;
 import com.prg2022.proyectoQR.Repository.UsuarioRepository;
 import com.prg2022.proyectoQR.addons.RegistoUsuario;
 
@@ -17,12 +19,18 @@ import com.prg2022.proyectoQR.addons.RegistoUsuario;
 public class registroController {
     @Autowired
     private UsuarioRepository uRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;    
+    @Autowired
+    private RoleRepository rRepository;        
+
+    
     
     //para habilitar usuarios
     @GetMapping("/habilitaUser/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> Habilitar(@PathVariable Long id) {
-        RegistoUsuario regUsr = new RegistoUsuario(uRepository);
+        RegistoUsuario regUsr = new RegistoUsuario(uRepository, passwordEncoder);
         regUsr.habilita(id);
         return new ResponseEntity<>(id, HttpStatus.OK);
     }    
@@ -37,7 +45,7 @@ public class registroController {
     //html para cambiar la clave a un usuario que puede registrarse
     @PostMapping(value = "/procesaregistro")
     public String buscausuario(String dniusuario,Model modelo ){
-        RegistoUsuario regUsr = new RegistoUsuario(uRepository);
+        RegistoUsuario regUsr = new RegistoUsuario(uRepository, passwordEncoder);
         if (regUsr.puedeRegistrarse(dniusuario)){
             modelo.addAttribute("referencia",dniusuario);
             modelo.addAttribute("error",false);
@@ -53,7 +61,7 @@ public class registroController {
                         String pwdusr,
                         String referencia,
                         Model modelo ){        
-        RegistoUsuario regUsr = new RegistoUsuario(uRepository);
+        RegistoUsuario regUsr = new RegistoUsuario(uRepository, rRepository, passwordEncoder);
         if (regUsr.altaUsuario(pwdusr, referencia)){
             return "iniciar";
         } else {

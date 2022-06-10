@@ -14,14 +14,20 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-//via: https://stackoverflow.com/questions/1132567/encrypt-password-in-configuration-files
+import org.springframework.beans.factory.annotation.Value;
+
+//modified from original in: https://stackoverflow.com/questions/1132567/encrypt-password-in-configuration-files
 
 public class cryptos {
     SecretKeySpec key;
+    @Value("${eeae.app.cryptos.password}")
+    private String passwordcrypto;
+    @Value("${eeae.app.cryptos.salt}")
+    private String saltcrypto;
 
     public cryptos() throws Exception {
-        String password = "ElpasswordDebeSerComplicadillo.!";
-        byte[] salt = new String("EchaleSaltALasCastanias").getBytes();
+        String password = passwordcrypto;
+        byte[] salt = new String(saltcrypto).getBytes();
         int iterationCount = 40000;
         int keyLength = 128;
         this.key = createSecretKey(password.toCharArray(),salt, iterationCount, keyLength);
