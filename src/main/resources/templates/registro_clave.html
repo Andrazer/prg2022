@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="ISO-8859-1">
-    <title>vamos alla</title>
-</head>
-<body>
+<html lang="es">
+<th:block th:include="fragments/head.html"></th:block>
+<body  class="login" style="background-color:rgba(6, 85, 181, 0.449)">
+  <div class="container-sm p-3 mb-2 bg-light text-dark">
 
 
   
-  <h1>INTRODUCE USUARIO Y CONTRASEÑA PARA CREAR CUENTA</h1>
+  <h1>Registro de usuario</h1>
 
  
 
@@ -18,17 +16,17 @@
     </div>
 
     <div>
-      <label>CONTRASEÑA</label>
-      <input name="contrasenausuario"  type="password">
+      <label>Establecer Contraseña</label>
+      <input name="pwdusr"  type="password">
     </div>
-
-    <div>
-        <label>REPITE CONTRASEÑA</label>
-        <input name="contrasenausuario2"  type="password">
-    </div>
-
     <input  type="submit" value="enviar"/>
-</body>
-</html>
+
+    <div  th:if="${error}" class="alert alert-danger" role="alert">Ocurrió un error al procesar su cambio de clave</div>
+
+    <th:block th:include="fragments/footer.html"></th:block>
+    <a href="/login">Volver al inicio</a>  
+    <script src="/js/bootstrap.bundle.min.js"></script>
+  </body>
+  </html>
 
 

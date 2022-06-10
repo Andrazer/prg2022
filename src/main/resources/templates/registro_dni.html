@@ -1,11 +1,8 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="ISO-8859-1">
-    <title>vamos alla</title>
-</head>
-<body>
+<html lang="es">
+<th:block th:include="fragments/head.html"></th:block>
+<body  class="login" style="background-color:rgba(6, 85, 181, 0.449)">
+  <div class="container-sm p-3 mb-2 bg-light text-dark">
 
    
         <h1>Registro</h1>
@@ -20,8 +17,9 @@
             <input  type="submit" value="enviar"/>
             
         </form>
-        
-        
-     
+<div  th:if="${error}" class="alert alert-danger" role="alert">El usuario solicitado no puede ser procesado</div>
+<a href="/login">Volver al inicio</a>        
+<th:block th:include="fragments/footer.html"></th:block>
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
