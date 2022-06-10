@@ -3,17 +3,20 @@
 Configuraciones de /src/main/resources/application.properties:
 
 # Opciones a modificar DB
+```
 spring.datasource.url=jdbc:h2:file:./db21
 spring.datasource.username=admin
 spring.datasource.password=password
-
+```
 # Opciones a modificar App Encriptacion
+```
 eeae.app.jwtCookieName= eeae
 eeae.app.jwtSecret= eeaeSecretKey
 eeae.app.cryptos.password = ElpasswordDebeSerComplicadillo.!
 eeae.app.cryptos.salt = EchaleSaltALasCastanias
-
+```
 # opciones que no necesitan ser modificadas pero si agregadas
+```
 eeae.app.jwtExpirationMs= 86400000
 spring.jpa.properties.hibernate.show_sql=false
 spring.datasource.driverClassName=org.h2.Driver
@@ -27,9 +30,10 @@ createDatabaseIfNotExist=true
 spring.mvc.format.date=dd-MM-yyyy
 spring.mvc.format.date-time=dd-MM-yyyy HH:mm:ss
 spring.mvc.format.time=HH:mm:ss
-
+```
 
 # Opciones extra:
+```
 #logging.level.root=WARN
 #logging.level.org.springframework.web=DEBUG
 #logging.level.org.hibernate=ERROR
@@ -47,6 +51,4 @@ spring.mvc.format.time=HH:mm:ss
 
 #trust.store=classpath:keystore/XXXXX.p12
 #trust.store.password=xxx
-
-
-
+```
