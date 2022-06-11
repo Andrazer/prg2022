@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 
-
+import javax.crypto.spec.SecretKeySpec;
 
 import com.prg2022.proyectoQR.Repository.UsuarioRepository;
 import com.prg2022.proyectoQR.addons.numeroBrigada.generador;
@@ -22,6 +22,7 @@ import com.prg2022.proyectoQR.modelos.Movimiento;
 import com.prg2022.proyectoQR.modelos.Role;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,7 +41,11 @@ import java.time.temporal.ChronoField;
 
 @Component
 public class DataLoader implements ApplicationRunner {
-
+    @Value("${eeae.app.def.firstadminlogin}")
+    private String defadmlogin;
+    
+    @Value("${eeae.app.def.firstadminpassw}")
+    private String defadmpass;
 
 
     private UsuarioRepository aRepository;
@@ -68,7 +73,9 @@ public class DataLoader implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Optional<Usuario> alumno = aRepository.findByDni("Admin");
+        
+
+        Optional<Usuario> alumno = aRepository.findByDni(defadmlogin);
         List<Brigada> brigada = bRepository.findByDescripcion("Sistema");
         Optional<Role> roles = rRepository.findByDescripcion(EnumRole.ROLE_ADMIN);
         if (brigada.isEmpty()) {
@@ -82,14 +89,15 @@ public class DataLoader implements ApplicationRunner {
               }
         }   
         if (alumno.isEmpty()) {
-            System.out.println("No hay administrador, creando usuario Admin con password 1234");
+            System.out.println("No hay administrador, creando usuario "+defadmlogin+
+                                " con password "+defadmpass);
             
             Usuario agregado = aRepository.save(
                     new Usuario(
                         "Administrador",
-                        "Admin",
+                        defadmlogin,
                         bRepository.findByDescripcion("Sistema").get(0)));
-            agregado.setClave(passwordEncoder.encode("123456"));  
+            agregado.setClave(passwordEncoder.encode(defadmpass));  
             Set<Role> permisos = new HashSet<>();
             Role adminRole = rRepository.findByDescripcion(EnumRole.ROLE_ADMIN).get();
             permisos.add(adminRole);
