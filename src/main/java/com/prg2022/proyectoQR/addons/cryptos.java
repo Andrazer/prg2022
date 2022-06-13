@@ -20,11 +20,10 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class cryptos {
     SecretKeySpec key;
-    @Value("${eeae.app.cryptos.password}")
-    private String passwordcrypto;
-    @Value("${eeae.app.cryptos.salt}")
-    private String saltcrypto;
+    private String passwordcrypto = "ElpasswordDebeSerComplicadillo.!";
+    private String saltcrypto = "EchaleSaltALasCastanias";
 
+    
     public cryptos() throws Exception {
         String password = passwordcrypto;
         byte[] salt = new String(saltcrypto).getBytes();
