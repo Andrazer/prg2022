@@ -39,3 +39,4 @@ out/
 .vscode/
 db*.*src/main/resources/static/fotos/*
 
+db21.mv.db

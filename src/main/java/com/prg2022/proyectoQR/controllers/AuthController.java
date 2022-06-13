@@ -20,12 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.prg2022.proyectoQR.modelos.EnumRole;
-import com.prg2022.proyectoQR.modelos.Role;
-import com.prg2022.proyectoQR.modelos.Usuario;
 
 import com.prg2022.proyectoQR.payload.request.LoginRequest;
-import com.prg2022.proyectoQR.payload.request.SignupRequest;
+
 import com.prg2022.proyectoQR.payload.response.UserInfoResponse;
 import com.prg2022.proyectoQR.payload.response.MessageResponse;
 
