@@ -39,4 +39,6 @@ out/
 .vscode/
 db*.*src/main/resources/static/fotos/*
 
-db21.mv.db
+*.mv.db
+src/main/java/com/prg2022/proyectoQR/addons/cryptos.java
+src/main/resources/application.properties

@@ -14,10 +14,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.beans.factory.annotation.Value;
-
-//modified from original in: https://stackoverflow.com/questions/1132567/encrypt-password-in-configuration-files
-
 public class cryptos {
     SecretKeySpec key;
     private String passwordcrypto = "ElpasswordDebeSerComplicadillo.!";
