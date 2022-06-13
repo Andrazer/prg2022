@@ -85,7 +85,6 @@ const add_user= event => {
   })
 ).then(res => {
 actualiza_interface(res.data)
-get_alumnos();
 }));
   
 
