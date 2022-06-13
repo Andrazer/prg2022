@@ -1,5 +1,5 @@
 function habilita(){
-  fetch('/habilitaUser/[[${id}]]', { method: "GET" })
+  fetch('/habilitaUser/'+idu, { method: "GET" })
  .then(async response => {
    if (!response.ok) {
    const error = (data && data.message) || response.status;
@@ -26,7 +26,7 @@ const edita_usr= event => {
 
 
  
- fetch('/usuarios/update/[[${id}]]', { method: "POST", body: data })
+ fetch('/usuarios/update/'+idu, { method: "POST", body: data })
  .then(async response => {
    if (!response.ok) {
    const error = (data && data.message) || response.status;
@@ -48,14 +48,14 @@ const edita_usr= event => {
  });  
 
 function borra_usuario(){
-fetch('/usuarios/del/[[${id}]]', { method: "DELETE" })
+fetch('/usuarios/del/'+idu, { method: "DELETE" })
 .then(async response => {
   if (!response.ok) {
   const error = (data && data.message) || response.status;
   return Promise.reject(error);
   }
   else {
-    window.location.href = '/brigada/show/[[${usuario.BrigadaId}]]'; 
+    window.location.href = '/brigada/show/'+idubd; 
   }
 })
 .catch(err => {
@@ -73,7 +73,7 @@ fetch('/usuarios/del/[[${id}]]', { method: "DELETE" })
    const data = new FormData();
    data.append('fileDatas', archivos[0]);
  
- fetch('/subeFoto/[[${id}]]', { method: "POST", body: data })
+ fetch('/subeFoto/'+idu, { method: "POST", body: data })
  .then(async response => {
    if (!response.ok) {
    const error = (data && data.message) || response.status;

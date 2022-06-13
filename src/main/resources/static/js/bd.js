@@ -10,7 +10,7 @@ const add_user= event => {
  
  
   
-  fetch('/usuarios/addfull/[[${id}]]', { method: "POST", body: data })
+  fetch('/usuarios/addfull/'+idb, { method: "POST", body: data })
   .then(async response => {
     if (!response.ok) {
     const error = (data && data.message) || response.status;
@@ -37,7 +37,7 @@ const add_user= event => {
     const data = new FormData();
     data.append('fileDatas', archivos[0]);
   
-  fetch('/subeFotos/[[${id}]]', { method: "POST", body: data })
+  fetch('/subeFotos/'+idb, { method: "POST", body: data })
   .then(async response => {
     if (!response.ok) {
     const error = (data && data.message) || response.status;
@@ -77,8 +77,8 @@ const add_user= event => {
 
     
   }
-//function actualiza_detalle(){
- fetch('/brigada/get/[[${id}]]', { method: "GET" }).then(response => 
+
+ fetch('/brigada/get/'+idb, { method: "GET" }).then(response => 
   response.json().then(data => ({
       data: data,
       status: response.status
@@ -86,13 +86,12 @@ const add_user= event => {
 ).then(res => {
 actualiza_interface(res.data)
 get_alumnos();
-//console.log(res.data);
 }));
-  //}    
+  
 
 
 function finalizar_imp(){
-fetch('/usuarios/ProcesaExcel/[[${id}]]/'+document.getElementById("ranchodef").value, { method: "POST" })
+fetch('/usuarios/ProcesaExcel/'+idb+'/'+document.getElementById("ranchodef").value, { method: "POST" })
 .then(async response => {
 if (!response.ok) {
 const error = (data && data.message) || response.status;
@@ -109,53 +108,12 @@ alert("No ha sido posible importar los usuarios");
 };
 
 
-function get_alumnos(){
- /*
-fetch('/usuarios/getByBrigada/[[${id}]]', { method: "GET" }).then(response => 
-  response.json().then(data => ({
-  data: data,
-  status: response.status
-  })
-  ).then(res => {
-    //  actualiza_interface(res.data)
-    console.log(res.data);
-  }));*/
-}   
 
 const subirImagen= event => {
 const archivos = event.target.files;
 const data = new FormData();
 
 data.append('fileDatas', archivos[0]);
-/*
-fetch('/usuarios/subirExcel', {
-  method: 'POST',
-  body: data
-})
-.then(response => response.json())
-.then(data => {
-  console.log(data.json);
-  document.getElementById("agregando_usuarios").classList.add("d-none");
-  document.getElementById("agregando_usuarios2").classList.remove("d-none");
-})
-.catch(error => {
-  console.error(error);
-});*/
-
-//fetch('/usuarios/subirExcel', { method: "POST", body: data }).then(response => 
-/*
-fetch('/usuarios/NuevoExcel', { method: "POST", body: data })
-.then(response => response.json()
-.then(data => ({
-  data: data,
-  status: response.status
-  })
-)
-.then(res => {
-  document.getElementById("agregando_usuarios").classList.add("d-none");
-  document.getElementById("agregando_usuarios2").classList.remove("d-none");
-  importacion(res.data);
-}));  */
 
 fetch('/usuarios/NuevoExcel', { method: "POST", body: data })
 .then(response => response.json()
@@ -299,7 +257,7 @@ function getOperacion() {
       }
       function PostEditBrigada(){
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "/brigada/update/[[${id}]]");
+        xhr.open("POST", "/brigada/update/"+idb);
         xhr.setRequestHeader("Accept", "application/json");
         xhr.setRequestHeader("Content-Type", "application/json");
   
