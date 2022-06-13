@@ -1,10 +1,10 @@
 <th:block th:include="cabecera.html"></th:block>
 
-<section style="background-color: #eee;">
-    <div class="container py-5">
+<section>
+  <div class="container py-4 difuminado" style="background-color:rgba(228,235,170,0.8);">
       <div class="row">
         <div class="col">
-          <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+          <nav aria-label="breadcrumb" class="difuminado rounded bg-light p-3 mb-4">
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item"><a href="/">Inicio</a></li>
               <li class="breadcrumb-item"><a href="/brigada">Brigadas</a></li>
@@ -18,7 +18,7 @@
   
       <div class="row">
         <div class="col-lg-4">
-          <div class="card mb-4 mb-lg-0">
+          <div class="card mb-4 mb-lg-0 difuminado rounded">
             <!--DATOS DE BRIGADA-->
                 <div class="card-body">
                   <div class="row">
@@ -71,7 +71,7 @@
           <div class="row">
 
             <div class="col-6">
-                <div class="card mb-4 mb-md-0">
+              <div class="card mb-4 mb-md-0 difuminado rounded">
                     <div class="card-body">
                       <div class="row">
                         <div class="col-6">
@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="col-6">
-                <div class="card mb-4 mb-md-0">
+              <div class="card mb-4 mb-md-0 difuminado rounded">
                     <div class="card-body">
                         <p class="mb-4"><span class="text-primary font-italic me-1">Movimientos</span></p>
                     </div>
@@ -122,11 +122,11 @@
 <div class="modal fade" id="add_user" tabindex="-1" aria-labelledby="add_userLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="background-color:rgba(13,110,253,1); color:white;">
         <h5 class="modal-title" id="add_userLabel">Agregar Usuarios</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <div id="agregando_usuarios" class="modal-body text-center">
+      <div id="agregando_usuarios" class="modal-body text-center" style="background-color:rgba(228,235,170,0.8);">
           <form th:object="${importarArchivo}" enctype="multipart/form-data">
            <input th:field="*{fileDatas}" type="file"  style="display:none"/>
            <button type="button" class="btn btn-primary btn-sm"  data-bs-toggle="modal" data-bs-target="#add_user_ind">Alta individual</button>
@@ -134,7 +134,7 @@
             accept=".xls, .csv, .xlsx"
             onclick="document.getElementById('fileDatas').click();">Importar archivo Excel</span>
           </form>
-          <div class="text-start btn btn-outline-success disabled my-4 btn-sm">
+          <div class="text-center btn btn-outline-success disabled my-4 btn-sm" style="color:black;">
             <strong>Formato del archivo a importar (Excel) </strong>[Extensión xls, xlsx]<br><br>
 
             
@@ -147,7 +147,7 @@
           - Los números de brigada en el formato corto se generan según el orden en que están en excel.<br>
           </div>
       </div>
-      <div id="agregando_usuarios2" class="modal-body text-center d-none">
+      <div id="agregando_usuarios2" class="modal-body text-center d-none" style="background-color:rgba(228,235,170,0.8) ;">
         <input type="hidden" value="" name="fichero" id="fichero">
         <div class="input-group input-group-sm mb-3">
           <span class="input-group-text" id="pprancho">Personas por rancho</span>
@@ -162,8 +162,8 @@
         </div>
       </div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="modal-footer" style="background-color:rgba(228,235,170,0.8) ;">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cerrar</button>
 
       </div>
     </div>

@@ -1,7 +1,9 @@
 <section id="home" class="faq">
     <div class="container py-4">
-        <h1 class="text-center mt-2" th:if="${pagina != null && pagina.containsKey('titulo')}" th:text="${pagina.titulo}"></h1>
-        <h2 class="text-center h4 mt-4" th:if="${pagina != null && pagina.containsKey('subtitulo')}" th:text="${pagina.subtitulo}"></h2>
+        <div class="shadow bg-primary" style="border-radius: 45px;"></div>
+            <h1 class="text-center mt-2 text-light" th:if="${pagina != null && pagina.containsKey('titulo')}" th:text="${pagina.titulo}"></h1>
+            <h2 class="text-center h4 mt-4 text-light" th:if="${pagina != null && pagina.containsKey('subtitulo')}" th:text="${pagina.subtitulo}"></h2>
+        </div>
     </div>
 </section>
 

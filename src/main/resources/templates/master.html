@@ -3,8 +3,8 @@
 <div class="container-sm">
 
   <div class="row" th:with="lista = ${ { 'brigada', 'movimientos', 'lector'} }">
-    <div th:each="variable : ${lista}" class="col-sm-3">
-      <div class="card">
+    <div th:each="variable : ${lista}" class="col-sm-4 mb-2">
+      <div class="card difuminado" style="background-color: rgba(228,235,170,0.8);">
         <div class="card-body">
           <h5 class="card-title" th:text="|${variable}|">titulo</h5>
           <p class="card-text" th:text="|Control de ${variable}|">texto</p>

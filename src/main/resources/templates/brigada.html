@@ -1,11 +1,31 @@
 <th:block th:include="cabecera.html"></th:block>
 
-
+<style>
+  .borrar, .editar, .ver, .add_fol {
+      background-repeat: no-repeat;
+      background-position: center;
+      width: 40px;
+      height: 28px;
+      margin-right: 5px;
+  }
+  .editar {
+      background-image: url(/css/editar.svg);
+  }
+  .borrar {
+      background-image: url(/css/borrar.svg);
+  }
+  .ver {
+      background-image: url(/css/ver.svg);
+  }
+  .add_fol{
+      background-image: url(/css/add_fol.svg);
+  }
+</style>
 <div id="bdy_brigada" class="container-sm">
     
 </div>
-<div id="acciones_briada" class="container-sm">
-    <button class="btn btn-sm btn-success add_fol mb-2"  data-bs-toggle="modal" data-bs-target="#add_brigada"
+<div id="acciones_briada" class="container-sm text-center">
+  <button class="btn btn-sm btn-verde add_fol mb-2" style="min-width: 15%;" data-bs-toggle="modal" data-bs-target="#add_brigada"
      title="Agregar Brigada"></button>
 </div>
 
@@ -66,33 +86,5 @@
       </div>
     </div>
   </div>
-
-
-  <style>
-    .borrar, .editar, .ver, .add_fol {
-        background-repeat: no-repeat;
-        background-position: center;
-        width: 40px;
-        height: 28px;
-        margin-right: 5px;
-    }
-    .editar {
-        background-image: url(/css/editar.svg);
-    }
-    .borrar {
-        background-image: url(/css/borrar.svg);
-    }
-    .ver {
-        background-image: url(/css/ver.svg);
-    }
-    .add_fol{
-        background-image: url(/css/add_fol.svg);
-    }
-</style>
-
-
-
-
-
 <script src="/js/b.js"></script>
 <th:block th:include="pie.html"></th:block>

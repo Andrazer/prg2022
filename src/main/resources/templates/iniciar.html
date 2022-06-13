@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
 <th:block th:include="fragments/head.html"></th:block>
-<body  class="login" style="background-color:rgba(6, 85, 181, 0.449)">
-  <div class="container-sm p-3 mb-2 bg-light text-dark">
-  <th:block th:include="fragments/titulo.html"></th:block>
-    <form class="mt-5"> 
+<body  class="login" style="background-color:rgba(78, 160, 245, 0.72)">
+  <div class="container-sm p-3 mb-2">
+  </div>
+  <div class="container-sm p-3 mb-2 text-dark difuminado" style="background-color: rgba(228,235,170,0.8);">
+    <th:block th:include="fragments/titulo.html"></th:block>
+    <form class="mt-0"> 
       <div class="row">
         <div class="col">
           <img src="logo_escano.png" width="40%" class="rounded mx-auto d-block" alt="logo_escano.png">
@@ -13,14 +15,14 @@
   <!-- Email input -->
         <div class="col" Vertically aligned padding="25px">
           <div>
-            <label for="form2Example1" class="form-label">Nombre de usuario</label>
-            <input id='username' class="form-control form-control-lg" type="text" name='username' value=''>
+            <label for="username" class="form-label  text-primary">Nombre de usuario</label>
+            <input id='username' class="form-control form-control-lg difuminado" type="text" name='username' value=''>
           </div>
     <br>
   <!-- Password input -->
           <div class="mb-3">
-            <label class="form-label" for="form2Example2">Contraseña</label>
-            <input id='password' type='password' name='password' class="form-control form-control-lg" value=""/>
+            <label class="form-label text-primary" for="password">Contraseña</label>
+            <input id='password' type='password' name='password' class="form-control form-control-lg difuminado" value=""/>
           </div>
 
           <div id="errormessage" class="alert alert-danger d-flex align-items-center d-none" role="alert">
