@@ -1,16 +1,21 @@
 package com.prg2022.proyectoQR.controllers;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
 import com.prg2022.proyectoQR.Repository.MovimientoRepository;
+import com.prg2022.proyectoQR.Repository.RoleRepository;
 import com.prg2022.proyectoQR.Repository.UsuarioRepository;
 import com.prg2022.proyectoQR.modelos.Brigada;
+import com.prg2022.proyectoQR.modelos.EnumRole;
 import com.prg2022.proyectoQR.modelos.Movimiento;
+import com.prg2022.proyectoQR.modelos.Role;
 import com.prg2022.proyectoQR.modelos.Usuario;
 import com.prg2022.proyectoQR.payload.request.AddUsuarioRequest;
 import com.prg2022.proyectoQR.payload.response.MessageResponse;
@@ -48,6 +53,8 @@ public class UsuarioController {
     @Autowired
     private MovimientoRepository mrepository;
     @Autowired
+    private RoleRepository rrepository;    
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/add")
@@ -61,11 +68,6 @@ public class UsuarioController {
     }
 
     @GetMapping("/detalle/{id}")
-    /*    @ResponseBody public String detalles(){
-        UserDetailsImpl quien = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return quien.getId().toString();
-    }*/
-
     public ModelAndView showUser(@PathVariable Long id, ModelAndView modelAndView) {
         boolean enespera = false;
         boolean registrable = false;
@@ -103,7 +105,30 @@ public class UsuarioController {
       }
       return new ResponseEntity<>(id, HttpStatus.NOT_FOUND);
     }
+
+    @PostMapping(value = "/roles/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> update(@PathVariable Long id,@RequestParam(name="rol",required=false) String rol){
+      Usuario rolear = urepository.getById(id);
+      if (rolear.getId()>1){
+            Set<Role> permisosar = new HashSet<>();
+            if (rol!=null
+            ){
+              Role userRols = rrepository.findByDescripcion(EnumRole.valueOf(rol)).get();
+              if (rrepository.count()>0){
+                permisosar.add(userRols);
+                rolear.setRoles(permisosar);    
+              }
+            } else {
+              rolear.setRoles(null);
+            }
+            urepository.save(rolear);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
+      }
+      return new ResponseEntity<>("no", HttpStatus.NOT_FOUND);
+    }
  
+
     @PostMapping(value = "/update/{id}")
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<?> update(@PathVariable Long id, 
