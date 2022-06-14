@@ -1,11 +1,11 @@
 <th:block th:include="cabecera.html"></th:block>
 <script>const idu = "[[${id}]]";const idubd = "[[${usuario.BrigadaId}]]";</script>
-<section style="background-color: #eee;">
+<section class="container py-4 difuminado" style="background-color:rgba(228,235,170,0.8);">
     <div class="container py-5">
       <div class="row">
         <div class="col">
-          <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-            <ol class="breadcrumb mb-0">
+          <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4 difuminado">
+              <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item"><a href="/">Inicio</a></li>
               <li class="breadcrumb-item"><a href="/brigada">Brigadas</a></li>
               <li class="breadcrumb-item"><a href="/" th:href="'/brigada/show/'+${usuario.BrigadaId}" th:text="'Brigada '+${usuario.getBrigadaDescripcion}" >Usuarios</a></li>
@@ -18,12 +18,11 @@
 
 
 
-
       <div class="row">
         <div class="col-lg-4">
-          <div class="card mb-4">
+          <div class="card mb-4 difuminado col-menu">
             <div class="card-body text-center">
-<span th:unless="${#lists.isEmpty(usuario.Roles)}" th:class="${usuario.Roles[0].descripcion}+' badge rounded-pill bg-primary'" th:text="${usuario.Roles[0].descripcion}">YES</span>
+              <span th:unless="${#lists.isEmpty(usuario.Roles)}" th:class="${usuario.Roles[0].descripcion}+' badge rounded-pill bg-primary'" th:text="${usuario.Roles[0].descripcion}">YES</span>
 
               <div class="container">
               <img th:src="'/fotos/'+${usuario.getFoto}" alt="Foto"
@@ -55,13 +54,13 @@
           <div class="row">
 
             <div class="col-12 col-lg-6">
-                <div class="card mb-4 mb-md-0">
+              <div class="card mb-4 mb-md-0 difuminado col-menu">
                     <div class="card-body">
                       <p class="mb-4"><span class="text-primary font-italic me-1">Últimos 10 registros</span></p>
 
                       <div th:each="movimiento : ${movimientos}" class="mx-2 mb-1">
                           <span th:if="${movimiento.Abordo}" th:text="${#temporals.format(movimiento.cuando, 'dd-MM-yyyy HH:mm')}"  class="btn btn-outline-success btn-sm"/>
-                          <span th:unless="${movimiento.Abordo}" th:text="${#temporals.format(movimiento.cuando, 'dd-MM-yyyy HH:mm')}"  class="btn btn-outline-danger btn-sm mx-4"/>
+                          <span th:unless="${movimiento.Abordo}" th:text="${#temporals.format(movimiento.cuando, 'dd-MM-yyyy HH:mm')}"  class="btn btn-outline-danger btn-sm mx-4 float-end"/>
                       </div>
 
 
@@ -69,12 +68,12 @@
                 </div>
             </div>
             <div class="col-12 col-lg-6">
-                <div class="card mb-4 mb-md-0">
+              <div class="card mb-4 mb-md-0 difuminado col-menu">
                     <div class="card-body">
                         <p class="mb-4"><span class="text-primary font-italic me-1">Autorizaciones</span></p>
                     </div>
                 </div>
-                <div class="card my-4 mb-md-0">
+                <div class="card my-4 mb-md-0 difuminado col-menu">
                   <div class="card-body text-center">
                       <p class="mb-4"><span class="text-primary font-italic me-1">Acciones</span></p>
                       <p><span  th:if="${registrable}" role="button" class="btn btn-success btn-sm" 
@@ -119,8 +118,8 @@
                         <span class="input-group-text" id="rancho_lbl">Rancho</span>
                         <input th:value="${usuario.rancho}" id="edit_rancho" type="text" class="form-control" placeholder="rancho" aria-label="#" aria-describedby="rancho_lbl">
                       </div>  
-                      <button class="btn btn-warning btn-sm float-end" type="submit">Actualizar</button>
-                      <button id="cacenla" class="btn btn-sm btn-outline-secondary add_fol mb-2 float-start"
+                      <button class="btn btn-warning btn-sm float-end mt-2" type="submit">Actualizar</button>
+                      <button id="cacenla" class="btn btn-sm btn-danger add_fol mb-2 float-start mt-2"
                        title="Cancelar" onClick="document.location.reload();">Cancelar</button> 
                       </form>                    
 

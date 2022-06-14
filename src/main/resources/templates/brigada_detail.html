@@ -2,10 +2,10 @@
 <script>const idb = "[[${id}]]";</script>
 <section>
   <div class="container py-4 difuminado" style="background-color:rgba(228,235,170,0.8);">
-      <div class="row">
-        <div class="col">
-          <nav aria-label="breadcrumb" class="difuminado rounded bg-light p-3 mb-4">
-            <ol class="breadcrumb mb-0">
+      <!-- <div class="row"> -->
+       <!-- <div class="col"> -->
+        <nav aria-label="breadcrumb" class="mb-2">
+          <ol class="breadcrumb  p-2 mb-0">
               <li class="breadcrumb-item"><a href="/">Inicio</a></li>
               <li class="breadcrumb-item"><a href="/brigada">Brigadas</a></li>
               <li class="breadcrumb-item active" aria-current="page">Detalle de la Brigada <span id="nombreBrigada"></span> </li>
@@ -13,12 +13,12 @@
             <span id="marcas" style="font-size: 10px;">creada: 00/00/00 | Última actualización: 00/00/00</span>
           </nav>
           
-        </div>
-      </div>
+        <!-- </div> -->
+      <!-- </div> -->
   
       <div class="row">
         <div class="col-lg-4">
-          <div class="card mb-4 mb-lg-0 difuminado rounded">
+          <div class="card mb-4 mb-lg-0 difuminado col-menu">
             <!--DATOS DE BRIGADA-->
                 <div class="card-body">
                   <div class="row">
@@ -45,14 +45,14 @@
                   </div>
                   <hr> 
                   <div class="text-end">
-                    <button id="btn_sube_fotos" class="btn btn-sm btn-outline-success add_fol mb-2 float-start"
+                    <button id="btn_sube_fotos" class="btn btn-sm btn-success add_fol mb-2 float-start"
                        title="Subir Fotos" 
                        data-bs-toggle="modal" 
                        data-bs-target="#add_fotos"
                        >Subir Fotos</button>                    
-                    <button id="btn_mod_brigada" class="btn btn-sm btn-outline-warning add_fol mb-2"
+                    <button id="btn_mod_brigada" class="btn btn-sm btn-warning add_fol mb-2"
                        title="Modificar Brigada" onClick="EditBrigada();">Modificar Brigada</button>
-                       <button id="btn_closemod_brigada" class="d-none  btn btn-sm btn-outline-secondary add_fol mb-2"
+                       <button id="btn_closemod_brigada" class="d-none  btn btn-sm btn-outline-primary add_fol mb-2"
                        title="Cerrar" onClick="CancelEditBrigada();">Cerrar</button>
                        <button id="btn_upd_brigada" class="d-none  btn btn-sm btn-outline-success add_fol mb-2"
                        title="Guardar Cambios" onClick="PostEditBrigada();">Guardar Cambios</button>                                              
@@ -71,7 +71,7 @@
           <div class="row">
 
             <div class="col-6">
-              <div class="card mb-4 mb-md-0 difuminado rounded">
+              <div class="card mb-4 mb-md-0 difuminado col-menu">
                     <div class="card-body">
                       <div class="row">
                         <div class="col-6">
@@ -90,7 +90,7 @@
                       </div>
 
 
-                      <div th:each="usuario : ${usuarios}" class="botonera mx-2 mb-1 float-start">
+                      <div th:each="usuario : ${usuarios}" class="botonera m-1 float-start">
                         <th th:if="${usuario.NumBrigada}!='000null'">
                           <a th:if="${usuario.Abordo}" th:text="${usuario.NumBrigada}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="btn btn-outline-success btn-sm"/>
                           <a th:unless="${usuario.Abordo}" th:text="${usuario.NumBrigada}" th:href="@{/usuarios/detalle/{id}(id=${usuario.id})}" class="btn btn-outline-danger btn-sm"/>
@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="col-6">
-              <div class="card mb-4 mb-md-0 difuminado rounded">
+              <div class="card mb-4 mb-md-0 difuminado  col-menu">
                     <div class="card-body">
                         <p class="mb-4"><span class="text-primary font-italic me-1">Movimientos</span></p>
                     </div>
