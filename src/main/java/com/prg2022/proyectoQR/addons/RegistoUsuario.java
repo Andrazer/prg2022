@@ -57,15 +57,17 @@ public class RegistoUsuario {
         if(!buscado.isEmpty()){
             Usuario encontrado = buscado.get();
            //---COMPRUEBA QUE EL USUARIO NO HA SIDO HABILITADO ANTES-----//
+           
             if (BCrypt.checkpw(referencia, encontrado.getClave())){
                 //aqui empieza el registro
                 encontrado.setClave(passwordEncoder.encode(pwdusr));
+                /*
                 if (encontrado.getRoles().isEmpty()){
                     Set<Role> permisos = new HashSet<>();
                     Role adminRole = rRepository.findByDescripcion(EnumRole.ROLE_ADMIN).get();
                     permisos.add(adminRole);
                     encontrado.setRoles(permisos);
-                }
+                }*/
                 uRepository.save(encontrado);
                 //fin del registro
                 return true;

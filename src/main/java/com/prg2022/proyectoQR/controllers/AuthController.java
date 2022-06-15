@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,6 +48,9 @@ public class AuthController {
   JwtUtils jwtUtils;
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    if (loginRequest.getUsername().equals(loginRequest.getPassword())){
+      return new ResponseEntity<>("no", HttpStatus.NOT_FOUND);
+    }
     Authentication authentication = authenticationManager
         .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
