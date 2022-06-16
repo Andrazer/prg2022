@@ -1,9 +1,14 @@
 package com.prg2022.proyectoQR.controllers;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +18,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javax.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.prg2022.proyectoQR.Repository.BrigadaRepository;
@@ -37,8 +42,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.apache.commons.compress.utils.IOUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -54,7 +62,31 @@ public class UploadFileController {
     @Autowired
     private BrigadaRepository brepository;    
 
-
+    @RequestMapping(value = "fotos/{brigada}/{uploadedFileName}",method = RequestMethod.GET)
+    /*public ResponseEntity<File> getFile(
+        @PathVariable String uploadedFileName, @PathVariable String brigada){
+      try{
+        File toReturn = new File("fotos/"+brigada+"/" + uploadedFileName);
+        ResponseEntity<File> r = new ResponseEntity(toReturn, HttpStatus.OK);
+        return r;
+      }catch(Exception e){
+        return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+      }
+    }*/
+    public ResponseEntity<byte[]> getImage(@PathVariable String uploadedFileName, @PathVariable String brigada) throws IOException {
+        String filename = "fotos/"+brigada+"/" + uploadedFileName;
+		InputStream inputImage = new FileInputStream(filename);
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[512];
+        int l = inputImage.read(buffer);
+        while(l >= 0) {
+            outputStream.write(buffer, 0, l);
+            l = inputImage.read(buffer);
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "image/jpg");
+        return new ResponseEntity<byte[]>(outputStream.toByteArray(), headers, HttpStatus.OK);	
+	}
 
     @RequestMapping(value = "/subeFotos/{id}", method = RequestMethod.POST)
     @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
@@ -86,7 +118,7 @@ public class UploadFileController {
                                 if (encontrado.getBrigadaId()==id){
                                     //el usuario pertenece a la brigada que estamos editando
                                     String rutaCorta = encontrado.getBrigadaId()+"/";
-                                    String rutaLarga = "src/main/resources/static/fotos/"+rutaCorta;
+                                    String rutaLarga = "fotos/"+rutaCorta;
                                     File file = new File(rutaLarga+""+encontrado.getId()+"."+extension);
                                     if (!file.exists()) {
                                         File pathDir = file.getParentFile();
@@ -118,7 +150,7 @@ public class UploadFileController {
                 if (!pepe.isEmpty()){
                     Usuario encontrado = pepe.get();
                     String rutaCorta = encontrado.getBrigadaId()+"/";
-                    String rutaLarga = "src/main/resources/static/fotos/"+rutaCorta;
+                    String rutaLarga = "fotos/"+rutaCorta;
                     File carpeta = new File(rutaLarga);
 
                     if (!carpeta.exists()) { carpeta.mkdirs(); }
@@ -269,7 +301,7 @@ public class UploadFileController {
         String[] permitidos = {"jpg","jpeg","png","bmp"};
         if(!Arrays.stream(permitidos).anyMatch(extension::equals)) { return false; }        
         String rutaCorta = usuario.getBrigadaId()+"/";
-        String rutaLarga = "src/main/resources/static/fotos/"+rutaCorta;
+        String rutaLarga = "fotos/"+rutaCorta;
         File carpeta = new File(rutaLarga);
         if (!carpeta.exists()) { carpeta.mkdirs(); }
         File archivoServidor = new File(rutaLarga+""+usuario.getId()+"."+extension);
