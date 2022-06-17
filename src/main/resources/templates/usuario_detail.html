@@ -63,6 +63,8 @@
               <div class="card mb-4 mb-md-0 difuminado col-menu">
                     <div class="card-body">
                         <p class="mb-4"><span class="text-primary font-italic me-1">Autorizaciones</span></p>
+                        
+                        <button type="button" class="btn btn-primary btn-sm"  data-bs-toggle="modal" data-bs-target="#autoriza">Agregar</button>
                     </div>
                 </div>
                 <div class="card my-4 mb-md-0 difuminado col-menu">
@@ -133,6 +135,48 @@
       </div>
     </div>
   </section>
+
+
+  <!-- Modal AUTORIZA-->
+<div class="modal fade" id="autoriza" tabindex="-1" aria-labelledby="autorizaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:rgba(13,110,253,1); color:white;">
+        <h5 class="modal-title" id="autorizaLabel">Nueva autorización</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body text-center" style="background-color:rgba(228,235,170,0.8);">
+
+        <form id="autoriz_usr" >
+          <div class="input-group mb-1 pt-2">
+            <span class="input-group-text border-dark" id="nombre_lbl">Tipo</span>
+            <input value="" id="edit_nombre" type="text" class="form-control border-dark" placeholder="Nombre" aria-label="Nombre" aria-describedby="nombre_lbl">
+          </div>
+          <div class="input-group mb-1">
+            <span class="input-group-text border-dark" id="er1">Inicio</span>
+            <input value="" id="edit_apellido" type="text" class="form-control border-dark" placeholder="1er Apellido" aria-label="1er Apellido" aria-describedby="er1">
+          </div>
+          <div class="input-group mb-1">
+            <span class="input-group-text border-dark" id="do2_lbl">Fin</span>
+            <input value="" id="edit_apellido2" type="text" class="form-control border-dark" placeholder="2do Apellido" aria-label="2do Apellido" aria-describedby="do2_lbl">
+          </div>
+          <div class="form-check form-switch mx-2">
+            <input type="radio" class="btn-check" name="autorizado" id="autorizado" autocomplete="off" checked>
+            <label class="btn btn-outline-success" for="autorizado">Autorizado</label>
+          </div>
+          
+          <button class="my-2 btn btn-outline-success btn-sm float-end" type="submit">Agregar</button>
+          </form>      
+  
+        </div>
+        <div class="modal-footer" style="background-color:rgba(228,235,170,0.8);">
+          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cerrar</button>
+  
+      </div>
+    </div>
+  </div>
+</div>
+
   <style>
     .edit_foto{
       display: none;
