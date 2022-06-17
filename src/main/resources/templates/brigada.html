@@ -37,8 +37,8 @@
 <!-- Modal -->
 <div class="modal fade" id="add_brigada" tabindex="-1" aria-labelledby="add_brigadaLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
+      <div class="modal-content" style="background-color:rgba(228,235,170,1);">
+        <div class="modal-header bg-primary text-white">
           <h5 class="modal-title" id="add_brigadaLabel">Agregar Brigada</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
@@ -46,30 +46,30 @@
         <div class="modal-body">
           
             <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-desclbl">* Descripción:</span>
-                <input id="descripcion" type="text" class="form-control" placeholder="Tercera Alfa" 
-                aria-label="descripcion" aria-describedby="desclbl" required>
+              <span class="input-group-text border-dark" id="basic-desclbl">* Descripción:</span>
+              <input id="descripcion" type="text" class="form-control border-dark" placeholder="Tercera Alfa" 
+             aria-label="descripcion" aria-describedby="desclbl" required>
             </div>
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="numerolbl">Número de Brigada:</span>
-              <input id="grupo" type="text" class="form-control" placeholder="1" 
+            <div class="input-group mb-3 border-dark">
+              <span class="input-group-text border-dark" id="numerolbl">Número de Brigada:</span>
+              <input id="grupo" type="text" class="form-control border-dark" placeholder="1" 
                 aria-label="Número que identifica la brigada" aria-describedby="numerolbl"  maxlength="2">
             </div>
             <div class="input-group mb-3">
-              <span class="input-group-text" id="letralbl">Letra de Brigada:</span>
-              <input id="letra" type="text" class="form-control" placeholder="A" 
+              <span class="input-group-text border-dark" id="letralbl">Letra de Brigada:</span>
+              <input id="letra" type="text" class="form-control border-dark" placeholder="A" 
                 aria-label="Letra que identifica la brigada (ALFA, BRAVO, etc.." aria-describedby="letralbl"  maxlength="3">
             </div>            
             <div class="input-group mb-3">
-                <span class="input-group-text" id="fechainicio">* Fecha de inicio:</span>
-                <input id="fecha_inicio" type="date" class="form-control" aria-label="Fecha de inicio"
+                <span class="input-group-text border-dark" id="fechainicio">* Fecha de inicio:</span>
+                <input id="fecha_inicio" type="date" class="form-control border-dark" aria-label="Fecha de inicio"
                   aria-describedby="fechainicio" required>
             </div>    
             <div class="input-group mb-3">
-              <span class="input-group-text" id="fechafin">* Fecha de Fin:</span>
-              <input id="fecha_fin" type="date" class="form-control" aria-label="Fecha de Finalizacion"
+              <span class="input-group-text border-dark" id="fechafin">* Fecha de Fin:</span>
+              <input id="fecha_fin" type="date" class="form-control border-dark" aria-label="Fecha de Finalizacion"
                 aria-describedby="fechafin" required>
-            </div> 
+            </div>  
             <div id="aclaraciones" class="small btn-outline-success disabled">
               El número y la letra se utilizarán para generar los números de Brigada<br>
               También servira para identificar la brigada en pantalla (Ejemplo: 6A)
@@ -79,8 +79,8 @@
 
         </div>
         <div class="modal-footer" style="border-top: none;">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" onclick="Registrame();">Agregar</button>
+          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-outline-success" onclick="Registrame();">Agregar</button>
         </div>
       </form>
       </div>

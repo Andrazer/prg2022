@@ -68,3 +68,37 @@
 .col-menu{
     background-color: rgb(243, 234, 204, 1);
 }
+.btn-outline-primary{
+    border: solid 2px;
+    font-weight: bolder;
+}
+.btn-outline-warning{
+    border: solid 2px;
+    font-weight: bolder;
+}
+.btn-outline-danger{
+    border: solid 2px;
+    font-weight: bolder;
+}
+.btn-outline-success{
+    border: solid 2px;
+    font-weight: bolder;
+}
+.btn-outline-secondary{
+    border: solid 2px;
+    font-weight: bolder;
+}
+.form-control{
+    border-color: black solid 1px;
+}
+.table-light{
+    --bs-table-bg:rgba(13,110,253,1);
+    --bs-table-striped-bg: #ecedee;
+    --bs-table-striped-color: #000;
+    --bs-table-active-bg: #dfe0e1;
+    --bs-table-active-color: #000;
+    --bs-table-hover-bg: #e5e6e7;
+    --bs-table-hover-color: #000;
+    color:rgba(228,235,170,0.8);
+    border-color: #dfe0e1;
+}

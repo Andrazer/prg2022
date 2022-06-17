@@ -1,8 +1,8 @@
 <th:block th:include="cabecera.html"></th:block>
 <script>const idu = "[[${id}]]";const idubd = "[[${usuario.BrigadaId}]]";</script>
 <section class="container py-4 difuminado" style="background-color:rgba(228,235,170,0.8);">
-  <nav aria-label="breadcrumb" class="mb-2">
-    <ol class="breadcrumb p-2 mb-0">
+          <nav aria-label="breadcrumb" class="mb-2">
+              <ol class="breadcrumb p-2 mb-0">
               <li class="breadcrumb-item"><a href="/">Inicio</a></li>
               <li class="breadcrumb-item"><a href="/brigada">Brigadas</a></li>
               <li class="breadcrumb-item"><a href="/" th:href="'/brigada/show/'+${usuario.BrigadaId}" th:text="'Brigada '+${usuario.getBrigadaDescripcion}" >Usuarios</a></li>
@@ -88,28 +88,28 @@
                       </form>
                       
                       <form id="edita_usuario" class="d-none">
-                        <div class="input-group mb-1 pt-2">
-                          <span class="input-group-text border-dark" id="nombre_lbl">Nombre</span>
-                          <input th:value="${usuario.nombre}" id="edit_nombre" type="text" class="form-control border-dark" placeholder="Nombre" aria-label="Nombre" aria-describedby="nombre_lbl">
-                        </div>
-                        <div class="input-group mb-1">
-                          <span class="input-group-text border-dark" id="er1">1er Apellido</span>
-                          <input th:value="${usuario.apellido1}" id="edit_apellido" type="text" class="form-control border-dark" placeholder="er1" aria-label="1er Apellido" aria-describedby="er1">
-                        </div>
-                        <div class="input-group mb-1">
-                          <span class="input-group-text border-dark" id="do2_lbl">2do Apellido</span>
-                          <input th:value="${usuario.apellido2}" id="edit_apellido2" type="text" class="form-control border-dark" placeholder="do2" aria-label="2do Apellido" aria-describedby="do2_lbl">
-                        </div>
-                        <div class="input-group mb-1">
-                          <span class="input-group-text border-dark" id="dni_lbl">DNI</span>
-                          <input th:value="${usuario.dni}" id="edit_dni" type="text" class="form-control border-dark" placeholder="dni" aria-label="DNI" aria-describedby="dni_lbl">
-                        </div>   
-                        <div class="input-group mb-1">
-                          <span class="input-group-text border-dark" id="num_lbl">#</span>
-                          <input th:value="${usuario.numero}" id="edit_numero" type="text" class="form-control border-dark" placeholder="num" aria-label="#" aria-describedby="num_lbl">
-                          <span class="input-group-text border-dark" id="rancho_lbl">Rancho</span>
-                          <input th:value="${usuario.rancho}" id="edit_rancho" type="text" class="form-control border-dark" placeholder="rancho" aria-label="#" aria-describedby="rancho_lbl">
-                        </div>  
+                      <div class="input-group mb-1 pt-2">
+                        <span class="input-group-text border-dark" id="nombre_lbl">Nombre</span>
+                        <input th:value="${usuario.nombre}" id="edit_nombre" type="text" class="form-control border-dark" placeholder="Nombre" aria-label="Nombre" aria-describedby="nombre_lbl">
+                      </div>
+                      <div class="input-group mb-1">
+                        <span class="input-group-text border-dark" id="er1">1er Apellido</span>
+                        <input th:value="${usuario.apellido1}" id="edit_apellido" type="text" class="form-control border-dark" placeholder="er1" aria-label="1er Apellido" aria-describedby="er1">
+                      </div>
+                      <div class="input-group mb-1">
+                        <span class="input-group-text border-dark" id="do2_lbl">2do Apellido</span>
+                        <input th:value="${usuario.apellido2}" id="edit_apellido2" type="text" class="form-control border-dark" placeholder="do2" aria-label="2do Apellido" aria-describedby="do2_lbl">
+                      </div>
+                      <div class="input-group mb-1">
+                        <span class="input-group-text border-dark" id="dni_lbl">DNI</span>
+                        <input th:value="${usuario.dni}" id="edit_dni" type="text" class="form-control border-dark" placeholder="dni" aria-label="DNI" aria-describedby="dni_lbl">
+                      </div>   
+                      <div class="input-group mb-1">
+                        <span class="input-group-text border-dark" id="num_lbl">#</span>
+                        <input th:value="${usuario.numero}" id="edit_numero" type="text" class="form-control border-dark" placeholder="num" aria-label="#" aria-describedby="num_lbl">
+                        <span class="input-group-text border-dark" id="rancho_lbl">Rancho</span>
+                        <input th:value="${usuario.rancho}" id="edit_rancho" type="text" class="form-control border-dark" placeholder="rancho" aria-label="#" aria-describedby="rancho_lbl">
+                      </div>  
                       <button class="btn btn-warning btn-sm float-end mt-2" type="submit">Actualizar</button>
                       <button id="cacenla" class="btn btn-sm btn-danger add_fol mb-2 float-start mt-2"
                        title="Cancelar" onClick="document.location.reload();">Cancelar</button> 

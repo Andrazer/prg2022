@@ -2,8 +2,6 @@
 <script>const idb = "[[${id}]]";</script>
 <section>
   <div class="container py-4 difuminado" style="background-color:rgba(228,235,170,0.8);">
-      <!-- <div class="row"> -->
-       <!-- <div class="col"> -->
         <nav aria-label="breadcrumb" class="mb-2">
           <ol class="breadcrumb  p-2 mb-0">
               <li class="breadcrumb-item"><a href="/">Inicio</a></li>
@@ -12,9 +10,6 @@
             </ol>
             <span id="marcas" style="font-size: 10px;">creada: 00/00/00 | Última actualización: 00/00/00</span>
           </nav>
-          
-        <!-- </div> -->
-      <!-- </div> -->
   
       <div class="row">
         <div class="col-lg-4">
@@ -178,46 +173,46 @@
 <div class="modal fade" id="add_user_ind" tabindex="-1" aria-labelledby="add_user_indLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="background-color:rgba(13,110,253,1); color:white;">
         <h5 class="modal-title" id="add_user_indLabel">Agregar Usuario</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <div class="modal-body text-center">
+      <div class="modal-body text-center" style="background-color:rgba(228,235,170,0.8);">
 
-      <form id="add_usr" >
-        <div class="input-group mb-1 pt-2">
-          <span class="input-group-text" id="nombre_lbl">Nombre</span>
-          <input value="" id="edit_nombre" type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" aria-describedby="nombre_lbl">
+        <form id="add_usr" >
+          <div class="input-group mb-1 pt-2">
+            <span class="input-group-text border-dark" id="nombre_lbl">Nombre</span>
+            <input value="" id="edit_nombre" type="text" class="form-control border-dark" placeholder="Nombre" aria-label="Nombre" aria-describedby="nombre_lbl">
+          </div>
+          <div class="input-group mb-1">
+            <span class="input-group-text border-dark" id="er1">1er Apellido</span>
+            <input value="" id="edit_apellido" type="text" class="form-control border-dark" placeholder="1er Apellido" aria-label="1er Apellido" aria-describedby="er1">
+          </div>
+          <div class="input-group mb-1">
+            <span class="input-group-text border-dark" id="do2_lbl">2do Apellido</span>
+            <input value="" id="edit_apellido2" type="text" class="form-control border-dark" placeholder="2do Apellido" aria-label="2do Apellido" aria-describedby="do2_lbl">
+          </div>
+          <div class="input-group mb-1">
+            <span class="input-group-text border-dark" id="dni_lbl">DNI</span>
+            <input value="" id="edit_dni" type="text" class="form-control border-dark" placeholder="DNI" aria-label="DNI" aria-describedby="dni_lbl">
+          </div>   
+          <div class="input-group mb-1">
+            <span class="input-group-text border-dark" id="rancho_lbl">Rancho</span>
+            <input value="" id="edit_rancho" type="text" class="form-control border-dark" placeholder="rancho" aria-label="#" aria-describedby="rancho_lbl">
+            <span class="input-group-text border-dark" id="num_lbl">#</span>
+            <input value="" id="edit_numero" type="text" class="form-control border-dark" placeholder="Numero" aria-label="#" aria-describedby="num_lbl">
+            <span class="input-group-text border-dark" id="nubrig_lblm_lbl">#</span>
+            <input id="edit_grp" type="text" class="form-control border-dark" readonly aria-label="#" aria-describedby="brig_lbl">
+            <span class="input-group-text border-dark" id="letra_lbl">#</span>
+            <input id="edit_letra" type="text" class="form-control border-dark" readonly aria-label="#" aria-describedby="letra_lbl">                    
+          </div>  
+          <button class="my-2 btn btn-outline-success btn-sm float-end" type="submit">Agregar</button>
+          </form>      
+  
         </div>
-        <div class="input-group mb-1">
-          <span class="input-group-text" id="er1">1er Apellido</span>
-          <input value="" id="edit_apellido" type="text" class="form-control" placeholder="1er Apellido" aria-label="1er Apellido" aria-describedby="er1">
-        </div>
-        <div class="input-group mb-1">
-          <span class="input-group-text" id="do2_lbl">2do Apellido</span>
-          <input value="" id="edit_apellido2" type="text" class="form-control" placeholder="2do Apellido" aria-label="2do Apellido" aria-describedby="do2_lbl">
-        </div>
-        <div class="input-group mb-1">
-          <span class="input-group-text" id="dni_lbl">DNI</span>
-          <input value="" id="edit_dni" type="text" class="form-control" placeholder="DNI" aria-label="DNI" aria-describedby="dni_lbl">
-        </div>   
-        <div class="input-group mb-1">
-          <span class="input-group-text" id="rancho_lbl">Rancho</span>
-          <input value="" id="edit_rancho" type="text" class="form-control" placeholder="rancho" aria-label="#" aria-describedby="rancho_lbl">
-          <span class="input-group-text" id="num_lbl">#</span>
-          <input value="" id="edit_numero" type="text" class="form-control" placeholder="Numero" aria-label="#" aria-describedby="num_lbl">
-          <span class="input-group-text" id="nubrig_lblm_lbl">#</span>
-          <input id="edit_grp" type="text" class="form-control" readonly aria-label="#" aria-describedby="brig_lbl">
-          <span class="input-group-text" id="letra_lbl">#</span>
-          <input id="edit_letra" type="text" class="form-control" readonly aria-label="#" aria-describedby="letra_lbl">                    
-        </div>  
-        <button class="my-2 btn btn-warning btn-sm float-end" type="submit">Agregar</button>
-        </form>      
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-
+        <div class="modal-footer" style="background-color:rgba(228,235,170,0.8);">
+          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cerrar</button>
+  
       </div>
     </div>
   </div>
@@ -229,11 +224,11 @@
 <div class="modal fade" id="add_fotos" tabindex="-1" aria-labelledby="add_fotosLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="background-color:rgba(13,110,253,1); color:white;">
         <h5 class="modal-title" id="add_fotosLabel">Agregar Fotos</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <div class="modal-body text-center">
+      <div class="modal-body text-center" style="background-color:rgba(228,235,170,0.8);">
 
 
           <form>
@@ -241,7 +236,7 @@
           <span role="button" class="btn btn-primary btn-sm" 
            onclick="document.getElementById('fotoszip').click();">Importar archivo de Fotos</span>
          </form>
-         <div class="text-start btn btn-outline-success disabled my-4 btn-sm">
+         <div class="text-center btn btn-outline-success disabled my-4 btn-sm">
            <strong>Opción A: Importar fotos sueltas </strong><br><br>
 
            
@@ -255,8 +250,8 @@
 
 
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="modal-footer" style="background-color:rgba(228,235,170,0.8);">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cerrar</button>
 
       </div>
     </div>
