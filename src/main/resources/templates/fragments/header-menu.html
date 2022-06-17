@@ -37,7 +37,7 @@
           -->
         </ul>
         <form class="d-flex">
-          <button type="button" class="my-2 btn btn-sm btn-outline-warning"  data-bs-toggle="modal" data-bs-target="#chgpwd">Cambiar clave</button>
+          <button type="button" class="btn me-2 btn-sm btn-outline-danger"  data-bs-toggle="modal" data-bs-target="#chgpwd">Cambiar clave</button>
           <a href="/salir"><button class="btn btn-sm btn-outline-primary" type="button">Salir</button></a>
         </form>
       </div>
@@ -54,31 +54,31 @@
 <div class="modal fade" id="chgpwd" tabindex="-1" aria-labelledby="chgpwdLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="color:white; background-color:rgba(13,110,253,1);">
         <h5 class="modal-title" id="chgpwdLabel">Cambiar clave</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
-      <div class="modal-body text-center">
+      <div class="modal-body text-center" style="color:black; background-color: rgba(228,235,170,0.8);">
 
       
         <div class="input-group mb-1 pt-2">
-          <span class="input-group-text" id="nombre_lbl">Clave anterior</span>
-          <input value="" id="oldpasswd" type="password" class="form-control" aria-label="Clave anterior" aria-describedby="nombre_lbl">
+          <span class="input-group-text border-dark" id="nombre_lbl">Clave anterior</span>
+          <input value="" id="oldpasswd" type="password" class="form-control border-dark" aria-label="Clave anterior" aria-describedby="nombre_lbl">
         </div>
         <div class="input-group mb-1">
-          <span class="input-group-text" id="er1">Nueva clave</span>
-          <input value="" id="passwd" type="password" class="form-control" aria-label="Nueva clave" aria-describedby="er1">
+          <span class="input-group-text border-dark" id="er1">Nueva clave</span>
+          <input value="" id="passwd" type="password" class="form-control border-dark" aria-label="Nueva clave" aria-describedby="er1">
         </div>
         <div class="input-group mb-1">
-          <span class="input-group-text" id="do2_lbl">Repetir clave</span>
-          <input value="" id="passwd2" type="password" class="form-control" aria-label="Repetir clave" aria-describedby="do2_lbl">
+          <span class="input-group-text border-dark" id="do2_lbl">Repetir clave</span>
+          <input value="" id="passwd2" type="password" class="form-control border-dark" aria-label="Repetir clave" aria-describedby="do2_lbl">
         </div>
-        <button id="cambiapaswdord" class="my-2 btn btn-warning btn-sm float-end">Cambiar</button>
+        <button id="cambiapaswdord" class="my-2 btn btn-outline-success btn-sm float-end">Cambiar</button>
         
 
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      <div class="modal-footer" style="background-color: rgba(228,235,170,0.8);">
+        <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cerrar</button>
 
       </div>
     </div>
