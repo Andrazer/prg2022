@@ -14,25 +14,19 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+      <tr th:each="cuen : ${cuenta}">
+        <td scope="row"><a th:href="'/brigada/show/'+${cuen[3]}" th:text="${cuen[4]}"></a></td>
+        <td th:text="${cuen[1]}">xx</td>
+        <td th:text="${cuen[2]}">xx</td>
+        <td th:text="${cuen[0]}">xx</td>
+    </tr>
     </tbody>
   </table>
+
+
+
+
+
 
 </div>
 <th:block th:include="pie.html"></th:block>
