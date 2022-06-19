@@ -14,6 +14,7 @@ import com.prg2022.proyectoQR.Repository.RoleRepository;
 import com.prg2022.proyectoQR.Repository.UsuarioRepository;
 import com.prg2022.proyectoQR.modelos.Brigada;
 import com.prg2022.proyectoQR.modelos.EnumRole;
+import com.prg2022.proyectoQR.modelos.Estados;
 import com.prg2022.proyectoQR.modelos.Movimiento;
 import com.prg2022.proyectoQR.modelos.Role;
 import com.prg2022.proyectoQR.modelos.Usuario;
@@ -78,6 +79,7 @@ public class UsuarioController {
         modelAndView.addObject("movimientos", movimientos);
         modelAndView.addObject("usuario", usuario);
         modelAndView.addObject("id", id);
+        modelAndView.addObject("estados", Estados.values());
         modelAndView.setViewName("usuario_detail");
         System.out.println("**"+usuario.getClave()+"**");
         if (usuario.getClave()==null){

@@ -1,5 +1,16 @@
 <th:block th:include="cabecera.html"></th:block>
 <script>const idu = "[[${id}]]";const idubd = "[[${usuario.BrigadaId}]]";</script>
+<!-- Popperjs -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.2/dist/umd/popper.min.js"
+      crossorigin="anonymous"></script>
+<!-- Tempus Dominus JavaScript -->
+<script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"
+      crossorigin="anonymous"></script>
+
+<!-- Tempus Dominus Styles -->
+<link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css"
+      rel="stylesheet" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />      
 <section class="container py-4 difuminado" style="background-color:rgba(228,235,170,0.8);">
   <nav aria-label="breadcrumb" class="mb-2">
     <ol class="breadcrumb p-2 mb-0">
@@ -148,31 +159,78 @@
       <div class="modal-body text-center" style="background-color:rgba(228,235,170,0.8);">
 
         <form id="autoriz_usr" >
-          <div class="input-group mb-1 pt-2">
-            <span class="input-group-text border-dark" id="nombre_lbl">Tipo</span>
-            <input value="" id="edit_nombre" type="text" class="form-control border-dark" placeholder="Nombre" aria-label="Nombre" aria-describedby="nombre_lbl">
-          </div>
-          <div class="input-group mb-1">
-            <span class="input-group-text border-dark" id="er1">Inicio</span>
-            <input value="" id="edit_apellido" type="text" class="form-control border-dark" placeholder="1er Apellido" aria-label="1er Apellido" aria-describedby="er1">
-          </div>
-          <div class="input-group mb-1">
-            <span class="input-group-text border-dark" id="do2_lbl">Fin</span>
-            <input value="" id="edit_apellido2" type="text" class="form-control border-dark" placeholder="2do Apellido" aria-label="2do Apellido" aria-describedby="do2_lbl">
-          </div>
-          <div class="form-check form-switch mx-2">
-            <input type="radio" class="btn-check" name="autorizado" id="autorizado" autocomplete="off" checked>
-            <label class="btn btn-outline-success" for="autorizado">Autorizado</label>
-          </div>
+
           
+
+<select class="form-select" aria-label="Default select example">
+  <option selected>Tipo de autorización</option>
+  <th th:each="estado : ${estados}">
+    <option th:value="${estado.name}" th:text="${estado.toString}">One</option>
+  </th:each>
+</select>
+
+
+
+<div class='row  py-4'>
+  <div class='col-sm-6'>
+    <label for='linkedPickers1Input' class='form-label'>Desde</label>
+    <div
+    class='input-group log-event'
+    id='linkedPickers1'
+    data-td-target-input='nearest'
+    data-td-target-toggle='nearest'
+    >
+    <input
+      id='linkedPickers1Input'
+      type='text'
+      class='form-control'
+      data-td-target='#linkedPickers1'
+    />
+    <span
+      class='input-group-text'
+      data-td-target='#linkedPickers1'
+      data-td-toggle='datetimepicker'
+    >
+        <span class='fa-solid fa-calendar'></span>
+      </span>
+    </div>
+  </div>
+  <div class='col-sm-6'>
+    <label for='linkedPickers2Input' class='form-label'>Hasta</label>
+    <div
+    class='input-group log-event'
+    id='linkedPickers2'
+    data-td-target-input='nearest'
+    data-td-target-toggle='nearest'
+    >
+    <input
+      id='linkedPickers2Input'
+      type='text'
+      class='form-control'
+      data-td-target='#linkedPickers2'
+    />
+    <span
+      class='input-group-text'
+      data-td-target='#linkedPickers2'
+      data-td-toggle='datetimepicker'
+    >
+        <span class='fa-solid fa-calendar'></span>
+      </span>
+    </div>
+  </div>
+</div>      
+
+
+<div class="form-check form-switch col-4 py-4">
+  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+  <label class="form-check-label" for="flexSwitchCheckDefault">Autorizado</label>
+</div>
+<button type="button" class="btn btn-sm btn-outline-primary float-start" data-bs-dismiss="modal">Cerrar</button>
+
           <button class="my-2 btn btn-outline-success btn-sm float-end" type="submit">Agregar</button>
           </form>      
   
         </div>
-        <div class="modal-footer" style="background-color:rgba(228,235,170,0.8);">
-          <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cerrar</button>
-  
-      </div>
     </div>
   </div>
 </div>
@@ -211,5 +269,13 @@
    alert("No ha sido posible actualizar permisos");
    })
 }
+
+
+const linkedPicker1Element = document.getElementById('linkedPickers1');
+const linked1 = new tempusDominus.TempusDominus(linkedPicker1Element);
+const linked2 = new tempusDominus.TempusDominus(document.getElementById('linkedPickers2'), {
+  useCurrent: false
+});
  </script>
+ 
   <th:block th:include="pie.html"></th:block>
