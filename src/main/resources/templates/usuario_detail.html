@@ -71,14 +71,7 @@
                 </div>
             </div>
             <div class="col-12 col-lg-6">
-              <div class="card mb-4 mb-md-0 difuminado col-menu">
-                    <div class="card-body">
-                        <p class="mb-4"><span class="text-primary font-italic me-1">Autorizaciones</span></p>
-                        
-                        <button type="button" class="btn btn-primary btn-sm"  data-bs-toggle="modal" data-bs-target="#autoriza">Agregar</button>
-                    </div>
-                </div>
-                <div class="card my-4 mb-md-0 difuminado col-menu">
+                <div class="card mb-md-0 difuminado col-menu">
                   <div class="card-body text-center">
                       <p class="mb-4"><span class="text-primary font-italic me-1">Acciones</span></p>
                       <p><span  th:if="${registrable}" role="button" class="btn btn-success btn-sm" 
@@ -88,8 +81,6 @@
                             <h3  th:if="${enespera}" role="button" class="btn btn-warning disabled btn-sm" 
                              >Usuario en espera de registro</h3>                       
                       </p>
-
-
                       <form id="panel">
                         <input type="file" style="display:none" id="fileDatas" name="fileDatas">
                          <span role="button" class="btn btn-primary btn-sm" 
@@ -147,93 +138,6 @@
     </div>
   </section>
 
-
-  <!-- Modal AUTORIZA-->
-<div class="modal fade" id="autoriza" tabindex="-1" aria-labelledby="autorizaLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color:rgba(13,110,253,1); color:white;">
-        <h5 class="modal-title" id="autorizaLabel">Nueva autorización</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body text-center" style="background-color:rgba(228,235,170,0.8);">
-
-        <form id="autoriz_usr" >
-
-          
-
-<select class="form-select" aria-label="Default select example">
-  <option selected>Tipo de autorización</option>
-  <th th:each="estado : ${estados}">
-    <option th:value="${estado.name}" th:text="${estado.toString}">One</option>
-  </th:each>
-</select>
-
-
-
-<div class='row  py-4'>
-  <div class='col-sm-6'>
-    <label for='linkedPickers1Input' class='form-label'>Desde</label>
-    <div
-    class='input-group log-event'
-    id='linkedPickers1'
-    data-td-target-input='nearest'
-    data-td-target-toggle='nearest'
-    >
-    <input
-      id='linkedPickers1Input'
-      type='text'
-      class='form-control'
-      data-td-target='#linkedPickers1'
-    />
-    <span
-      class='input-group-text'
-      data-td-target='#linkedPickers1'
-      data-td-toggle='datetimepicker'
-    >
-        <span class='fa-solid fa-calendar'></span>
-      </span>
-    </div>
-  </div>
-  <div class='col-sm-6'>
-    <label for='linkedPickers2Input' class='form-label'>Hasta</label>
-    <div
-    class='input-group log-event'
-    id='linkedPickers2'
-    data-td-target-input='nearest'
-    data-td-target-toggle='nearest'
-    >
-    <input
-      id='linkedPickers2Input'
-      type='text'
-      class='form-control'
-      data-td-target='#linkedPickers2'
-    />
-    <span
-      class='input-group-text'
-      data-td-target='#linkedPickers2'
-      data-td-toggle='datetimepicker'
-    >
-        <span class='fa-solid fa-calendar'></span>
-      </span>
-    </div>
-  </div>
-</div>      
-
-
-<div class="form-check form-switch col-4 py-4">
-  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-  <label class="form-check-label" for="flexSwitchCheckDefault">Autorizado</label>
-</div>
-<button type="button" class="btn btn-sm btn-outline-primary float-start" data-bs-dismiss="modal">Cerrar</button>
-
-          <button class="my-2 btn btn-outline-success btn-sm float-end" type="submit">Agregar</button>
-          </form>      
-  
-        </div>
-    </div>
-  </div>
-</div>
 
   <style>
     .edit_foto{

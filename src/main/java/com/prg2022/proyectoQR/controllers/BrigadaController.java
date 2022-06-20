@@ -40,6 +40,8 @@ public class BrigadaController {
     private UsuarioRepository urepository;
 
     @GetMapping("")
+    @PreAuthorize(" hasRole('MODERATOR') or hasRole('ADMIN')")
+    
     public ModelAndView getBrigadas(ModelAndView modelAndView, Model pagina) {
         pagina.addAttribute("titulo", "Brigadas");
         modelAndView.addObject("pagina", pagina);

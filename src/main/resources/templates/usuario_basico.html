@@ -1,0 +1,101 @@
+<th:block th:include="cabecera.html"></th:block>
+<script>const idu = "[[${id}]]";const idubd = "[[${usuario.BrigadaId}]]";</script>
+<section class="container py-4 difuminado" style="background-color:rgba(228,235,170,0.8);">
+    <div class="container py-5">
+
+
+
+
+
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4 difuminado col-menu">
+            <div class="card-body text-center">
+              <span th:unless="${#lists.isEmpty(usuario.Roles)}" th:class="${usuario.Roles[0].descripcion}+' badge rounded-pill bg-primary'" th:text="${usuario.Roles[0].descripcion}">YES</span>
+
+              <div class="container">
+              <img th:src="'/fotos/'+${usuario.getFoto}" alt="Foto"
+                class="rounded-circle img-fluid fotog" style="width: 150px;border-radius: 10%!important;">
+
+
+
+              </div>
+              <h5 th:text="${usuario.NombreCompleto}" class="my-3">John Smith</h5>
+              <p th:text="${usuario.dni}" class="text-muted mb-1">DNI</p>
+              <p th:text="'Brigada '+${usuario.getBrigadaDescripcion}" class="text-muted mb-4">Brigada</p>
+              <img th:src="'/qr-'+${id}+'.png'" src="xxx" alt="QR"
+                class="rounded-circle img-fluid" style="width: 150px;border-radius: 10%!important;">
+                <br><br>
+              <div class="d-flex justify-content-center mb-2">
+                <button th:if="${usuario.NumBrigada}!='000null'" type="button" class="btn btn-primary" th:text="${usuario.NumBrigada}" disabled>Num Brigada</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <div class="col-lg-8">
+
+
+
+          <div class="row">
+
+            <div class="col-12 col-lg-6">
+              <div class="card mb-4 mb-md-0 difuminado col-menu">
+                    <div class="card-body">
+                      <p class="mb-4"><span class="text-primary font-italic me-1">Últimos 10 registros</span></p>
+
+                      <div th:each="movimiento : ${movimientos}" class="mx-2 mb-1">
+                          <span th:if="${movimiento.Abordo}" th:text="${#temporals.format(movimiento.cuando, 'dd-MM-yyyy HH:mm')}"  class="btn btn-outline-success btn-sm"/>
+                          <span th:unless="${movimiento.Abordo}" th:text="${#temporals.format(movimiento.cuando, 'dd-MM-yyyy HH:mm')}"  class="btn btn-outline-danger btn-sm mx-4 float-end"/>
+                      </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <style>
+    .edit_foto{
+      display: none;
+    }
+    .fotog:hover + div{
+      display: block;
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      /*transform: translate(-50%, -50%);*/
+    }
+    </style>
+ <script src="/js/ud.js"></script>
+ <script>
+  function rolear(roles){
+  const data = new FormData();
+  if (roles!=''){
+    data.append('rol', roles);
+  }
+  fetch('/usuarios/roles/'+idu, { method: "POST", body: data })
+ .then(async response => {
+   if (!response.ok) {
+   const error = (data && data.message) || response.status;
+   return Promise.reject(error);
+   }
+   else {
+   alert("Permisos actualizados");
+   window.location.reload();
+   }
+ })
+ .catch(err => {
+   alert("No ha sido posible actualizar permisos");
+   })
+}
+ </script>
+  <th:block th:include="pie.html"></th:block>
